@@ -8,6 +8,15 @@
       app
     >
       <v-list>
+        <v-list-tile avatar exact>
+          <v-list-tile-avatar color="primary">
+             <span class="font-weight-bold white--text">{{ firstLetter }}</span>
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            {{ fullName }}
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
         <v-list-tile
           v-for="(item, i) in items"
           :key="i"
@@ -32,8 +41,11 @@
       dark
     >
       <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-      <v-spacer />
+      <v-toolbar-title>{{ appTitle }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon @click.prevent="logout">
+        <v-icon>fa-sign-out-alt</v-icon>
+      </v-btn>
     </v-toolbar>
     <v-content>
       <v-container>
@@ -44,6 +56,9 @@
 </template>
 
 <script>
+import strings from '@/util/strings';
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
@@ -58,7 +73,28 @@ export default {
         }
       ],
       miniVariant: false,
-      title: 'Proface'
+      ...strings
+    }
+  },
+  computed: {
+    ...mapState('auth',[
+      'user'
+    ]),
+    firstLetter() {
+      return this.fullName ? this.fullName
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase())
+        .join('') : "";
+    },
+    fullName(){
+      const { firstName, lastName } = this.user;
+      return `${firstName} ${lastName}`
+    }
+  },
+  methods: {
+    async logout() {
+      await this.$auth.logout();
+      this.$router.push('/login')
     }
   }
 }

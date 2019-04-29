@@ -3,6 +3,7 @@ import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/es5/util/colors'
 
 Vue.use(Vuetify, {
+  iconfont: 'fa',
   theme: {
     primary: '#3C8DCB',
     accent: '#3C45CB',
