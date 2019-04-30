@@ -18,7 +18,7 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700|Material+Icons'
+        href: 'https://fonts.googleapis.com/css?family=Lato:300,400,500,700|Material+Icons'
       },
       {
         rel: 'stylesheet',

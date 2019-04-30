@@ -4,31 +4,28 @@
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
-      fixed
-      app
+      fixed app
     >
       <v-list>
-        <v-list-tile avatar exact>
-          <v-list-tile-avatar color="primary">
-             <span class="font-weight-bold white--text">{{ firstLetter }}</span>
-          </v-list-tile-avatar>
+        <v-list-tile>
           <v-list-tile-content>
-            {{ fullName }}
+           <proface-logo></proface-logo>
           </v-list-tile-content>
         </v-list-tile>
+        <span class="my-3"></span>
         <v-divider></v-divider>
         <v-list-tile
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
+          v-for="(menu, i) in menus"
+          :key="i" :to="menu.to"
+          router exact
         >
           <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon small>{{ menu.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="item.title" />
+            <v-list-tile-title>
+              {{ menu.title }}
+            </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -41,14 +38,16 @@
       dark
     >
       <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-toolbar-title>{{ appTitle }}</v-toolbar-title>
+      <v-toolbar-title>
+        <span class="font-weight-bold">
+          {{ currentTitle }}
+        </span>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click.prevent="logout">
-        <v-icon>fa-sign-out-alt</v-icon>
-      </v-btn>
+      <user-details-menu :user="user"></user-details-menu>
     </v-toolbar>
     <v-content>
-      <v-container>
+      <v-container fluid fill-height ma-0 pa-0>
         <nuxt />
       </v-container>
     </v-content>
@@ -56,46 +55,32 @@
 </template>
 
 <script>
+import UserDetailsMenu from '@/components/UserDetailsMenu'
+import ProfaceLogo from '@/components/ProfaceLogo'
 import strings from '@/util/strings';
+import menus from '@/util/menus';
 import { mapState } from 'vuex';
 
 export default {
+  components: {
+    UserDetailsMenu,
+    ProfaceLogo
+  },
   data() {
     return {
-      clipped: true,
+      clipped: false,
       drawer: false,
       fixed: false,
-      items: [
-        {
-          icon: 'apps',
-          title: 'Inicio',
-          to: '/'
-        }
-      ],
-      miniVariant: false,
-      ...strings
+      miniVariant: false
     }
   },
   computed: {
+    ...mapState(['currentTitle']),
     ...mapState('auth',[
       'user'
     ]),
-    firstLetter() {
-      return this.fullName ? this.fullName
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase())
-        .join('') : "";
-    },
-    fullName(){
-      const { firstName, lastName } = this.user;
-      return `${firstName} ${lastName}`
-    }
-  },
-  methods: {
-    async logout() {
-      await this.$auth.logout();
-      this.$router.push('/login')
-    }
+    strings: () => strings,
+    menus: () => menus,
   }
 }
 </script>

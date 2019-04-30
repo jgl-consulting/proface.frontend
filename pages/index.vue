@@ -8,5 +8,8 @@
 
 <script>
 export default {
+  async fetch ({ store }) {
+    store.dispatch('loadCurrentTitle', 'Inicio');
+  }
 }
 </script>

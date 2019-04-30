@@ -5,9 +5,7 @@
       <v-card class="px-3 py-5" elevation="3">
         <v-card-text>
           <v-form class="text-xs-center" ref="loginForm" lazy-validation>
-            <h1 class="primary--text mb-5">
-              <span class="mt-1">{{ appTitle }}</span>
-            </h1>
+            <proface-logo class="mb-5"></proface-logo>
             <v-text-field
               label="Usuario"
               v-model="user.username"
@@ -23,11 +21,11 @@
               :type="value ? 'password' : 'text'"
             ></v-text-field>
             <v-btn 
-              class="mt-5" 
+              class="text-capitalize mt-5" 
               :loading="busy"
               round outline large color="primary" 
               @click.prevent="login">
-              <v-icon class="mr-3">fa-sign-in-alt</v-icon>
+              <v-icon small class="mr-3">fa-sign-in-alt</v-icon>
               <span class="font-weight-bold">Iniciar Sesión</span>
             </v-btn>
           </v-form>
@@ -44,10 +42,12 @@ import QueryString from 'query-string'
 import strings from '@/util/strings'
 
 import Notification from '@/components/Notification'
+import ProfaceLogo from '@/components/ProfaceLogo'
 
 export default {
   components: {
-    Notification
+    Notification,
+    ProfaceLogo
   },
   layout: 'empty',
   auth: false,
