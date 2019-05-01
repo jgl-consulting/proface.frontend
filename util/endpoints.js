@@ -1,0 +1,1 @@
+export const PROVEEDORES_ENDPOINT = '/api/proveedor';

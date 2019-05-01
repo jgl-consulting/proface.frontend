@@ -47,7 +47,7 @@
       <user-details-menu :user="user"></user-details-menu>
     </v-toolbar>
     <v-content>
-      <v-container fluid fill-height ma-0 pa-0>
+      <v-container fluid ma-0 pa-0>
         <nuxt />
       </v-container>
     </v-content>

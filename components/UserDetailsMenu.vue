@@ -52,9 +52,9 @@
           </v-list-tile>
         </v-list>
         -->
-        <v-card-actions class="pa-2">
+        <v-card-actions class="px-2 pt-3">
           <v-spacer></v-spacer>
-          <v-btn class="text-capitalize" color="accent" @click="logout" round>
+          <v-btn color="accent" @click="logout" flat>
             <v-icon small>fa-sign-out-alt</v-icon>
             <span class="mx-1"></span>
             Cerrar sesión

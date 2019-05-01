@@ -1,21 +1,17 @@
 <template>
   <div>
-    {{ user }}
+    {{ proveedor }}
   </div>
 </template>
 
 <script>
 
 export default {
-  validate ({ params }) {
-    return /^\d+$/.test(params.idProveedor)
-  },
   async asyncData({ params, $axios}) {
     const { idProveedor } = params;
+    const { _embedded } = await $axios.$get(`/api/proveedor/${idProveedor}`);
 
-    const user = await $axios.$get(`/usuarios/${idProveedor}`);
-
-    return { user };
+    return { proveedor: _embedded };
   }
 }
 </script>
