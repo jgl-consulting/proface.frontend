@@ -1,1 +1,1 @@
-export const PROVEEDORES_ENDPOINT = '/api/proveedor';
+export const SUPPLIERS_ENDPOINT = '/api/suppliers';

@@ -40,7 +40,7 @@
         </v-toolbar>
         <v-data-table
           :headers="headers"
-          :items="proveedores"
+          :items="suppliers"
           class="elevation-1"
           :total-items="page.totalElements"
           :pagination.sync="pagination"
@@ -48,21 +48,18 @@
           rows-per-page-text="Tamaño de página"
         >
           <template v-slot:items="{ item }">
-            <td>{{ item.idProveedor }}</td>
+            <td>{{ item.id }}</td>
             <td class="text-xs-right">
-              {{ item.nombre }}
+              {{ item.name }}
             </td>
             <td class="text-xs-right">
-              {{ optional(item.cuenta).nroCuenta || "No existe" }}
+              {{ item.address }}
             </td>
             <td class="text-xs-right">
-              {{ item.tipoProveedor }}
+              {{ item.type.name }}
             </td>
             <td class="text-xs-right">
-              {{ optional(item.direccion).nombreCalle }}, {{ optional(item.direccion).ciudad }}
-              </td>
-            <td class="text-xs-right">
-              {{ optional(item.contacto).nombre }} {{ optional(item.contacto).apellido }}
+              {{ optional(item.contact).firstName }} {{ optional(item.contact).lastName }}
             </td>
           </template>
         </v-data-table>
@@ -80,29 +77,28 @@ export default {
     
     const params = { requestPage: 0, size: 20, sortBy: undefined };
 
-    await store.dispatch('proveedores/fetchProveedores', params)
+    await store.dispatch('suppliers/fetchSuppliers', params)
   },
   data() {
     return {
       title: 'Proveedores',
       headers: [
         {
-          text: 'Id Proveedor',
+          text: 'Id',
           align: 'left',
           sortable: false,
-          value: 'idProveedor'
+          value: 'id'
         },
-        { text: 'Nombre', value: 'nombre' },
-        { text: 'Cuenta', value: 'cuenta' },
-        { text: 'Direccion', value: 'direccion' },
-        { text: 'Tipo', value: 'tipoProveedor' },
-        { text: 'Contacto', value: 'contacto' }
+        { text: 'Nombre', value: 'name' },
+        { text: 'Direccion', value: 'address' },
+        { text: 'Tipo', value: 'type' },
+        { text: 'Contacto', value: 'contact' }
       ],
       pagination: {
         descending: false,
         page: 0,
         rowsPerPage: 20,// -1 for All",
-        sortBy: 'cuenta'
+        sortBy: 'id'
       },
       pageSizes: [20, 30, 50, 100]
     }
@@ -119,13 +115,13 @@ export default {
           descending
         };
 
-        await this.$store.dispatch('proveedores/fetchProveedores', params);
+        await this.$store.dispatch('suppliers/fetchSuppliers', params);
       }
     }
   },
   computed: {
-    ...mapState('proveedores', [
-      'proveedores',
+    ...mapState('suppliers', [
+      'suppliers',
       'page'
     ])
   },
