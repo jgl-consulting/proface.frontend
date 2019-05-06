@@ -45,7 +45,9 @@ export default {
   */
   plugins: [
     '@/plugins/vuetify',
-    '@/plugins/services'
+    '@/plugins/services',
+    '@/plugins/flags',
+    '@/plugins/lodash',
   ],
 
   /*

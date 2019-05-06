@@ -9,7 +9,7 @@
 export default {
   async asyncData({ params, $axios}) {
     const { idProveedor } = params;
-    const { _embedded } = await $axios.$get(`/api/proveedor/${idProveedor}`);
+    const { _embedded } = await $axios.$get(`/api/suppliers/${supplierId}`);
 
     return { proveedor: _embedded };
   }
