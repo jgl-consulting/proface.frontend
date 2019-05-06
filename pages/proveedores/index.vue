@@ -66,13 +66,14 @@
       </v-flex>
     </v-layout>
   </v-container>
-  
 </template>
 
 <script>
 import { mapState } from 'vuex';
+
 export default {
   async fetch ({ store }) {
+    
     store.dispatch('loadCurrentTitle', 'Proveedores');
     
     const params = { requestPage: 0, size: 20, sortBy: undefined };
