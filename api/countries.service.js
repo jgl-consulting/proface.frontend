@@ -5,10 +5,7 @@ export default class CountriesService {
   }
 
   async listCountries() {
-    const { supplierTypes } = (await this.$axios.$get(COUNTRIES_ENDPOINT, {
-      params: { size: Number.MAX_VALUE }
-    }))._embedded;
-
+    const { countries } = await this.$axios.$get(`${COUNTRIES_ENDPOINT}/unpaged`);
     return countries;
   }
 

@@ -25,16 +25,13 @@ export const mutations = {
 }
 export const actions = {
   async fetchSuppliers({ commit }, { requestPage, size, sortBy, descending }) {
-    const { suppliers, page } = await this.$suppliers.listSuppliers(requestPage, size, sortBy, descending);
+    const direction = descending ? 'desc' : 'asc';
+    const { suppliers, page } = await this.$suppliers.listSuppliers(requestPage, size, sortBy, direction);
     commit(SET_SUPPLIERS, suppliers);
     commit(SET_PAGE, page);
   },
   async fetchSupplierTypes({ commit }) {
     const supplierTypes = await this.$suppliers.listSupplierTypes();
-    commit(SET_SUPPLIER_TYPES, supplierTypes.map((type) => {
-      const url = new URL(type._links.self.href);
-      const id = parseInt(_.last(url.pathname.split('/')));
-      return { id,...type };
-    }));
+    commit(SET_SUPPLIER_TYPES, supplierTypes);
   }
 }

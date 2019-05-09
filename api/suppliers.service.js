@@ -5,9 +5,9 @@ export default class SuppliersService {
     this.$axios = $axios;
   }
 
-  async listSuppliers(page, size, sortBy, descending) {
+  async listSuppliers(page, size, sortBy, direction) {
     const suppliers = await this.$axios.$get(SUPPLIERS_ENDPOINT, {
-      params: { page, size, sortBy, descending }
+      params: { page, size, sort: sortBy ? `${sortBy},${direction}`: sortBy}
     });
     
     const extractOneContact = (supplier) => ({
@@ -28,12 +28,8 @@ export default class SuppliersService {
     }
   }
 
-  async listSupplierTypes() {
-    const { supplierTypes } = (await this.$axios.$get(SUPPLIER_TYPES_ENDPOINT, {
-      params: { size: Number.MAX_VALUE }
-    }))._embedded;
-
-    return supplierTypes;
+  listSupplierTypes() {
+    return this.$axios.$get(`${SUPPLIER_TYPES_ENDPOINT}/unpaged`);
   }
 
 }
