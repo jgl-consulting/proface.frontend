@@ -48,6 +48,7 @@ export default {
     '@/plugins/services',
     '@/plugins/flags',
     '@/plugins/lodash',
+    '@/plugins/filters',
   ],
 
   /*
@@ -114,6 +115,6 @@ export default {
     }
   },
   router: {
-    middleware: ['auth']
+    middleware: ['auth', 'page-title']
   }
 }

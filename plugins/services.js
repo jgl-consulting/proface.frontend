@@ -1,4 +1,4 @@
-import SuppliersService from '@/api/suppliers-service';
+import SuppliersService from '@/api/suppliers.service';
 
 export default function(ctx, inject) {
   if (!ctx.$axios) {

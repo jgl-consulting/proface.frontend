@@ -1,15 +1,19 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <h1>Proyecto proface</h1>
-    </v-flex>
-  </v-layout>
+  <v-container>
+    <v-layout row wrap>
+      <v-flex>
+        <module-title>
+          Módulos
+        </module-title>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
 export default {
   async fetch ({ store }) {
-    store.dispatch('loadCurrentTitle', 'Inicio');
+    // store.dispatch('loadCurrentTitle', 'Inicio');
   }
 }
 </script>

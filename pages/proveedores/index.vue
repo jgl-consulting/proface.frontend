@@ -1,20 +1,15 @@
 <template>
-  <v-container grid-list-md fill-height fluid ma-0>
+  <v-container>
     <v-layout wrap row>
       <v-flex xs12>
-        <v-layout row wrap align-content-center>          
-          <v-flex xs3>
-            <!-- <v-breadcrumbs divider="/">
-              <v-breadcrumbs-item>
-                Proveedores
-              </v-breadcrumbs-item>
-              <v-breadcrumbs-item>
-                Listado
-              </v-breadcrumbs-item>
-            </v-breadcrumbs> -->
+        <v-layout row wrap align-content-center mb-3>          
+          <v-flex xs6>
+            <module-title>
+              Listado de proveedores
+            </module-title>
           </v-flex>
-          <v-flex xs9 class="text-xs-right">
-            <v-btn fab small color="success">
+          <v-flex xs6 class="text-xs-right">
+            <v-btn class="mt-3" fab small color="success" @click="openAddSupplierDialog">
               <v-icon small>fa-plus</v-icon>
             </v-btn>
             <!-- <v-btn fab small color="accent">
@@ -26,8 +21,8 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex xs12 px-2>
-        <v-toolbar class="elevation-2">
+      <v-flex xs12>
+        <!-- <v-toolbar class="elevation-2">
           <v-flex xs12>
             <v-text-field
               full-width
@@ -37,7 +32,7 @@
               @click:append="searchProveedor"
             ></v-text-field>
           </v-flex>
-        </v-toolbar>
+        </v-toolbar> -->
         <v-data-table
           :headers="headers"
           :items="suppliers"
@@ -50,8 +45,7 @@
           rows-per-page-text="Tamaño de página"
         >
           <template v-slot:items="props">
-            <tr @click="props.expanded = !props.expanded">
-
+            <tr @click.stop="props.expanded = !props.expanded">
               <td>{{ props.item.id }}</td>
               <td class="text-xs-right">
                 {{ props.item.nativeId }}
@@ -73,26 +67,32 @@
               <td class="text-xs-right">
                 {{ props.item.type.name }}
               </td>
+              <td class="text-xs-center">
+                <v-btn class="mx-1" color="primary" dark fab small
+                  @click.stop="supplierDetails(props.item)">
+                  <v-icon small>fa-ellipsis-v</v-icon>
+                </v-btn>
+                <v-btn class="mx-1" color="accent" dark fab small
+                  @click.stop="openEditSupplierDialog(props.item)">
+                  <v-icon small>fa-pen</v-icon>
+                </v-btn>
+                <v-btn class="mx-1" color="deep-purple darken-3" dark fab small
+                  @click.stop="deleteSupplier(props.item)">
+                  <v-icon small>fa-trash</v-icon>
+                </v-btn>
+              </td>
             </tr>
           </template>
           <template v-slot:expand="{ item }">
             <v-list avatar>
               <div v-if="$_.isEmpty(item.accounts)">
-                <v-list-tile>
-                  <v-list-tile-avatar>
-                    <v-icon small class="yellow darken-3" color="white">
-                      fa-search
-                    </v-icon>
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                    <v-list-tile-title>
-                      No hay cuentas para el proveedor.
-                    </v-list-tile-title>
-                  </v-list-tile-content>
-                </v-list-tile>
+                <empty-list-tile>
+                  No hay cuentas para el proveedor.
+                </empty-list-tile>
               </div>
               <div v-else> 
                 <account-list-item
+                  class="my-3"
                   v-for="account in item.accounts"
                   :key="account | accountFlatId"
                   :description="account.description"
@@ -100,32 +100,41 @@
                   :cci="account.cci"
                   :bank="account.bank"
                   :currency="account.currency"
-                ></account-list-item>
+                >
+                </account-list-item>
               </div>
             </v-list>
           </template>
         </v-data-table>
       </v-flex>
     </v-layout>
+    <save-supplier-dialog
+      v-model="openSaveDialog"
+      :supplier="supplierToSave"
+      :mode="dialogMode"
+      @save="saveSupplier"
+    ></save-supplier-dialog>
   </v-container>
 </template>
 
 <script>
-import AccountListItem from '@/components/AccountListItem';
-
+import EmptyListTile from '@/components/EmptyListTile';
+import AccountListItem from '@/components/suppliers/AccountListItem';
+import SaveSupplierDialog from '@/components/suppliers/SaveSupplierDialog';
 import { mapState } from 'vuex';
 
 export default {
   components: {
-    AccountListItem
+    AccountListItem,
+    EmptyListTile,
+    SaveSupplierDialog
   },
   async fetch ({ store }) {
-    
-    store.dispatch('loadCurrentTitle', 'Proveedores');
+    let array = [1,2,3,4];
     
     const params = { requestPage: 0, size: 20, sortBy: undefined };
-
-    await store.dispatch('suppliers/fetchSuppliers', params)
+    await store.dispatch('suppliers/fetchSuppliers', params);
+    await store.dispatch('suppliers/fetchSupplierTypes');
   },
   data() {
     return {
@@ -142,6 +151,7 @@ export default {
         { text: 'Direccion', value: 'address' },
         { text: 'Pais', value: 'country'},
         { text: 'Tipo', value: 'type' },
+        { text: 'Acciones', value: 'id', sortable: false,}
       ],
       pagination: {
         descending: false,
@@ -150,7 +160,14 @@ export default {
         sortBy: 'id'
       },
       expand: false,
-      pageSizes: [20, 30, 50, 100]
+      pageSizes: [20, 30, 50, 100],
+      supplierToSave: {
+        type: { id: 0 },
+        country: { id: 0 },
+        contact: { id: 0 }
+      },
+      openSaveDialog: false,
+      dialogMode: 'nuevo'
     }
   },
   watch: {
@@ -176,12 +193,34 @@ export default {
     ])
   },
   methods: {
-    searchProveedor() {
-      console.log('searching')
+    supplierDetails(supplier) {
+      const { path } = this.$route;
+      this.$router.push({
+        path: `${path}/${supplier.id}`
+      })
+    },
+    openAddSupplierDialog() {
+      this.openSaveDialog = true;
+      this.supplierToSave = {
+        type: { id: 0 },
+        country: { id: 0 },
+        contact: { id: 0 }
+      };
+      this.dialogMode = 'nuevo';
+    },
+    openEditSupplierDialog(supplier) {
+      this.openSaveDialog = true;
+      this.supplierToSave = supplier;
+      this.dialogMode = 'editar';
+    },
+    saveSupplier(supplier) {
+      console.log(supplier);
+    },
+    deleteSupplier(supplier){
     },
     optional(object) {
       return object || {};
-    }
+    },
   },
   filters: {
     accountFlatId({ id }) {

@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/es5/util/colors'
+import ModuleTitle from '@/components/ModuleTitle'
+
+
 
 Vue.use(Vuetify, {
   iconfont: 'fa',
@@ -14,3 +17,4 @@ Vue.use(Vuetify, {
     success: colors.green.base
   }
 })
+Vue.component("ModuleTitle", ModuleTitle);

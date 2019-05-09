@@ -8,8 +8,15 @@
     >
       <v-list>
         <v-list-tile>
+          <v-list-tile-action>
+             <v-icon color="primary">fa fa-tooth</v-icon>
+          </v-list-tile-action>
           <v-list-tile-content>
-           <proface-logo></proface-logo>
+            <v-list-tile-title>
+              <h1 class="primary--text">
+                Proface
+              </h1>
+            </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <span class="my-3"></span>
@@ -25,6 +32,18 @@
           <v-list-tile-content>
             <v-list-tile-title>
               {{ menu.title }}
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-spacer></v-spacer>
+        <v-list-tile @click.stop="miniVariant = !miniVariant">
+          <v-list-tile-action>
+            <v-icon>{{ `fa-chevron-${miniVariant ? 'right' : 'left'}`}}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              Contraer
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
