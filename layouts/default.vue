@@ -74,8 +74,8 @@
 </template>
 
 <script>
-import UserDetailsMenu from '@/components/UserDetailsMenu'
-import ProfaceLogo from '@/components/ProfaceLogo'
+import UserDetailsMenu from '@/components/common/UserDetailsMenu'
+import ProfaceLogo from '@/components/common/ProfaceLogo'
 import strings from '@/util/strings';
 import menus from '@/util/menus';
 import { mapState } from 'vuex';

@@ -39,8 +39,8 @@ import { mapState } from 'vuex'
 import QueryString from 'query-string'
 import strings from '@/util/strings'
 
-import Notification from '@/components/Notification'
-import ProfaceLogo from '@/components/ProfaceLogo'
+import Notification from '@/components/common/Notification'
+import ProfaceLogo from '@/components/common/ProfaceLogo'
 
 export default {
   components: {

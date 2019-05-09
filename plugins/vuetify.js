@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/es5/util/colors'
-import ModuleTitle from '@/components/ModuleTitle'
+import ModuleTitle from '@/components/common/ModuleTitle'
 
 
 

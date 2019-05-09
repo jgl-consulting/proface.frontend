@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import EmptyListTile from '@/components/EmptyListTile';
+import EmptyListTile from '@/components/common/EmptyListTile';
 import AccountListItem from '@/components/suppliers/AccountListItem';
 import SaveSupplierDialog from '@/components/suppliers/SaveSupplierDialog';
 import { mapState } from 'vuex';
