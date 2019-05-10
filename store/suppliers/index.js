@@ -1,8 +1,9 @@
-import { SET_SUPPLIERS, SET_SUPPLIER_TYPES, SET_PAGE } from '@/util/mutations-types';
+import { SET_SUPPLIERS, SET_SUPPLIER_TYPES, SET_PAGE, SET_COUNTRIES } from '@/util/mutations-types';
 import _ from 'lodash';
 export const state = () => ({
   suppliers: [],
   supplierTypes: [],
+  countries: [],
   page: {
     size: 0,
     totalElements: 0,
@@ -21,6 +22,9 @@ export const mutations = {
   },
   [SET_PAGE](state, page) {
     state.page = page;
+  },
+  [SET_COUNTRIES](state, countries) {
+    state.countries = countries;
   }
 }
 export const actions = {
@@ -33,5 +37,13 @@ export const actions = {
   async fetchSupplierTypes({ commit }) {
     const supplierTypes = await this.$suppliers.listSupplierTypes();
     commit(SET_SUPPLIER_TYPES, supplierTypes);
+  },
+  async fetchCountries({commit}) {
+    const countries = await this.$countries.listCountries();
+    commit(SET_COUNTRIES, countries);
+  },
+  async createSupplier({ dispatch }, { supplier }) {
+    await this.$suppliers.createSupplier(supplier);
+    await dispatch('fetchSuppliers');
   }
 }

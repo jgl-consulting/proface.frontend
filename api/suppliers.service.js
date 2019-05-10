@@ -32,4 +32,8 @@ export default class SuppliersService {
     return this.$axios.$get(`${SUPPLIER_TYPES_ENDPOINT}/unpaged`);
   }
 
+  async createSupplier(supplier) {
+    await this.$axios.$post(SUPPLIERS_ENDPOINT, supplier);
+  }
+
 }

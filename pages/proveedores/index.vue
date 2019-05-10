@@ -112,7 +112,6 @@
       v-model="openSaveDialog"
       :supplier="supplierToSave"
       :mode="dialogMode"
-      @save="saveSupplier"
     ></save-supplier-dialog>
   </v-container>
 </template>
@@ -135,6 +134,7 @@ export default {
     const params = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch('suppliers/fetchSuppliers', params);
     await store.dispatch('suppliers/fetchSupplierTypes');
+    await store.dispatch('suppliers/fetchCountries');
   },
   data() {
     return {
@@ -212,9 +212,6 @@ export default {
       this.openSaveDialog = true;
       this.supplierToSave = supplier;
       this.dialogMode = 'editar';
-    },
-    saveSupplier(supplier) {
-      console.log(supplier);
     },
     deleteSupplier(supplier){
     },
