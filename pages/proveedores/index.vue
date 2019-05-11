@@ -57,7 +57,7 @@
                 {{ props.item.address }}
               </td>
               <td class="text-xs-right">
-                <span class="mr-2">{{ props.item.country.name }}</span>
+                <span class="mr-2">{{ props.item.country.iso }}</span>
                 <flag 
                   :iso="props.item.country.iso"
                   :title="props.item.country.name"
@@ -112,6 +112,7 @@
       v-model="openSaveDialog"
       :supplier="supplierToSave"
       :mode="dialogMode"
+      @save="saveSupplier"
     ></save-supplier-dialog>
   </v-container>
 </template>
@@ -130,7 +131,7 @@ export default {
   },
   async fetch ({ store }) {
     let array = [1,2,3,4];
-    
+
     const params = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch('suppliers/fetchSuppliers', params);
     await store.dispatch('suppliers/fetchSupplierTypes');
@@ -194,6 +195,8 @@ export default {
   },
   methods: {
     supplierDetails(supplier) {
+      const array1 = [3, 4]
+      const array2 = [1, 2, ...array1, 5]
       const { path } = this.$route;
       this.$router.push({
         path: `${path}/${supplier.id}`
@@ -212,6 +215,9 @@ export default {
       this.openSaveDialog = true;
       this.supplierToSave = supplier;
       this.dialogMode = 'editar';
+    },
+    saveSupplier(supplier) {
+      console.log(supplier);
     },
     deleteSupplier(supplier){
     },

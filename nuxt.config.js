@@ -66,6 +66,7 @@ export default {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     baseURL: 'https://proface-api.herokuapp.com'
+    // baseURL: 'http://localhost:8080'
   },
 
   /*

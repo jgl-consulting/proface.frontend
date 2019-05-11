@@ -121,11 +121,13 @@ export default {
   watch: {
     supplier: {
       handler() {
-        const [ country ] = this.countries; 
+        console.log(this.countries, this.supplierTypes);
+        const [ country = {} ] = this.countries; 
         this.supplierModel = { 
           ... this.supplier, 
           country
         };
+        console.log({ supplier: this.supplierModel })
       }
     }
   },
