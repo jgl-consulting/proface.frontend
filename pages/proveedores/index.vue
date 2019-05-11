@@ -130,8 +130,6 @@ export default {
     SaveSupplierDialog
   },
   async fetch ({ store }) {
-    let array = [1,2,3,4];
-
     const params = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch('suppliers/fetchSuppliers', params);
     await store.dispatch('suppliers/fetchSupplierTypes');
@@ -195,8 +193,6 @@ export default {
   },
   methods: {
     supplierDetails(supplier) {
-      const array1 = [3, 4]
-      const array2 = [1, 2, ...array1, 5]
       const { path } = this.$route;
       this.$router.push({
         path: `${path}/${supplier.id}`
