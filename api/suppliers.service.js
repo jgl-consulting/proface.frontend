@@ -13,7 +13,7 @@ export default class SuppliersService {
     const extractOneContact = (supplier) => ({
       ...supplier,
       contacts: undefined,
-      contact: supplier.contacts[0]
+      contact: supplier.contacts[0] || {}
     });
 
     return { 
@@ -33,7 +33,18 @@ export default class SuppliersService {
   }
 
   async createSupplier(supplier) {
+    console.log(JSON.stringify(supplier));
     await this.$axios.$post(SUPPLIERS_ENDPOINT, supplier);
+  }
+
+  async updateSupplier(supplier) {
+    console.log(JSON.stringify(supplier));
+    const { id } = supplier;
+    await this.$axios.$put(`${SUPPLIERS_ENDPOINT}/${id}`, supplier);
+  }
+
+  async deleteSupplier({ id }) {
+    await this.$axios.$delete(`${SUPPLIERS_ENDPOINT}/${id}`);
   }
 
 }

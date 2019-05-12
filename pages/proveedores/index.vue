@@ -112,7 +112,6 @@
       v-model="openSaveDialog"
       :supplier="supplierToSave"
       :mode="dialogMode"
-      @save="saveSupplier"
     ></save-supplier-dialog>
   </v-container>
 </template>
@@ -121,7 +120,7 @@
 import EmptyListTile from '@/components/common/EmptyListTile';
 import AccountListItem from '@/components/suppliers/AccountListItem';
 import SaveSupplierDialog from '@/components/suppliers/SaveSupplierDialog';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -192,6 +191,9 @@ export default {
     ])
   },
   methods: {
+    ...mapActions('suppliers', {
+      deleteSupplierAction: 'deleteSupplier'
+    }),
     supplierDetails(supplier) {
       const { path } = this.$route;
       this.$router.push({
@@ -210,12 +212,30 @@ export default {
     openEditSupplierDialog(supplier) {
       this.openSaveDialog = true;
       this.supplierToSave = supplier;
+      console.log(this.supplierToSave)
       this.dialogMode = 'editar';
     },
-    saveSupplier(supplier) {
-      console.log(supplier);
-    },
-    deleteSupplier(supplier){
+    async deleteSupplier(supplier){
+      const { name } = supplier;
+      const res = await this.$confirm(`¿Está seguro de borrar al proveedor '${name}'?`, {
+        title: 'Advertencia' 
+      });
+      if(res) {
+        try {
+          await this.deleteSupplierAction({ supplier });
+
+          this.$confirm('Borrado correcto!', {
+            title: 'Éxito',
+            color: 'success'
+          });
+        
+        } catch(error) {
+          this.$confirm(error, {
+            title: 'Error',
+            color: 'error'
+          });
+        }
+      }
     },
     optional(object) {
       return object || {};

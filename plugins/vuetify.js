@@ -2,8 +2,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/es5/util/colors'
 import ModuleTitle from '@/components/common/ModuleTitle'
-
-
+import VuetifyConfirm from 'vuetify-confirm'
 
 Vue.use(Vuetify, {
   iconfont: 'fa',
@@ -17,4 +16,13 @@ Vue.use(Vuetify, {
     success: colors.green.base
   }
 })
+
+// Custom
 Vue.component("ModuleTitle", ModuleTitle);
+
+// vuetify-confirm
+Vue.use(VuetifyConfirm, {
+  buttonTrueText: 'Aceptar',
+  buttonFalseText: 'Cancelar',
+  width: 350,
+})

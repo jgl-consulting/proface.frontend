@@ -122,10 +122,10 @@ export default {
     supplier: {
       handler() {
         const [ country = {} ] = this.countries; 
-        this.supplierModel = { 
-          ... this.supplier, 
-          country
-        };
+
+
+        this.supplierModel = JSON.parse(JSON.stringify(this.supplier))
+        this.supplierModel.country = this.supplier.country || country;
       }
     }
   },
@@ -144,21 +144,39 @@ export default {
     ...mapState('suppliers', [
       'supplierTypes',
       'countries'
-    ])
+    ]),
+    supplierToSave(){
+      const { contact } = this.supplierModel;
+      return JSON.parse(JSON.stringify({ 
+        ...this.supplierModel, 
+        contacts: [ contact ],
+        contact: undefined,
+        accounts: [] 
+      }));
+    }
   },
   methods: {
     ...mapActions('suppliers', [
-      'createSupplier'
+      'createSupplier',
+      'updateSupplier'
     ]),
     async saveSupplier() {
-      // TODO: Check why this object generate ERROR 500
-      // {"type":{"id":4,"name":"Nacional"},"country":{"id":230,"name":"United States of America","iso":"US"},"contact":{"id":0,"firstName":"Luis","lastName":"Pozos","phone":"989283432","email":"lpozos@aa.com"},"name":"American Airlines","nativeId":"12093812903","address":"asdksjsakldjsa","contacts":[{"id":0,"firstName":"Luis","lastName":"Pozos","phone":"989283432","email":"lpozos@aa.com"}]}
-      const { contact } = this.supplierModel;
-      const supplier = { ...this.supplierModel, contacts: [ contact ] };
+      const supplier = this.supplierToSave; 
       try {
-        if(this.mode === 'nuevo') {
-          console.log(JSON.stringify(supplier))
-          await this.createSupplier({ supplier });
+        const { name } = supplier;
+        const res = await this.$confirm(`¿Está seguro de guardar al proveedor '${name}'?`, { title: 'Advertencia' })
+        if(res) {
+          if(this.mode === 'nuevo') {
+            await this.createSupplier({ supplier });
+          } else if(this.mode === 'editar') {
+            await this.updateSupplier({ supplier });
+          }
+
+          await this.$confirm('Guardado correcto!', {
+            title: 'Éxito',
+            color: 'success'
+          });
+
           this.closeDialog();
         }
       } catch(error) {
@@ -170,7 +188,12 @@ export default {
       this.$emit("input", this.isOpen);
     },
     showError(error){
-      console.log({ error })
+      const { message, errors } = error.response.data;
+      this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
+        title: message, 
+        color: 'error',
+        width: 500
+      });
     }
   },
   created(){
