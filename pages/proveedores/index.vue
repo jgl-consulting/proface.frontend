@@ -3,21 +3,10 @@
   <v-container>
     <v-layout wrap row>
       <v-flex xs12>
-        <v-toolbar class="elevation-2" extended>
-          <v-text-field
-            full-width
-            color="grey"
-            label="Buscar proveedor"
-            append-icon="search"
-          ></v-text-field>
-          <v-btn 
-            class="mt-3" 
-            fab 
-            absolute
-            bottom
-            right
-            color="success" 
-            @click="openAddSupplierDialog">
+        <v-toolbar class="elevation-3" color="deep-purple darken-2ace" dark>
+          <h3>Tabla de proveedores</h3>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="openAddSupplierDialog">
             <v-icon small>fa-plus</v-icon>
           </v-btn>
         </v-toolbar>
@@ -64,7 +53,7 @@
                   @click.stop="openEditSupplierDialog(props.item)">
                   <v-icon small>fa-pen</v-icon>
                 </v-btn>
-                <v-btn class="mx-1" color="deep-purple darken-3" dark fab small
+                <v-btn class="mx-1" color="deep-purple darken-2" dark fab small
                   @click.stop="deleteSupplier(props.item)">
                   <v-icon small>fa-trash</v-icon>
                 </v-btn>
@@ -174,7 +163,8 @@ export default {
   computed: {
     ...mapState('suppliers', [
       'suppliers',
-      'page'
+      'page',
+      'countries'
     ])
   },
   methods: {

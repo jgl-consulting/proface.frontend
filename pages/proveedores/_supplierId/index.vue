@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title primary-title>
-      <h1>
+      <h1 class="headline-1 ma-2">
         {{ supplier.name }}
         <flag
           class="ml-2"
@@ -12,26 +12,66 @@
       </h1>
     </v-card-title>
     <v-layout row wrap>
-        <v-flex xs7>
-          <model-detail
-            :fields="supplierFields"
-            :model="supplier"
-          ></model-detail>
+        <v-flex md6 pa-4>
+          <v-card flat class="elevation-3">
+            <v-toolbar dark color="deep-purple darken-2">
+               <h2>Información General</h2>
+            </v-toolbar>
+            <v-card-text>
+              <model-detail
+                :fields="supplierFields"
+                :model="supplier"
+              ></model-detail>
+            </v-card-text>
+          </v-card>
         </v-flex>
-        <v-flex xs5>
-          <h2>Contacto</h2>
-          <model-detail
-            :fields="supplierContactFields"
-            :model="supplierContact"
-          ></model-detail>
+        <v-flex md6 pa-4>
+          <v-card flat class="elevation-3">
+            <v-toolbar dark color="accent">
+              <h2>Contacto</h2>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-card-text>
+            <model-detail
+              :fields="supplierContactFields"
+              :model="supplierContact"
+            >
+              <template v-slot:phone="{ field, model }">
+                <v-list-tile-avatar>
+                  <v-icon small>{{ field.icon }}</v-icon>
+                </v-list-tile-avatar> 
+                <v-list-tile-content>
+                  <v-list-tile-title>
+                    {{ field.title }}
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title>
+                    {{ model[field.key] }}
+                  </v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{on}">
+                      <v-btn icon v-on="on">
+                        <v-icon small>fa-clone</v-icon>
+                      </v-btn>
+                    </template>
+                    Copia al portapapeles
+                  </v-tooltip>    
+                </v-list-tile-action>            
+              </template>
+            </model-detail>
+            </v-card-text>
+          </v-card>
+         
         </v-flex>
     </v-layout>
   </v-card>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 import ModelDetail from '@/components/suppliers/ModelDetail';
+
 export default {
   async fetch({ params, route, store }) {
     const { supplierId } = params;  

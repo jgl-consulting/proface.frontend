@@ -47,7 +47,7 @@
             </v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>
+            <v-list-tile-title class="font-weight-bold">
               Contraer
             </v-list-tile-title>
           </v-list-tile-content>
@@ -81,7 +81,7 @@
                 divider="/" 
                 :items="this.displayBreadcrumbs">
                 <template v-slot:item="{ item }">
-                  <v-breadcrumbs-item nuxt :to="item.href">
+                  <v-breadcrumbs-item nuxt :to="item.href" exact>
                     {{ item.text }}
                   </v-breadcrumbs-item>
                 </template>
