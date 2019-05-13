@@ -1,38 +1,26 @@
+
 <template>
   <v-container>
     <v-layout wrap row>
       <v-flex xs12>
-        <v-layout row wrap align-content-center mb-3>          
-          <v-flex xs6>
-            <module-title>
-              Listado de proveedores
-            </module-title>
-          </v-flex>
-          <v-flex xs6 class="text-xs-right">
-            <v-btn class="mt-3" fab small color="success" @click="openAddSupplierDialog">
-              <v-icon small>fa-plus</v-icon>
-            </v-btn>
-            <!-- <v-btn fab small color="accent">
-              <v-icon small>fa-cloud-upload-alt</v-icon>
-            </v-btn>
-            <v-btn fab small color="accent">
-              <v-icon small>fa-cloud-download-alt</v-icon>
-            </v-btn> -->
-          </v-flex>
-        </v-layout>
-      </v-flex>
-      <v-flex xs12>
-        <!-- <v-toolbar class="elevation-2">
-          <v-flex xs12>
-            <v-text-field
-              full-width
-              color="grey"
-              label="Buscar proveedor"
-              append-icon="search"
-              @click:append="searchProveedor"
-            ></v-text-field>
-          </v-flex>
-        </v-toolbar> -->
+        <v-toolbar class="elevation-2" extended>
+          <v-text-field
+            full-width
+            color="grey"
+            label="Buscar proveedor"
+            append-icon="search"
+          ></v-text-field>
+          <v-btn 
+            class="mt-3" 
+            fab 
+            absolute
+            bottom
+            right
+            color="success" 
+            @click="openAddSupplierDialog">
+            <v-icon small>fa-plus</v-icon>
+          </v-btn>
+        </v-toolbar>
         <v-data-table
           :headers="headers"
           :items="suppliers"
@@ -112,6 +100,7 @@
       v-model="openSaveDialog"
       :supplier="supplierToSave"
       :mode="dialogMode"
+      @save="saveSupplier"
     ></save-supplier-dialog>
   </v-container>
 </template>
@@ -120,8 +109,7 @@
 import EmptyListTile from '@/components/common/EmptyListTile';
 import AccountListItem from '@/components/suppliers/AccountListItem';
 import SaveSupplierDialog from '@/components/suppliers/SaveSupplierDialog';
-import { mapState, mapActions } from 'vuex';
-
+import { mapState } from 'vuex';
 export default {
   components: {
     AccountListItem,
@@ -179,7 +167,6 @@ export default {
           sortBy,
           descending
         };
-
         await this.$store.dispatch('suppliers/fetchSuppliers', params);
       }
     }
@@ -191,9 +178,6 @@ export default {
     ])
   },
   methods: {
-    ...mapActions('suppliers', {
-      deleteSupplierAction: 'deleteSupplier'
-    }),
     supplierDetails(supplier) {
       const { path } = this.$route;
       this.$router.push({
@@ -212,30 +196,12 @@ export default {
     openEditSupplierDialog(supplier) {
       this.openSaveDialog = true;
       this.supplierToSave = supplier;
-      console.log(this.supplierToSave)
       this.dialogMode = 'editar';
     },
-    async deleteSupplier(supplier){
-      const { name } = supplier;
-      const res = await this.$confirm(`¿Está seguro de borrar al proveedor '${name}'?`, {
-        title: 'Advertencia' 
-      });
-      if(res) {
-        try {
-          await this.deleteSupplierAction({ supplier });
-
-          this.$confirm('Borrado correcto!', {
-            title: 'Éxito',
-            color: 'success'
-          });
-        
-        } catch(error) {
-          this.$confirm(error, {
-            title: 'Error',
-            color: 'error'
-          });
-        }
-      }
+    saveSupplier(supplier) {
+      console.log(supplier);
+    },
+    deleteSupplier(supplier){
     },
     optional(object) {
       return object || {};

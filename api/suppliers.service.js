@@ -32,13 +32,15 @@ export default class SuppliersService {
     return this.$axios.$get(`${SUPPLIER_TYPES_ENDPOINT}/unpaged`);
   }
 
+  getSupplierById(supplierId) {
+    return this.$axios.$get(`${SUPPLIERS_ENDPOINT}/${supplierId}`);
+  } 
+
   async createSupplier(supplier) {
-    console.log(JSON.stringify(supplier));
     await this.$axios.$post(SUPPLIERS_ENDPOINT, supplier);
   }
 
   async updateSupplier(supplier) {
-    console.log(JSON.stringify(supplier));
     const { id } = supplier;
     await this.$axios.$put(`${SUPPLIERS_ENDPOINT}/${id}`, supplier);
   }

@@ -22,24 +22,29 @@
         <span class="my-3"></span>
         <v-divider></v-divider>
         <v-list-tile
+          class="my-2"
           v-for="(menu, i) in menus"
-          :key="i" :to="menu.to"
-          router exact
+          :key="i" 
+          :to="menu.to"
+          router 
+          exact
         >
           <v-list-tile-action>
             <v-icon small>{{ menu.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>
+            <v-list-tile-title class="font-weight-bold">
               {{ menu.title }}
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-divider></v-divider>
         <v-spacer></v-spacer>
-        <v-list-tile @click.stop="miniVariant = !miniVariant">
+        <v-list-tile class="my-2" @click.stop="miniVariant = !miniVariant">
           <v-list-tile-action>
-            <v-icon>{{ `fa-chevron-${miniVariant ? 'right' : 'left'}`}}</v-icon>
+            <v-icon small>
+              {{ `fa-chevron-${miniVariant ? 'right' : 'left'}`}}
+            </v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>
@@ -66,8 +71,25 @@
       <user-details-menu :user="user"></user-details-menu>
     </v-toolbar>
     <v-content>
-      <v-container fluid ma-0 pa-0>
-        <nuxt />
+      <v-container fluid pa-0>
+        <v-container pb-0>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-breadcrumbs 
+                large 
+                class="px-0" 
+                divider="/" 
+                :items="this.displayBreadcrumbs">
+                <template v-slot:item="{ item }">
+                  <v-breadcrumbs-item nuxt :to="item.href">
+                    {{ item.text }}
+                  </v-breadcrumbs-item>
+                </template>
+              </v-breadcrumbs>
+            </v-flex>
+          </v-layout>
+        </v-container>
+        <nuxt :key="$route.name"/>
       </v-container>
     </v-content>
   </v-app>
@@ -78,7 +100,7 @@ import UserDetailsMenu from '@/components/common/UserDetailsMenu'
 import ProfaceLogo from '@/components/common/ProfaceLogo'
 import strings from '@/util/strings';
 import menus from '@/util/menus';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -95,6 +117,7 @@ export default {
   },
   computed: {
     ...mapState(['currentTitle']),
+    ...mapGetters(['displayBreadcrumbs']),
     ...mapState('auth',[
       'user'
     ]),

@@ -1,28 +1,35 @@
 <template>
-  <v-container>
+  <v-container pt-0>
     <v-layout row wrap>
-      <v-flex>
-        <module-title>
-          {{ supplier.name }}
-        </module-title>
-        <div class="object-demo">
-          <pre>
-            {{ supplier || pretty }}
-          </pre>
-        </div>
-      </v-flex>
+      <v-tabs v-model="activeTab" grow>
+        <v-tab 
+          v-for="(tab, id) of tabs" 
+          :key="id" 
+          :to="tab.route" 
+          exact
+          nuxt
+        >
+          {{ tab.name }}
+        </v-tab>
+      </v-tabs>
     </v-layout>
+    <nuxt/>
   </v-container>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 
 export default {
-  async asyncData({ params, $axios}) {
-    const { supplierId } = params;
-    const supplier = await $axios.$get(`/api/suppliers/${supplierId}`);
-
-    return { supplier };
+  asyncData({ route }){
+    const { path } = route;
+    return {
+      activeTab: `${path}/perfil`,
+      tabs: [
+        { name: 'Datos generales', route: `${path}` },
+        { name: 'Cuentas Bancarias', route: `${path}/cuentas` }
+      ]
+    }
   }
 }
 </script>

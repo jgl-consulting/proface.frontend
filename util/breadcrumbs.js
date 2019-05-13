@@ -1,9 +1,38 @@
 export default {
-  "/": [
-    { title: "Módulos", link: '/' }
-  ],
-  "/proveedores": [
-    { title: "Módulos", link: '/' }, 
-    { title: "Proveedores", link: '/proveedores' }
-  ]
+  "index": function() {
+    return [
+      { 
+        text: 'Módulos', 
+        href: '/'
+      }
+    ]
+  },
+  "proveedores": function (){
+    return [
+      { 
+        text: 'Módulos', 
+        href: '/' 
+      }, 
+      { 
+        text: 'Proveedores', 
+        href: '/proveedores' 
+      },
+    ]
+  },
+  "proveedores-supplierId": function(supplier, path) {
+    return [
+      { 
+        text: 'Módulos', 
+        href: '/' 
+      }, 
+      { 
+        text: 'Proveedores', 
+        href: '/proveedores'
+      },
+      {
+        text: supplier ? supplier.name : '',
+        href: path || ''
+      }
+    ];
+  },
 }

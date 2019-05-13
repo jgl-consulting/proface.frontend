@@ -7,7 +7,10 @@
       offset-x
     >
       <template v-slot:activator="{ on }">
-        <v-avatar color="primary darken-3" v-on="on">
+        <span class="font-weight-bold">
+          Hola {{ user.firstName }}!
+        </span>
+        <v-avatar color="primary darken-3 ml-2" v-on="on">
           <span class="font-weight-bold white--text">{{ firstLetter }}</span>
         </v-avatar>
       </template>
