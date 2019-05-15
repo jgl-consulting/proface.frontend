@@ -135,7 +135,7 @@ export default {
         supplierId  
       });
       
-      store.dispatch('addParams', [ supplier, 'route.path' ]);
+      store.dispatch('addParams', [ supplier, route.path ]);
     }
   },
   components: {
