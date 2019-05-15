@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/es5/util/colors'
 import PageBreadcrumbs from '@/components/common/PageBreadcrumbs';
+import SimpleTableLayout from '@/components/common/SimpleTableLayout';
 import VuetifyConfirm from 'vuetify-confirm'
  
 Vue.use(Vuetify, {
@@ -19,6 +20,8 @@ Vue.use(Vuetify, {
 
 // Custom
 Vue.component("PageBreadcrumbs", PageBreadcrumbs);
+Vue.component("SimpleTableLayout", SimpleTableLayout);
+
 
 // vuetify-confirm
 Vue.use(VuetifyConfirm, {

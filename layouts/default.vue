@@ -74,7 +74,7 @@
     <v-content>
       <v-container>
         <page-breadcrumbs></page-breadcrumbs>
-        <nuxt :key="$route.name"/>
+        <nuxt/>
       </v-container>
     </v-content>
   </v-app>

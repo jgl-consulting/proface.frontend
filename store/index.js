@@ -5,6 +5,7 @@ import {
 
 export const state = () => ({
   currentTitle: 'Inicio',
+  breadcrumbs: []
 })
 
 export const mutations = {
@@ -17,6 +18,7 @@ export const mutations = {
 }
 export const actions =  {
   loadPageInfo({ commit }, { title, breadcrumbs }) {
+    console.log({ title, breadcrumbs });
     commit(SET_CURRENT_TITLE, title);
     commit(SET_BREADCRUMBS, breadcrumbs);
   },

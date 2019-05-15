@@ -23,7 +23,9 @@
         <v-icon>{{ tab.icon }}</v-icon>
       </v-tab>
     </v-tabs>
-    <nuxt/>
+    <v-card flat>
+      <nuxt/>
+    </v-card>
   </div>
 </template>
 

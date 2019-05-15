@@ -1,96 +1,96 @@
 <template>
-  <div>
-    <v-layout wrap row mb-3>
-      <h1>Proveedores</h1>
-      <v-spacer></v-spacer>
+  <simple-table-layout>
+    <template #title>
+      Proveedores
+    </template>
+    <template #actions>
       <v-btn color="accent" outline round @click="openAddSupplierDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="ml-2">Nuevo proveedor</span>
       </v-btn>
-    </v-layout>
-    <v-layout wrap row>
-      <v-flex xs12>
-        <v-data-table
-          :headers="headers"
-          :items="suppliers"
-          :expand="expand"
-          item-key="id"
-          class="elevation-1"
-          :total-items="page.totalElements"
-          :pagination.sync="pagination"
-          :rows-per-page-items="pageSizes"
-          rows-per-page-text="Tamaño de página"
-        >
-          <template v-slot:items="props">
-            <tr @click.stop="props.expanded = !props.expanded">
-              <td>{{ props.item.id }}</td>
-              <td class="text-xs-right">
-                {{ props.item.nativeId }}
-              </td>
-              <td class="text-xs-right">
-                {{ props.item.name }} 
-              </td>
-              <td class="text-xs-right">
-                {{ props.item.address }}
-              </td>
-              <td class="text-xs-right">
-                <span class="mr-2">{{ props.item.country.iso }}</span>
-                <flag 
-                  :iso="props.item.country.iso"
-                  :title="props.item.country.name"
-                  :squared="false"
-                ></flag> 
-              </td>
-              <td class="text-xs-right">
-                {{ props.item.type.name }}
-              </td>
-              <td class="text-xs-center">
-                <v-btn class="mx-1" color="primary" dark icon flat small
-                  @click.stop="supplierDetails(props.item)">
-                  <v-icon small>fa-ellipsis-v</v-icon>
-                </v-btn>
-                <v-btn class="mx-1" color="accent" dark icon flat small
-                  @click.stop="openEditSupplierDialog(props.item)">
-                  <v-icon small>fa-pen</v-icon>
-                </v-btn>
-                <v-btn class="mx-1" color="deep-purple darken-2" dark icon flat small
-                  @click.stop="deleteSupplier(props.item)">
-                  <v-icon small>fa-trash</v-icon>
-                </v-btn>
-              </td>
-            </tr>
-          </template>
-          <template v-slot:expand="{ item }">
-            <v-list avatar>
-              <div v-if="$_.isEmpty(item.accounts)">
-                <empty-list-tile>
-                  No hay cuentas para el proveedor.
-                </empty-list-tile>
-              </div>
-              <div v-else> 
-                <account-list-item
-                  class="my-3"
-                  v-for="account in item.accounts"
-                  :key="account | accountFlatId"
-                  :description="account.description"
-                  :number="account.number"
-                  :cci="account.cci"
-                  :bank="account.bank"
-                  :currency="account.currency"
-                >
-                </account-list-item>
-              </div>
-            </v-list>
-          </template>
-        </v-data-table>
-      </v-flex>
+    </template>
+    <template #table>
+      <v-data-table
+        :headers="headers"
+        :items="suppliers"
+        :expand="expand"
+        item-key="id"
+        class="elevation-1"
+        :total-items="page.totalElements"
+        :pagination.sync="pagination"
+        :rows-per-page-items="pageSizes"
+        rows-per-page-text="Tamaño de página">
+        <template v-slot:items="props">
+          <tr @click.stop="props.expanded = !props.expanded">
+            <td>{{ props.item.id }}</td>
+            <td class="text-xs-right">
+              {{ props.item.nativeId }}
+            </td>
+            <td class="text-xs-right">
+              {{ props.item.name }} 
+            </td>
+            <td class="text-xs-right">
+              {{ props.item.address }}
+            </td>
+            <td class="text-xs-right">
+              <span class="mr-2">{{ props.item.country.iso }}</span>
+              <flag 
+                :iso="props.item.country.iso"
+                :title="props.item.country.name"
+                :squared="false"
+              ></flag> 
+            </td>
+            <td class="text-xs-right">
+              {{ props.item.type.name }}
+            </td>
+            <td class="text-xs-center" @click.stop="() => {}">
+              <v-btn class="mx-1" color="primary" dark icon flat small
+                nuxt :to="props.item.id | path($route.fullPath)">
+                <v-icon small>fa-ellipsis-v</v-icon>
+              </v-btn>
+              <v-btn class="mx-1" color="accent" dark icon flat small
+                @click.stop="openEditSupplierDialog(props.item)">
+                <v-icon small>fa-pen</v-icon>
+              </v-btn>
+              <v-btn class="mx-1" color="deep-purple darken-2" dark icon flat small
+                @click.stop="deleteSupplier(props.item)">
+                <v-icon small>fa-trash</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </template>
+        <template v-slot:expand="{ item }">
+          <v-list avatar>
+            <div v-if="$_.isEmpty(item.accounts)">
+              <empty-list-tile>
+                No hay cuentas para el proveedor.
+              </empty-list-tile>
+            </div>
+            <div v-else> 
+              <account-list-item
+                class="my-3"
+                v-for="account in item.accounts"
+                :key="account | accountFlatId"
+                :description="account.description"
+                :number="account.number"
+                :cci="account.cci"
+                :bank="account.bank"
+                :currency="account.currency"
+              >
+              </account-list-item>
+            </div>
+          </v-list>
+        </template>
+      </v-data-table>
+    </template>
+    <template #dialog>
       <save-supplier-dialog
         v-model="openSaveDialog"
         :supplier="supplierToSave"
         :mode="dialogMode"
       ></save-supplier-dialog>
-    </v-layout>
-  </div>
+    </template>
+  </simple-table-layout>
 </template>
 
 <script>
@@ -176,12 +176,6 @@ export default {
     ...mapActions('suppliers', {
       deleteSupplierAction: 'deleteSupplier'
     }),
-    supplierDetails(supplier) {
-      const { path } = this.$route;
-      this.$router.push({
-        path: `${path}/${supplier.id}`
-      })
-    },
     openAddSupplierDialog() {
       this.openSaveDialog = true;
       this.supplierToSave = {
@@ -228,12 +222,8 @@ export default {
   filters: {
     accountFlatId({ id }) {
       return `${id}`;
-    }
+    },
+    path: (param, path) => `${path}/${param}`
   }
 }
 </script>
-<style>
-  tr>th {
-    text-transform: uppercase !important;
-  }
-</style>
