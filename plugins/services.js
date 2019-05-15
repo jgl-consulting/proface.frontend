@@ -1,5 +1,6 @@
 import SuppliersService from '@/api/suppliers.service';
 import CountriesService from '@/api/countries.service';
+import ProductsService from '@/api/products.service';
 
 export default function(ctx, inject) {
   if (!ctx.$axios) {
@@ -7,5 +8,6 @@ export default function(ctx, inject) {
   } else {
     inject('suppliers',  new SuppliersService(ctx));
     inject('countries', new CountriesService(ctx));
+    inject('products', new ProductsService(ctx));
   }
 }

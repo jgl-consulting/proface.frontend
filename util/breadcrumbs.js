@@ -35,4 +35,32 @@ export default {
       }
     ];
   },
+  "productos": function (){
+    return [
+      { 
+        text: 'Módulos', 
+        href: '/' 
+      }, 
+      { 
+        text: 'Productos', 
+        href: '/productos' 
+      },
+    ]
+  },
+  "productos-productId": function(product, path) {
+    return [
+      { 
+        text: 'Módulos', 
+        href: '/' 
+      }, 
+      { 
+        text: 'Productos', 
+        href: '/productos'
+      },
+      {
+        text: product ? product.name : '',
+        href: path || ''
+      }
+    ];
+  },
 }
