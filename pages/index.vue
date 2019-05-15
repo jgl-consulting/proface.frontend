@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <page-breadcrumbs></page-breadcrumbs>
     <v-layout row wrap>
       <v-flex 
         v-for="(menu, idx) in menus" 

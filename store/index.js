@@ -16,8 +16,8 @@ export const mutations = {
   [SET_CURRENT_TITLE](state, title){
     state.currentTitle = title;
   },
-  [SET_BREADCRUMBS_DATA](state, breadcrumbsData){
-    state.breadcrumbsData = breadcrumbsData;
+  [SET_BREADCRUMBS_DATA](state, constructor){
+    state.breadcrumbsData.constructor = constructor;
   },
   [SET_PARAMS](state, params) {
     state.breadcrumbsData.params = params;
@@ -31,10 +31,10 @@ export const getters = {
   }
 }
 export const actions =  {
-  loadPageInfo({ commit }, { title, constructor, params }) {
+  loadPageInfo({ commit }, { title, constructor }) {
     commit(SET_CURRENT_TITLE, title);
     if(constructor) {
-      commit(SET_BREADCRUMBS_DATA, { constructor, params });
+      commit(SET_BREADCRUMBS_DATA, constructor);
     }
   },
   addParams({ commit }, params) {

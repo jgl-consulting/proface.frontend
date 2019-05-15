@@ -1,5 +1,8 @@
 <template>
-   <v-list two-line subheader avatar>
+  <v-list two-line subheader avatar>
+    <v-subheader>
+      {{ title }}
+    </v-subheader>
     <v-list-tile v-for="field in fields" :key="field.key">
       <slot :name="field.key" :model="model" :field="field">
         <v-list-tile-avatar>
@@ -21,6 +24,7 @@
 <script>
 export default {
   props: {
+    title: String,
     fields: Array,
     model: Object
   },

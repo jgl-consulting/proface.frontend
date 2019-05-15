@@ -4,6 +4,7 @@
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
+      temporary
       fixed app
     >
       <v-list>
@@ -71,26 +72,7 @@
       <user-details-menu :user="user"></user-details-menu>
     </v-toolbar>
     <v-content>
-      <v-container fluid pa-0>
-        <v-container pb-0>
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-breadcrumbs 
-                large 
-                class="px-0" 
-                divider="/" 
-                :items="this.displayBreadcrumbs">
-                <template v-slot:item="{ item }">
-                  <v-breadcrumbs-item nuxt :to="item.href" exact>
-                    {{ item.text }}
-                  </v-breadcrumbs-item>
-                </template>
-              </v-breadcrumbs>
-            </v-flex>
-          </v-layout>
-        </v-container>
-        <nuxt :key="$route.name"/>
-      </v-container>
+      <nuxt :key="$route.name"/>
     </v-content>
   </v-app>
 </template>
@@ -100,7 +82,7 @@ import UserDetailsMenu from '@/components/common/UserDetailsMenu'
 import ProfaceLogo from '@/components/common/ProfaceLogo'
 import strings from '@/util/strings';
 import menus from '@/util/menus';
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -111,13 +93,12 @@ export default {
     return {
       clipped: false,
       drawer: false,
-      fixed: false,
+      fixed: true,
       miniVariant: false
     }
   },
   computed: {
     ...mapState(['currentTitle']),
-    ...mapGetters(['displayBreadcrumbs']),
     ...mapState('auth',[
       'user'
     ]),

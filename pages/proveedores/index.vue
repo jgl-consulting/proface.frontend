@@ -1,15 +1,16 @@
 
 <template>
   <v-container>
-    <v-layout wrap row>
+    <page-breadcrumbs>
+      <template #actions>
+        <v-btn color="accent" outline round @click="openAddSupplierDialog">
+          <v-icon small>fa-plus</v-icon>
+          <span class="ml-2">Nuevo proveedor</span>
+        </v-btn>
+      </template>
+    </page-breadcrumbs>
+    <v-layout wrap row mt-3>
       <v-flex xs12>
-        <v-toolbar class="elevation-3" color="deep-purple darken-2ace" dark>
-          <h3>Tabla de proveedores</h3>
-          <v-spacer></v-spacer>
-          <v-btn icon @click="openAddSupplierDialog">
-            <v-icon small>fa-plus</v-icon>
-          </v-btn>
-        </v-toolbar>
         <v-data-table
           :headers="headers"
           :items="suppliers"
@@ -45,15 +46,15 @@
                 {{ props.item.type.name }}
               </td>
               <td class="text-xs-center">
-                <v-btn class="mx-1" color="primary" dark fab small
+                <v-btn class="mx-1" color="primary" dark icon flat small
                   @click.stop="supplierDetails(props.item)">
                   <v-icon small>fa-ellipsis-v</v-icon>
                 </v-btn>
-                <v-btn class="mx-1" color="accent" dark fab small
+                <v-btn class="mx-1" color="accent" dark icon flat small
                   @click.stop="openEditSupplierDialog(props.item)">
                   <v-icon small>fa-pen</v-icon>
                 </v-btn>
-                <v-btn class="mx-1" color="deep-purple darken-2" dark fab small
+                <v-btn class="mx-1" color="deep-purple darken-2" dark icon flat small
                   @click.stop="deleteSupplier(props.item)">
                   <v-icon small>fa-trash</v-icon>
                 </v-btn>
@@ -89,7 +90,6 @@
       v-model="openSaveDialog"
       :supplier="supplierToSave"
       :mode="dialogMode"
-      @save="saveSupplier"
     ></save-supplier-dialog>
   </v-container>
 </template>
@@ -98,7 +98,7 @@
 import EmptyListTile from '@/components/common/EmptyListTile';
 import AccountListItem from '@/components/suppliers/AccountListItem';
 import SaveSupplierDialog from '@/components/suppliers/SaveSupplierDialog';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 export default {
   components: {
     AccountListItem,
@@ -168,6 +168,9 @@ export default {
     ])
   },
   methods: {
+    ...mapActions('suppliers', {
+      deleteSupplierAction: 'deleteSupplier'
+    }),
     supplierDetails(supplier) {
       const { path } = this.$route;
       this.$router.push({
@@ -188,13 +191,33 @@ export default {
       this.supplierToSave = supplier;
       this.dialogMode = 'editar';
     },
-    saveSupplier(supplier) {
-      console.log(supplier);
-    },
-    deleteSupplier(supplier){
+    async deleteSupplier(supplier){
+      try {
+        const { name } = supplier;
+        const res = await this.$confirm(`¿Está seguro de borrar al proveedor '${name}'?`, { title: 'Advertencia' })
+        if(res) {
+          
+          await this.deleteSupplierAction({ supplier })
+          
+          await this.$confirm('Borrado correcto!', {
+            title: 'Éxito',
+            color: 'success'
+          });
+        }
+      } catch(error) {
+        this.showError(error);
+      }
     },
     optional(object) {
       return object || {};
+    },
+    showError(error){
+      const { message, errors } = error.response.data;
+      this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
+        title: message, 
+        color: 'error',
+        width: 500
+      });
     },
   },
   filters: {
@@ -204,3 +227,8 @@ export default {
   }
 }
 </script>
+<style>
+  tr>th {
+    text-transform: uppercase !important;
+  }
+</style>

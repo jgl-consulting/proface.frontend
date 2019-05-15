@@ -1,71 +1,126 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <h1 class="headline-1 ma-2">
-        {{ supplier.name }}
-        <flag
-          class="ml-2"
-          :iso="supplier.country.iso"
-          :title="supplier.country.name"
-          :squared="false"
-        ></flag>
-      </h1>
-    </v-card-title>
-    <v-layout row wrap>
-        <v-flex md6 pa-4>
-          <v-card flat class="elevation-3">
-            <v-toolbar dark color="deep-purple darken-2">
-               <h2>Información General</h2>
-            </v-toolbar>
-            <v-card-text>
-              <model-detail
-                :fields="supplierFields"
-                :model="supplier"
-              ></model-detail>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-        <v-flex md6 pa-4>
-          <v-card flat class="elevation-3">
-            <v-toolbar dark color="accent">
-              <h2>Contacto</h2>
-              <v-spacer></v-spacer>
-            </v-toolbar>
-            <v-card-text>
-            <model-detail
-              :fields="supplierContactFields"
-              :model="supplierContact"
-            >
-              <template v-slot:phone="{ field, model }">
-                <v-list-tile-avatar>
-                  <v-icon small>{{ field.icon }}</v-icon>
-                </v-list-tile-avatar> 
-                <v-list-tile-content>
-                  <v-list-tile-title>
-                    {{ field.title }}
-                  </v-list-tile-title>
-                  <v-list-tile-sub-title>
-                    {{ model[field.key] }}
-                  </v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{on}">
-                      <v-btn icon v-on="on">
-                        <v-icon small>fa-clone</v-icon>
-                      </v-btn>
-                    </template>
-                    Copia al portapapeles
-                  </v-tooltip>    
-                </v-list-tile-action>            
-              </template>
-            </model-detail>
-            </v-card-text>
-          </v-card>
-         
-        </v-flex>
-    </v-layout>
-  </v-card>
+  <v-layout row wrap>
+      <v-flex md6 px-2>
+        <model-detail
+          title="Información"
+          :fields="supplierFields"
+          :model="supplier"
+        ></model-detail>
+        <model-detail
+          title="Contacto"
+          :fields="supplierContactFields"
+          :model="supplierContact"
+        >
+          <template v-slot:phone="{ field, model }">
+            <v-list-tile-avatar>
+              <v-icon small>{{ field.icon }}</v-icon>
+            </v-list-tile-avatar> 
+            <v-list-tile-content>
+              <v-list-tile-title>
+                {{ field.title }}
+              </v-list-tile-title>
+              <v-list-tile-sub-title>
+                {{ model[field.key] }}
+              </v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-tooltip bottom>
+                <template v-slot:activator="{on}">
+                  <v-btn icon v-on="on">
+                    <v-icon small>fa-clone</v-icon>
+                  </v-btn>
+                </template>
+                Copia al portapapeles
+              </v-tooltip>    
+            </v-list-tile-action>            
+          </template>
+        </model-detail>
+      </v-flex>
+      <v-flex md6 px-2>
+        <v-subheader>
+          Último pedido
+        </v-subheader>
+        <v-timeline
+          align-top
+          dense
+        >
+          <v-timeline-item
+            color="accent"
+            small
+          >
+            <v-layout pt-3>
+              <v-flex xs3>
+                <strong>5pm</strong>
+              </v-flex>
+              <v-flex>
+                <strong>New Icon</strong>
+                <div class="caption">Mobile App</div>
+              </v-flex>
+            </v-layout>
+          </v-timeline-item>
+
+          <v-timeline-item
+            color="deep-purple darken-2"
+            small
+          >
+            <v-layout wrap pt-3>
+              <v-flex xs3>
+                <strong>3-4pm</strong>
+              </v-flex>
+              <v-flex>
+                <strong>Design Stand Up</strong>
+                <div class="caption mb-2">Hangouts</div>
+                <v-avatar>
+                  <v-img
+                    src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairFrida&accessoriesType=Kurt&hairColor=Red&facialHairType=BeardLight&facialHairColor=BrownDark&clotheType=GraphicShirt&clotheColor=Gray01&graphicType=Skull&eyeType=Wink&eyebrowType=RaisedExcitedNatural&mouthType=Disbelief&skinColor=Brown"
+                  ></v-img>
+                </v-avatar>
+                <v-avatar>
+
+                  <v-img
+                    src="https://avataaars.io/?avatarStyle=Circle&topType=ShortHairFrizzle&accessoriesType=Prescription02&hairColor=Black&facialHairType=MoustacheMagnum&facialHairColor=BrownDark&clotheType=BlazerSweater&clotheColor=Black&eyeType=Default&eyebrowType=FlatNatural&mouthType=Default&skinColor=Tanned"
+                  ></v-img>
+                </v-avatar>
+                <v-avatar>
+                  <v-img
+                    src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairMiaWallace&accessoriesType=Sunglasses&hairColor=BlondeGolden&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale"
+                  ></v-img>
+                </v-avatar>
+              </v-flex>
+            </v-layout>
+          </v-timeline-item>
+
+          <v-timeline-item
+            color="accent"
+            small
+          >
+            <v-layout pt-3>
+              <v-flex xs3>
+                <strong>12pm</strong>
+              </v-flex>
+              <v-flex>
+                <strong>Lunch break</strong>
+              </v-flex>
+            </v-layout>
+          </v-timeline-item>
+
+          <v-timeline-item
+            color="deep-purple darken-2"
+            small
+          >
+            <v-layout pt-3>
+              <v-flex xs3>
+                <strong>9-11am</strong>
+              </v-flex>
+              <v-flex>
+                <strong>Finish Home Screen</strong>
+                <div class="caption">Web App</div>
+              </v-flex>
+            </v-layout>
+          </v-timeline-item>
+        </v-timeline>
+      </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -74,11 +129,14 @@ import ModelDetail from '@/components/suppliers/ModelDetail';
 
 export default {
   async fetch({ params, route, store }) {
-    const { supplierId } = params;  
-    const supplier = await store.dispatch('suppliers/details/fetchSupplier', { 
-      supplierId 
-    })
-    store.dispatch('addParams', [ supplier, route.path ]);
+    if(!store.state.suppliers.details.supplier.name) {
+      const { supplierId } = params;
+      const supplier = await store.dispatch('suppliers/details/fetchSupplier', { 
+        supplierId  
+      });
+      
+      store.dispatch('addParams', [ supplier, 'route.path' ]);
+    }
   },
   components: {
     ModelDetail
@@ -122,3 +180,8 @@ export default {
   },
 }
 </script>
+<style>
+  .v-subheader {
+    text-transform: uppercase !important;
+  }
+</style>

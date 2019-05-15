@@ -1,18 +1,29 @@
 <template>
-  <v-container pt-0>
+  <v-container>
+    <page-breadcrumbs></page-breadcrumbs>
     <v-layout row wrap>
-      <v-tabs v-model="activeTab" grow>
-        <v-tab 
-          v-for="(tab, id) of tabs" 
-          :key="id" 
-          :to="tab.route" 
-          exact
-          nuxt
-        >
-          {{ tab.name }}
-        </v-tab>
-      </v-tabs>
+      <h1 class="headline-1 ma-2">
+        {{ supplier.name }}
+        <flag
+          class="ml-2"
+          :iso="supplier.country.iso"
+          :title="supplier.country.name"
+          :squared="false"
+        ></flag>
+      </h1>
     </v-layout>
+    <v-tabs v-model="activeTab" icons-and-text fixed-tabs grow>
+      <v-tab 
+        v-for="(tab, id) of tabs" 
+        :key="id" 
+        :to="tab.route" 
+        exact
+        nuxt
+      >
+        {{ tab.name }}
+        <v-icon>{{ tab.icon }}</v-icon>
+      </v-tab>
+    </v-tabs>
     <nuxt/>
   </v-container>
 </template>
@@ -21,15 +32,32 @@
 import { mapState } from 'vuex';
 
 export default {
-  asyncData({ route }){
+  asyncData({ route, params }){
     const { path } = route;
+    const mainRoute = `/proveedores/${params.supplierId}`
     return {
-      activeTab: `${path}/perfil`,
+      activeTab: path,
       tabs: [
-        { name: 'Datos generales', route: `${path}` },
-        { name: 'Cuentas Bancarias', route: `${path}/cuentas` }
+        { 
+          name: 'Datos generales', 
+          route: `${mainRoute}`, 
+          icon: 'fa-info-circle' 
+        },
+        { 
+          name: 'Cuentas Bancarias', 
+          route: `${mainRoute}/cuentas`, 
+          icon: 'fa-piggy-bank' 
+        },
+        { 
+          name: 'Ordenes de compra', 
+          route: `${mainRoute}/ordenes`, 
+          icon: 'fa-clipboard' 
+        }
       ]
     }
+  },
+  computed: {
+    ...mapState('suppliers/details', ['supplier'])
   }
 }
 </script>
