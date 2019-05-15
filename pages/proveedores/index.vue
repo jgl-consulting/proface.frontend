@@ -100,10 +100,10 @@ import SaveSupplierDialog from '@/components/suppliers/SaveSupplierDialog';
 import { mapState, mapActions } from 'vuex';
 export default {
   meta: {
-      breadcrumbs: [
-        { name: 'Módulos', link: '/' },
-        { name: 'Proveedores', link: '/proveedores' },
-      ]
+    breadcrumbs: [
+      { name: 'Módulos', link: '/' },
+      { name: 'Proveedores', link: '/proveedores' },
+    ]
   },
   components: {
     AccountListItem,
