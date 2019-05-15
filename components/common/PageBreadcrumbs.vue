@@ -4,10 +4,10 @@
       large 
       class="px-0" 
       divider="/" 
-      :items="this.displayBreadcrumbs">
+      :items="this.breadcrumbs">
       <template v-slot:item="{ item }">
-        <v-breadcrumbs-item nuxt :to="item.href" exact>
-          {{ item.text }}
+        <v-breadcrumbs-item nuxt :to="item.link" exact :disabled="!item.link">
+          {{ item.name }}
         </v-breadcrumbs-item>
       </template>
     </v-breadcrumbs>
@@ -17,15 +17,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 export default {
   computed: {
-    ...mapGetters(['displayBreadcrumbs']),
+    ...mapState(['breadcrumbs']),
   }
 
 }
 </script>
 
 <style>
-
+  .disabled {
+    color: lightgrey;
+    pointer-events: none;
+  }
 </style>

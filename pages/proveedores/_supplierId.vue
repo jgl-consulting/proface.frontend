@@ -1,8 +1,7 @@
 <template>
-  <v-container>
-    <page-breadcrumbs></page-breadcrumbs>
+  <div>
     <v-layout row wrap>
-      <h1 class="headline-1 ma-2">
+      <h1 class="headline-1 mb-3">
         {{ supplier.name }}
         <flag
           class="ml-2"
@@ -25,13 +24,20 @@
       </v-tab>
     </v-tabs>
     <nuxt/>
-  </v-container>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 
 export default {
+  meta: {
+      breadcrumbs: [
+        { name: 'Módulos', link: '/' },
+        { name: 'Proveedores', link: '/proveedores' },
+        ({ supplierId }) => ({ name: supplierId  })
+      ]
+  },
   asyncData({ route, params }){
     const { path } = route;
     const mainRoute = `/proveedores/${params.supplierId}`

@@ -1,15 +1,14 @@
-
 <template>
-  <v-container>
-    <page-breadcrumbs>
-      <template #actions>
-        <v-btn color="accent" outline round @click="openAddSupplierDialog">
-          <v-icon small>fa-plus</v-icon>
-          <span class="ml-2">Nuevo proveedor</span>
-        </v-btn>
-      </template>
-    </page-breadcrumbs>
-    <v-layout wrap row mt-3>
+  <div>
+    <v-layout wrap row mb-3>
+      <h1>Proveedores</h1>
+      <v-spacer></v-spacer>
+      <v-btn color="accent" outline round @click="openAddSupplierDialog">
+        <v-icon small>fa-plus</v-icon>
+        <span class="ml-2">Nuevo proveedor</span>
+      </v-btn>
+    </v-layout>
+    <v-layout wrap row>
       <v-flex xs12>
         <v-data-table
           :headers="headers"
@@ -85,13 +84,13 @@
           </template>
         </v-data-table>
       </v-flex>
+      <save-supplier-dialog
+        v-model="openSaveDialog"
+        :supplier="supplierToSave"
+        :mode="dialogMode"
+      ></save-supplier-dialog>
     </v-layout>
-    <save-supplier-dialog
-      v-model="openSaveDialog"
-      :supplier="supplierToSave"
-      :mode="dialogMode"
-    ></save-supplier-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -100,6 +99,12 @@ import AccountListItem from '@/components/suppliers/AccountListItem';
 import SaveSupplierDialog from '@/components/suppliers/SaveSupplierDialog';
 import { mapState, mapActions } from 'vuex';
 export default {
+  meta: {
+      breadcrumbs: [
+        { name: 'Módulos', link: '/' },
+        { name: 'Proveedores', link: '/proveedores' },
+      ]
+  },
   components: {
     AccountListItem,
     EmptyListTile,

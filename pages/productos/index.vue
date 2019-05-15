@@ -1,6 +1,5 @@
-
 <template>
-  <v-container>
+  <div>
     <v-layout wrap row>
       <v-flex xs12>
         <v-toolbar class="elevation-2" extended>
@@ -75,7 +74,7 @@
       :mode="dialogMode"
       @save="saveProduct"
     ></save-product-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -83,6 +82,12 @@ import EmptyListTile from '@/components/common/EmptyListTile';
 import SaveProductDialog from '@/components/products/SaveProductDialog';
 import { mapState } from 'vuex';
 export default {
+  meta: {
+    breadcrumbs: [
+      { name: 'Módulos', link: '/' },
+      { name: 'Producto', link: '/producto' },
+    ]
+  },
   components: {
     EmptyListTile,
     SaveProductDialog

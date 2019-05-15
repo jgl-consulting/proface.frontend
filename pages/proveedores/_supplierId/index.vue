@@ -128,15 +128,9 @@ import { mapState } from 'vuex';
 import ModelDetail from '@/components/suppliers/ModelDetail';
 
 export default {
-  async fetch({ params, route, store }) {
-    if(!store.state.suppliers.details.supplier.name) {
-      const { supplierId } = params;
-      const supplier = await store.dispatch('suppliers/details/fetchSupplier', { 
-        supplierId  
-      });
-      
-      store.dispatch('addParams', [ supplier, route.path ]);
-    }
+  async fetch({ params: { supplierId }, route, store }) {
+    const fetchSupplierAction ='suppliers/details/fetchSupplier';
+    const supplier = await store.dispatch(fetchSupplierAction, { supplierId });
   },
   components: {
     ModelDetail

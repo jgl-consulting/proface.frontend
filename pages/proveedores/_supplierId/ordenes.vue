@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  async fetch({ params, route, store }) {
-    const { supplierId } = params;
-    const supplier = await store.dispatch('suppliers/details/fetchSupplier', { supplierId });
-    store.dispatch('addParams', [ supplier, route.path ]);
+  async fetch({ params: { supplierId }, route, store }) {
+    const fetchSupplierAction ='suppliers/details/fetchSupplier';
+    const supplier = await store.dispatch(fetchSupplierAction, { supplierId });
   },
 }
 </script>

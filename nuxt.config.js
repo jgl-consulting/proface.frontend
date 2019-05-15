@@ -1,6 +1,6 @@
 import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 import pkg from './package'
-
+import colors from 'vuetify/es5/util/colors'
 export default {
   mode: 'spa',
   head: {
@@ -26,7 +26,7 @@ export default {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#3C8DCB' },
+  loading: { color: colors.deepOrange.darken2 },
 
   /*
   ** Global CSS

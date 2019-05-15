@@ -72,7 +72,10 @@
       <user-details-menu :user="user"></user-details-menu>
     </v-toolbar>
     <v-content>
-      <nuxt :key="$route.name"/>
+      <v-container>
+        <page-breadcrumbs></page-breadcrumbs>
+        <nuxt :key="$route.name"/>
+      </v-container>
     </v-content>
   </v-app>
 </template>
