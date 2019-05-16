@@ -4,9 +4,9 @@
       Productos
     </template>
     <template #actions>
-      <v-btn color="accent" outline round @click="openAddProductDialog">
+      <v-btn color="accent" @click="openAddProductDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="ml-2">Nuevo Producto</span>
+        <span class="mx-1">Nuevo Producto</span>
       </v-btn>
     </template>
     <template #table>

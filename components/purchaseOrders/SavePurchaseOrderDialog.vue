@@ -28,35 +28,116 @@
               </v-text-field>
             </v-flex>
             <v-flex xs4 pa-2>
-              <v-date-picker 
-                v-model="purchaseOrderModel.creationDate" 
-                label="Fecha de Creación">
-              </v-date-picker>
+              <v-menu
+                v-model="menuCreation"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="209px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="purchaseOrderModel.creationDate"
+                    label="Fecha de Creación"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  />
+                </template>
+                <v-date-picker 
+                  v-model="purchaseOrderModel.creationDate" @input="menuCreation = false">
+                </v-date-picker>
+              </v-menu>
             </v-flex>
             <v-flex xs4 pa-2>
-              <v-date-picker 
-                v-model="purchaseOrderModel.quotationDate" 
-                label="Fecha de Presupuesto">
-              </v-date-picker>
+              <v-menu
+                v-model="menuQuotation"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="209px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="purchaseOrderModel.quotationDate"
+                    label="Fecha de Creación"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  />
+                </template>
+                <v-date-picker 
+                  v-model="purchaseOrderModel.quotationDate" @input="menuQuotation = false">
+                </v-date-picker>
+              </v-menu>
             </v-flex>
             <v-flex xs4 pa-2>
-              <v-date-picker 
-                v-model="purchaseOrderModel.receptionDate" 
-                label="Fecha de Recepción">
-              </v-date-picker>
+              <v-menu
+                v-model="menuBilling"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="209px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="purchaseOrderModel.billingDate"
+                    label="Fecha de Creación"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  />
+                </template>
+                <v-date-picker 
+                  v-model="purchaseOrderModel.billingDate" @input="menuBilling = false">
+                </v-date-picker>
+              </v-menu>
             </v-flex>
             <v-flex xs4 pa-2>
-              <v-date-picker 
-                v-model="purchaseOrderModel.billingDate" 
-                label="Fecha de Facturación">
-              </v-date-picker>
+              <v-menu
+                v-model="menuReception"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="209px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="purchaseOrderModel.receptionDate"
+                    label="Fecha de Creación"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  />
+                </template>
+                <v-date-picker 
+                  v-model="purchaseOrderModel.receptionDate" @input="menuReception = false">
+                </v-date-picker>
+              </v-menu>
             </v-flex>
-            <!--v-flex xs4 pa-2>
-              <v-text-field 
-                v-model="purchaseOrderModel.supplier.id" 
+            <v-flex xs4 pa-2>               
+              <v-autocomplete
+                v-model="purchaseOrderModel.supplier"
+                :items="suppliers"
+                item-value="id"
+                item-text="name"
+                :hint="supplierAutocompleteHint"
+                return-object
                 label="Proveedor">
-              </v-text-field>
-            </v-flex-->
+              </v-autocomplete>
+            </v-flex>
             <v-flex xs4 pa-2> 
               <v-select
                 v-model="purchaseOrderModel.status"
@@ -85,13 +166,19 @@ export default {
   data() {
     return {
       isOpen: false,
-      purchaseOrderModel: {}
+      purchaseOrderModel: {},
+      menuCreation: false,
+      menuQuotation: false,
+      menuReception: false,
+      menuBilling: false
     }
   },
   watch: {
     purchaseOrder: {
       handler() {
+        const [ supplier = {} ] = this.suppliers; 
         this.purchaseOrderModel = JSON.parse(JSON.stringify(this.purchaseOrder))
+        this.purchaseOrderModel.supplier = this.purchaseOrder.supplier || supplier;
        }
     }
   },
@@ -104,7 +191,8 @@ export default {
       }
     },
     ...mapState('purchaseOrders', [
-      'purchaseStatuses'
+      'purchaseStatuses',
+      'suppliers'
     ]),
     purchaseOrderToSave(){
       const { contact } = this.purchaseOrderModel;

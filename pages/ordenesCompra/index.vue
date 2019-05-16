@@ -4,9 +4,9 @@
       Órdenes de Compra
     </template>
     <template #actions>
-      <v-btn color="accent" outline round @click="openAddPurchaseOrderDialog">
+      <v-btn color="accent" @click="openAddPurchaseOrderDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="ml-2">Nueva orden de compra</span>
+        <span class="mx-1">Nueva orden de compra</span>
       </v-btn>
     </template>
     <template #table>
@@ -91,6 +91,7 @@ export default {
     const params = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
     await store.dispatch('purchaseOrders/fetchPurchaseStatuses');
+    await store.dispatch('purchaseOrders/fetchSuppliers')
   },
   data() {
     return {
@@ -103,10 +104,10 @@ export default {
           value: 'id'
         },
         { text: 'Id Local', value: 'nativeId' },
-        { text: 'Fecha de Creación', value: 'creationDate' },
-        { text: 'Fecha de Presupuesto', value: 'quotationDate' },
-        { text: 'Fecha de Facturación', value: 'billingDate'},
-        { text: 'Fecha de Recepción', value: 'receptionDate'},
+        { text: 'Creación', value: 'creationDate' },
+        { text: 'Presupuesto', value: 'quotationDate' },
+        { text: 'Facturación', value: 'billingDate'},
+        { text: 'Recepción', value: 'receptionDate'},
         { text: 'Proveedor', value: 'supplier'},
         { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'id', sortable: false,}
@@ -120,7 +121,8 @@ export default {
       expand: false,
       pageSizes: [20, 30, 50, 100],
       purchaseOrderToSave: {
-        status: { id: 0 }
+        status: { id: 0 },
+        supplier: { id: 0 }
       },
       openSaveDialog: false,
       dialogMode: 'nuevo'
@@ -154,7 +156,8 @@ export default {
     openAddPurchaseOrderDialog() {
       this.openSaveDialog = true;
       this.purchaseOrderToSave = {
-        status: { id: 0 }
+        status: { id: 0 },
+        supplier: { id:0 }
       };
       this.dialogMode = 'nuevo';
     },
