@@ -1,25 +1,17 @@
 <template>
   <div>
-    <v-layout wrap row>
-      <v-flex xs12>
-        <v-toolbar class="elevation-2" extended>
-          <v-text-field
-            full-width
-            color="grey"
-            label="Buscar producto"
-            append-icon="search"
-          ></v-text-field>
-          <v-btn 
-            class="mt-3" 
-            fab 
-            absolute
-            bottom
-            right
-            color="success" 
-            @click="openAddProductDialog">
-            <v-icon small>fa-plus</v-icon>
-          </v-btn>
-        </v-toolbar>
+    <simple-table-layout>
+      <template #title>
+        Productos
+      </template>
+      <template #actions>
+        <v-btn color="accent" @click="openAddProductDialog">
+          <v-icon small>fa-plus</v-icon>
+          <span class="mx-1"></span>
+          <span>Nuevo producto</span>
+        </v-btn>
+      </template>
+      <template #table>
         <v-data-table
           :headers="headers"
           :items="products"
@@ -29,8 +21,7 @@
           :total-items="page.totalElements"
           :pagination.sync="pagination"
           :rows-per-page-items="pageSizes"
-          rows-per-page-text="Tamaño de página"
-        >
+          rows-per-page-text="Tamaño de página" >
           <template v-slot:items="props">
             <tr @click.stop="props.expanded = !props.expanded">
               <td>{{ props.item.id }}</td>
@@ -49,16 +40,16 @@
               <td class="text-xs-right">
                 {{ props.item.line.name }}
               </td>
-              <td class="text-xs-center">
-                <v-btn class="mx-1" color="primary" dark fab small
-                  @click.stop="productDetails(props.item)">
+              <td class="text-xs-center" @click.stop="() => {}">
+                <v-btn class="mx-1" color="primary" dark icon flat small
+                  nuxt :to="props.item.id | path($route.fullPath)">>
                   <v-icon small>fa-ellipsis-v</v-icon>
                 </v-btn>
-                <v-btn class="mx-1" color="accent" dark fab small
+                <v-btn class="mx-1" color="accent" dark icon flat small
                   @click.stop="openEditProductDialog(props.item)">
                   <v-icon small>fa-pen</v-icon>
                 </v-btn>
-                <v-btn class="mx-1" color="deep-purple darken-3" dark fab small
+                <v-btn class="mx-1" color="deep-purple darken-3" dark icon flat small
                   @click.stop="deleteProduct(props.item)">
                   <v-icon small>fa-trash</v-icon>
                 </v-btn>
@@ -66,14 +57,16 @@
             </tr>
           </template>
         </v-data-table>
-      </v-flex>
-    </v-layout>
-    <save-product-dialog
-      v-model="openSaveDialog"
-      :product="productToSave"
-      :mode="dialogMode"
-      @save="saveProduct"
-    ></save-product-dialog>
+      </template>
+      <template #dialog>
+        <save-product-dialog
+          v-model="openSaveDialog"
+          :product="productToSave"
+          :mode="dialogMode"
+          @save="saveProduct"
+        ></save-product-dialog>
+      </template>
+    </simple-table-layout>
   </div>
 </template>
 
@@ -85,7 +78,7 @@ export default {
   meta: {
     breadcrumbs: [
       { name: 'Módulos', link: '/' },
-      { name: 'Producto', link: '/producto' },
+      { name: 'Producto', link: '/productos' },
     ]
   },
   components: {

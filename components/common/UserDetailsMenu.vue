@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xs-center">
+  <div v-if="user" class="text-xs-center">
     <v-menu
       v-model="menu"
       :close-on-content-click="false"
@@ -70,9 +70,7 @@
 
 <script>
   export default {
-    props: {
-      user: Object
-    },
+    props: ['user'],
     data: () => ({
       fav: true,
       menu: false,

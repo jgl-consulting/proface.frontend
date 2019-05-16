@@ -21,6 +21,13 @@
 import { mapState } from 'vuex';
 
 export default {
+  meta: {
+    breadcrumbs: [
+      { name: 'Módulos', link: '/' },
+      { name: 'Producto', link: '/productos' },
+      ({ productId }) => ({ name: productId  })
+    ]
+  },
   asyncData({ route }){
     const { path } = route;
     return {

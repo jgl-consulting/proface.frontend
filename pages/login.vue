@@ -43,6 +43,7 @@ import Notification from '@/components/common/Notification'
 import ProfaceLogo from '@/components/common/ProfaceLogo'
 
 export default {
+  loading: false,
   components: {
     Notification,
     ProfaceLogo

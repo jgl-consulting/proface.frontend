@@ -26,11 +26,11 @@ export default {
   /*
   ** Customize the progress-bar color
   */
-  loading: { 
+  loading: '@/components/common/Loading.vue'/* { 
     color: colors.deepOrange.darken2,
     continuous: true,
     height: '5px'
-  },
+  } */,
   /*
   ** Global CSS
   */

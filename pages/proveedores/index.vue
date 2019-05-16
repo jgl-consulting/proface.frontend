@@ -4,9 +4,10 @@
       Proveedores
     </template>
     <template #actions>
-      <v-btn color="accent" outline round @click="openAddSupplierDialog">
+      <v-btn color="accent" @click="openAddSupplierDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="ml-2">Nuevo proveedor</span>
+        <span class="mx-1"></span>
+        <span>Nuevo proveedor</span>
       </v-btn>
     </template>
     <template #table>
@@ -222,8 +223,7 @@ export default {
   filters: {
     accountFlatId({ id }) {
       return `${id}`;
-    },
-    path: (param, path) => `${path}/${param}`
+    }
   }
 }
 </script>
