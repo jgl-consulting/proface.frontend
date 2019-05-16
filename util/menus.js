@@ -4,7 +4,7 @@ export default [
     title: 'Gestión de proveedores',
     icon: 'fa fa-truck',
     to: '/proveedores',
-    description: 'Todo acerca de los proveedores de la compañia',
+    description: 'Todo acerca de los proveedores de la compañía',
     allowedRoles: ['COMPRAS'],
   },
   {
@@ -12,6 +12,15 @@ export default [
     title: 'Gestión de productos',
     icon: 'fa fa-boxes',
     to: '/productos',
+    description: 'Todo acerca de los productos de la compañía',
     allowedRoles: ['COMPRAS'],
+  },
+  {
+    id: 'ordenesCompra',
+    title: 'Gestión de órdenes de compra',
+    icon: 'fa fa-shopping-bag',
+    to: '/ordenesCompra',
+    description: 'Todo acerca de las órdenes de compra de la compañía',
+    allowedRoles: ['COMPRAS']
   }
 ]

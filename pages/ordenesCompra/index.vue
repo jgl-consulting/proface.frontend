@@ -1,18 +1,18 @@
 <template>
   <simple-table-layout>
     <template #title>
-      Productos
+      Órdenes de Compra
     </template>
     <template #actions>
-      <v-btn color="accent" outline round @click="openAddProductDialog">
+      <v-btn color="accent" outline round @click="openAddPurchaseOrderDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="ml-2">Nuevo Producto</span>
+        <span class="ml-2">Nueva orden de compra</span>
       </v-btn>
     </template>
     <template #table>
       <v-data-table
         :headers="headers"
-        :items="products"
+        :items="purchaseOrders"
         :expand="expand"
         item-key="id"
         class="elevation-1"
@@ -27,16 +27,22 @@
               {{ props.item.nativeId }}
             </td>
             <td class="text-xs-right">
-              {{ props.item.name }} 
+              {{ props.item.creationDate }} 
             </td>
             <td class="text-xs-right">
-                {{ props.item.description }}
+              {{ props.item.quotationDate }} 
             </td>
             <td class="text-xs-right">
-                {{ props.item.salePrice }}
+              {{ props.item.billingDate }} 
             </td>
             <td class="text-xs-right">
-              {{ props.item.line.name }}
+              {{ props.item.receptionDate }} 
+            </td>
+            <td class="text-xs-right">
+              {{ props.item.supplier.name }}
+            </td>
+            <td class="text-xs-right">
+              {{ props.item.status.description }}
             </td>
             <td class="text-xs-center" @click.stop="() => {}">
               <v-btn class="mx-1" color="primary" dark icon flat small
@@ -44,11 +50,11 @@
                 <v-icon small>fa-ellipsis-v</v-icon>
               </v-btn>
               <v-btn class="mx-1" color="accent" dark icon flat small
-                @click.stop="openEditProductDialog(props.item)">
+                @click.stop="openEditPurchaseOrderDialog(props.item)">
                 <v-icon small>fa-pen</v-icon>
               </v-btn>
               <v-btn class="mx-1" color="deep-purple darken-2" dark icon flat small
-                @click.stop="deleteProduct(props.item)">
+                @click.stop="deletePurchaseOrder(props.item)">
                 <v-icon small>fa-trash</v-icon>
               </v-btn>
             </td>
@@ -57,38 +63,38 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-product-dialog
+      <save-purchaseOrder-dialog
         v-model="openSaveDialog"
-        :product="productToSave"
+        :purchaseOrder="purchaseOrderToSave"
         :mode="dialogMode"
-      ></save-product-dialog>
+      ></save-purchaseOrder-dialog>
     </template>
   </simple-table-layout>
 </template>
 
 <script>
 import EmptyListTile from '@/components/common/EmptyListTile';
-import SaveProductDialog from '@/components/products/SaveProductDialog';
+import SavePurchaseOrderDialog from '@/components/purchaseOrders/SavePurchaseOrderDialog';
 import { mapState, mapActions } from 'vuex';
 export default {
   meta: {
     breadcrumbs: [
       { name: 'Módulos', link: '/' },
-      { name: 'Productos', link: '/productos' },
+      { name: 'Órdenes de Compra', link: '/ordenesCompra' },
     ]
   },
   components: {
     EmptyListTile,
-    SaveProductDialog
+    SavePurchaseOrderDialog
   },
   async fetch ({ store }) {
     const params = { requestPage: 0, size: 20, sortBy: undefined };
-    await store.dispatch('products/fetchProducts', params);
-    await store.dispatch('products/fetchProductLines');
+    await store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
+    await store.dispatch('purchaseOrders/fetchPurchaseStatuses');
   },
   data() {
     return {
-      title: 'Productos',
+      title: 'Órdenes de Compra',
       headers: [
         {
           text: 'Id',
@@ -97,10 +103,12 @@ export default {
           value: 'id'
         },
         { text: 'Id Local', value: 'nativeId' },
-        { text: 'Nombre', value: 'name' },
-        { text: 'Descripción', value: 'description' },
-        { text: 'Precio de Venta', value: 'salePrice' },
-        { text: 'Línea', value: 'line' },
+        { text: 'Fecha de Creación', value: 'creationDate' },
+        { text: 'Fecha de Presupuesto', value: 'quotationDate' },
+        { text: 'Fecha de Facturación', value: 'billingDate'},
+        { text: 'Fecha de Recepción', value: 'receptionDate'},
+        { text: 'Proveedor', value: 'supplier'},
+        { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'id', sortable: false,}
       ],
       pagination: {
@@ -111,8 +119,8 @@ export default {
       },
       expand: false,
       pageSizes: [20, 30, 50, 100],
-      productToSave: {
-        line: { id: 0 }
+      purchaseOrderToSave: {
+        status: { id: 0 }
       },
       openSaveDialog: false,
       dialogMode: 'nuevo'
@@ -129,39 +137,39 @@ export default {
           sortBy,
           descending
         };
-        await this.$store.dispatch('products/fetchProducts', params);
+        await this.$store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
       }
     }
   },
   computed: {
-    ...mapState('products', [
-      'products',
-      'page'
+    ...mapState('purchaseOrders', [
+      'purchaseOrders',
+      'page',
     ])
   },
   methods: {
-    ...mapActions('products', {
-      deleteProductAction: 'deleteProduct'
+    ...mapActions('purchaseOrders', {
+      deletePurchaseOrderAction: 'deletePurchaseOrder'
     }),
-    openAddProductDialog() {
+    openAddPurchaseOrderDialog() {
       this.openSaveDialog = true;
-      this.productToSave = {
-        line: { id: 0 }
+      this.purchaseOrderToSave = {
+        status: { id: 0 }
       };
       this.dialogMode = 'nuevo';
     },
-    openEditProductDialog(product) {
+    openEditPurchaseOrderDialog(purchaseOrder) {
       this.openSaveDialog = true;
-      this.productToSave = product;
+      this.purchaseOrderToSave = purchaseOrder;
       this.dialogMode = 'editar';
     },
-    async deleteProduct(product){
+    async deletePurchaseOrder(purchaseOrder){
       try {
-        const { name } = product;
-        const res = await this.$confirm(`¿Está seguro de borrar el producto '${name}'?`, { title: 'Advertencia' })
+        const { idNative } = purchaseOrder;
+        const res = await this.$confirm(`¿Está seguro de borrar la orden de compra '${idNative}'?`, { title: 'Advertencia' })
         if(res) {
           
-          await this.deleteProductAction({ product })
+          await this.deletePurchaseOrderAction({ purchaseOrder })
           
           await this.$confirm('Borrado correcto!', {
             title: 'Éxito',

@@ -1,5 +1,5 @@
 <template>
-   <v-list two-line subheader avatar>
+  <v-list two-line subheader avatar>
     <v-subheader>
       {{ title }}
     </v-subheader>
@@ -39,7 +39,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

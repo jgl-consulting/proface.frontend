@@ -9,3 +9,6 @@ export const SET_SUPPLIER = 'setSupplier';
 export const SET_PRODUCTS = 'setProducts';
 export const SET_PRODUCT_LINES = 'setProductLine';
 export const SET_PRODUCT = 'setProduct';
+export const SET_PURCHASE_ORDERS = 'setPurchaseOrders';
+export const SET_PURCHASE_STATUSES = 'setPurchaseStatuses';
+export const SET_PURCHASE_ORDER = 'setPurchaseOrder';

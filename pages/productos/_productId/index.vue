@@ -1,19 +1,13 @@
 <template>
-  <v-card>
-    <v-card-title primary-title>
-      <h1>
-        {{ product.name }}
-      </h1>
-    </v-card-title>
-    <v-layout row wrap>
-        <v-flex xs7>
-          <model-detail
-            :fields="productFields"
-            :model="product"
-          ></model-detail>
-        </v-flex>
-    </v-layout>
-  </v-card>
+  <v-layout row wrap>
+      <v-flex md6 px-2>
+        <model-detail
+          title="Información"
+          :fields="productFields"
+          :model="product"
+        ></model-detail>
+      </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -36,6 +30,12 @@ export default {
         { key: 'nativeId', title: 'Código local', icon: 'fa-id-card-alt' },
         { key: 'description', title: 'Descripción', icon:'fa-edit'},
         { 
+          key: 'salePrice', 
+          title: 'Precio de Venta', 
+          icon: 'fa-coins',
+          render: salePrice => 'S/. ' + salePrice
+        },
+        { 
           key: 'line', 
           title: 'Línea', 
           icon: 'fa-box',
@@ -51,3 +51,8 @@ export default {
   },
 }
 </script>
+<style>
+  .v-subheader {
+    text-transform: uppercase !important;
+  }
+</style>

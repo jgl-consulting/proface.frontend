@@ -63,4 +63,32 @@ export default {
       }
     ];
   },
+  "ordenesCompra": function (){
+    return [
+      { 
+        text: 'Módulos', 
+        href: '/' 
+      }, 
+      { 
+        text: 'Órdenes de Compra', 
+        href: '/ordenesCompra' 
+      },
+    ]
+  },
+  "ordenesCompra-purchaseOrderId": function(purchaseOrder, path) {
+    return [
+      { 
+        text: 'Módulos', 
+        href: '/' 
+      }, 
+      { 
+        text: 'Órdenes de Compra', 
+        href: '/ordenesCompra'
+      },
+      {
+        text: purchaseOrder ? purchaseOrder.nativeId : '',
+        href: path || ''
+      }
+    ];
+  },
 }

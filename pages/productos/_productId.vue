@@ -1,34 +1,55 @@
 <template>
-  <v-container pt-0>
+  <div>
     <v-layout row wrap>
-      <v-tabs v-model="activeTab" grow>
-        <v-tab 
-          v-for="(tab, id) of tabs" 
-          :key="id" 
-          :to="tab.route" 
-          exact
-          nuxt
-        >
-          {{ tab.name }}
-        </v-tab>
-      </v-tabs>
+      <h1 class="headline-1 mb-3">
+        {{ product.name }}
+      </h1>
     </v-layout>
-    <nuxt/>
-  </v-container>
+    <v-tabs v-model="activeTab" icons-and-text fixed-tabs grow>
+      <v-tab 
+        v-for="(tab, id) of tabs" 
+        :key="id" 
+        :to="tab.route" 
+        exact
+        nuxt
+      >
+        {{ tab.name }}
+        <v-icon>{{ tab.icon }}</v-icon>
+      </v-tab>
+    </v-tabs>
+    <v-card flat>
+      <nuxt/>
+    </v-card>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 
 export default {
-  asyncData({ route }){
+  meta: {
+      breadcrumbs: [
+        { name: 'Módulos', link: '/' },
+        { name: 'Productos', link: '/productos' },
+        ({ productId }) => ({ name: productId  })
+      ]
+  },
+  asyncData({ route, params }){
     const { path } = route;
+    const mainRoute = `/productos/${params.productId}`
     return {
-      activeTab: `${path}/perfil`,
+      activeTab: path,
       tabs: [
-        { name: 'Datos generales', route: `${path}` }
+        { 
+          name: 'Datos generales', 
+          route: `${mainRoute}`, 
+          icon: 'fa-info-circle' 
+        }
       ]
     }
+  },
+  computed: {
+    ...mapState('products/details', ['product'])
   }
 }
 </script>
