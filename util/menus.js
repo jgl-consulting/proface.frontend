@@ -17,7 +17,7 @@ export default [
   },
   {
     id: 'ordenesCompra',
-    title: 'Gestión de órdenes de compra',
+    title: 'Gestión de Compras',
     icon: 'fa fa-shopping-bag',
     to: '/ordenesCompra',
     description: 'Todo acerca de las órdenes de compra de la compañía',

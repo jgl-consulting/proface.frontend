@@ -5,7 +5,7 @@
         <v-btn icon dark @click="closeDialog">
           <v-icon>close</v-icon>
         </v-btn>
-        <v-toolbar-title class="text-weight-bold">
+        <v-toolbar-title class="font-weight-bold">
           {{ title }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
