@@ -51,12 +51,12 @@
                 label="Fecha de Facturación">
               </v-date-picker>
             </v-flex>
-            <v-flex xs4 pa-2>
+            <!--v-flex xs4 pa-2>
               <v-text-field 
                 v-model="purchaseOrderModel.supplier.id" 
                 label="Proveedor">
               </v-text-field>
-            </v-flex>
+            </v-flex-->
             <v-flex xs4 pa-2> 
               <v-select
                 v-model="purchaseOrderModel.status"

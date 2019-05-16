@@ -165,8 +165,8 @@ export default {
     },
     async deletePurchaseOrder(purchaseOrder){
       try {
-        const { idNative } = purchaseOrder;
-        const res = await this.$confirm(`¿Está seguro de borrar la orden de compra '${idNative}'?`, { title: 'Advertencia' })
+        const { nativeId } = purchaseOrder;
+        const res = await this.$confirm(`¿Está seguro de borrar la orden de compra '${nativeId}'?`, { title: 'Advertencia' })
         if(res) {
           
           await this.deletePurchaseOrderAction({ purchaseOrder })

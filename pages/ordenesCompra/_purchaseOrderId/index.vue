@@ -117,7 +117,7 @@ export default {
         { 
           key: 'supplier', 
           title: 'Proveedor', 
-          icon: 'fa-flagfa-truck', 
+          icon: 'fa-truck', 
           render: supplier => supplier.name 
         }
       ]
