@@ -1,9 +1,7 @@
 <template>
   <div>
     <v-layout wrap row mb-2>
-      <h1>
-        <slot name="title"></slot>
-      </h1>
+      <slot name="title"></slot>
       <v-spacer></v-spacer>
       <slot name="actions"></slot>
     </v-layout>

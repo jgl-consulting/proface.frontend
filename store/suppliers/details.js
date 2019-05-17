@@ -16,5 +16,9 @@ export const actions = {
     const supplier = await this.$suppliers.getSupplierById(supplierId);
     commit(SET_SUPPLIER, supplier);
     return supplier;
+  },
+  async createSupplierAccount({ dispatch }, { supplierAccount }) {
+    await this.$supplierAccounts.createSupplierAccount(supplierAccount);
+    await dispatch('fetchSupplier');
   }
 }

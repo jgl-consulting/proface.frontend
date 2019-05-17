@@ -1,7 +1,7 @@
 <template>
   <simple-table-layout>
     <template #title>
-      Proveedores
+      <h1>Proveedores</h1>
     </template>
     <template #actions>
       <v-btn color="accent" @click="openAddSupplierDialog">

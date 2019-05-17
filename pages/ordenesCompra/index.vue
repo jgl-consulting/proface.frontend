@@ -1,7 +1,7 @@
 <template>
   <simple-table-layout>
     <template #title>
-      Órdenes de Compra
+      <h1>Órdenes de Compra</h1>
     </template>
     <template #actions>
       <v-btn color="accent" @click="openAddPurchaseOrderDialog">

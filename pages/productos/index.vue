@@ -1,7 +1,7 @@
 <template>
   <simple-table-layout>
     <template #title>
-      Productos
+      <h1>Productos</h1>
     </template>
     <template #actions>
       <v-btn color="accent" @click="openAddProductDialog">
