@@ -95,7 +95,6 @@ export default {
       'productLines'
     ]),
     productToSave(){
-      const { product } = this.productModel;
       return JSON.parse(JSON.stringify({ 
         ...this.productModel
       }));

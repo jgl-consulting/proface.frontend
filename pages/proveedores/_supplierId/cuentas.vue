@@ -5,7 +5,7 @@
           Listado de cuentas
         </v-subheader>
       </template>
-      <template #actions>
+      <template #actions @click="openAddSupplierAccountDialog">
         <v-btn color="accent" >
           <v-icon small>fa-plus</v-icon>
           <span class="mx-1"></span>
@@ -40,8 +40,8 @@
       </template>
       <template #dialog>
         <save-supplier-account-dialog
-          v-model="openSaveDialog"
-          :supplier="supplierAccountToSave"
+          v-model="openSaveAccountDialog"
+          :supplierAccount="supplierAccountToSave"
           :mode="dialogMode"
         ></save-supplier-account-dialog>
       </template>
@@ -49,8 +49,9 @@
 </template>
 
 <script>
+import EmptyListTile from '@/components/common/EmptyListTile';
 import SaveSupplierAccountDialog from '@/components/suppliers/SaveSupplierAccountDialog';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   async fetch({ params: { supplierId }, route, store }) {
@@ -58,6 +59,7 @@ export default {
     await store.dispatch(fetchSupplierAction, { supplierId });
   },
   components: {
+    EmptyListTile,
     SaveSupplierAccountDialog
   },
   data: () => ({
@@ -78,7 +80,7 @@ export default {
     supplierAccountToSave: {
       bank: { id: 0 }
     },
-    openSaveDialog: false,
+    openSaveAccountDialog: false,
     dialogMode: 'nuevo'
   }),
   computed: {
@@ -91,24 +93,25 @@ export default {
   },
   methods: {
     openAddSupplierAccountDialog() {
-      this.openSaveDialog = true;
+      this.openSaveAccountDialog = true;
       this.supplierAccountToSave = {
-        bank: { id: 0 }
+        bank: { id: 0 },
+        supplier: supplier
       };
       this.dialogMode = 'nuevo';
     },
     openEditSupplierAccountDialog(supplierAccount) {
-      this.openSaveDialog = true;
+      this.openSaveAccountDialog = true;
       this.supplierAccountToSave = supplierAccount;
       this.dialogMode = 'editar';
     },
-    async deleteSupplierAccount(supplier){
+    async deleteSupplierAccount(supplierAccount){
       try {
-        const { number } = supplier;
+        const { number } = supplierAccount;
         const res = await this.$confirm(`¿Está seguro de borrar la cuenta '${number}'?`, { title: 'Advertencia' })
         if(res) {
           
-          await this.deleteSupplierAction({ supplier })
+          await this.deleteSupplierAction({ supplierAccount })
           
           await this.$confirm('Borrado correcto!', {
             title: 'Éxito',
@@ -118,6 +121,9 @@ export default {
       } catch(error) {
         this.showError(error);
       }
+    },
+    optional(object) {
+      return object || {};
     },
     showError(error){
       const { message, errors } = error.response.data;

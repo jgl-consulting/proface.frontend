@@ -10,95 +10,43 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn dark icon @click="saveSupplier">
+          <v-btn dark icon @click="saveSupplierAccount">
             <v-icon>fa-save</v-icon>
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-container>
-        <!-- <v-form>            
+        <v-form>            
           <v-layout row wrap>
             <v-flex xs12 pa-2>
-              <h3 class="text--blue-grey">Datos del proveedor</h3>
+              <h3 class="text--blue-grey">Datos de la cuenta</h3>
             </v-flex>
             <v-flex xs4 pa-2>
               <v-text-field 
-                v-model="supplierModel.name"
-                label="Nombre">
-              </v-text-field>
-            </v-flex>
-            <v-flex xs4 pa-2>
-              <v-text-field 
-                v-model="supplierModel.nativeId" 
-                label="Id Local">
-              </v-text-field>
-            </v-flex>
-            <v-flex xs4 pa-2> 
-              <v-select
-                v-model="supplierModel.type"
-                :items="supplierTypes"
-                item-value="id"
-                item-text="name"
-                return-object
-                label="Tipo">
-              </v-select>
-            </v-flex>
-            <v-flex xs8 pa-2>
-              <v-text-field 
-                v-model="supplierModel.address" 
-                label="Dirección">
-              </v-text-field>
-            </v-flex>
-            <v-flex xs4 pa-2>
-              <v-autocomplete
-                v-model="supplierModel.country"
-                :items="countries"
-                item-value="id"
-                item-text="name"
-                :hint="countryAutocompleteHint"
-                return-object
-                label="Pais">
-                <template v-slot:append>
-                  <flag
-                    :iso="supplierModel.country.iso"
-                    :title="supplierModel.country.name"
-                    :squared="false"
-                  ></flag>
-                </template>
-              </v-autocomplete>
-            </v-flex>
-          </v-layout>
-          <v-divider class="mt-2 mb-4"></v-divider>
-          <v-layout wrap>
-            <v-flex xs12 pa-2>
-              <h3 class="text--blue-grey">Contacto del proveedor</h3>
-            </v-flex>
-            <v-flex xs6 pa-2>
-              <v-text-field 
-                v-model="supplierModel.contact.firstName"
-                label="Nombres">
-              </v-text-field>
-            </v-flex>
-            <v-flex xs6 pa-2>
-              <v-text-field 
-                v-model="supplierModel.contact.lastName" 
-                label="Apellidos">
+                v-model="supplierAccountModel.number"
+                label="Número de Cuenta">
               </v-text-field>
             </v-flex>
             <v-flex xs4 pa-2>
               <v-text-field 
-                v-model="supplierModel.contact.phone" 
-                label="Teléfono">
+                v-model="supplierAccountModel.cci" 
+                label="CCI">
               </v-text-field>
             </v-flex>
             <v-flex xs8 pa-2>
               <v-text-field 
-                v-model="supplierModel.contact.email" 
-                label="Correo electrónico">
+                v-model="supplierAccountModel.description" 
+                label="Descripción">
+              </v-text-field>
+            </v-flex>
+            <v-flex xs8 pa-2>
+              <v-text-field 
+                v-model="supplierAccountModel.currency" 
+                label="Moneda">
               </v-text-field>
             </v-flex>
           </v-layout>
-        </v-form> -->
+        </v-form>
       </v-container>
     </v-card>
   </v-dialog>
@@ -108,68 +56,57 @@
 import { mapState, mapActions } from 'vuex';
 export default {
   props: {
-    supplier: Object,
+    supplierAccount: Object,
     mode: String,
     value: Boolean
   },
   data() {
     return {
       isOpen: false,
-      supplierModel: {}
+      supplierAccountModel: {}
     }
   },
   watch: {
     supplier: {
       handler() {
-        const [ country = {} ] = this.countries; 
-
-
-        this.supplierModel = JSON.parse(JSON.stringify(this.supplier))
-        this.supplierModel.country = this.supplier.country || country;
+        const [ bank = {} ] = this.banks; 
+        this.supplierAccountModel = JSON.parse(JSON.stringify(this.supplierAccount))
+        this.supplierAccountModel.bank = this.supplierAccount.bank || bank;
       }
     }
   },
   computed: {
     title() {
       if(this.mode == 'nuevo') {
-        return "Nuevo proveedor";
+        return "Nueva cuenta";
       } else if (this.mode == 'editar') {
-        return "Editar proveedor";
+        return "Editar cuenta";
       }
     },
-    countryAutocompleteHint() {
-      const { name, iso } = this.supplierModel.country || {};
-      return name && iso ? `${name}, ${iso}` : '';
-    },
-    ...mapState('suppliers', [
-      'supplierTypes',
-      'countries'
+    ...mapState('supplierAccounts', [
+      'banks'
     ]),
-    supplierToSave(){
-      const { contact } = this.supplierModel;
+    supplierAccountToSave(){
       return JSON.parse(JSON.stringify({ 
-        ...this.supplierModel, 
-        contacts: [ contact ],
-        contact: undefined,
-        accounts: [] 
+        ...this.supplierAccountModel,
       }));
     }
   },
   methods: {
-    ...mapActions('suppliers', [
-      'createSupplier',
-      'updateSupplier'
+    ...mapActions('suppliersAccounts', [
+      'createSupplierAccount',
+      'updateSupplierAccount'
     ]),
-    async saveSupplier() {
-      const supplier = this.supplierToSave; 
+    async saveSupplierAccount() {
+      const supplierAccount = this.supplierAccountToSave; 
       try {
-        const { name } = supplier;
-        const res = await this.$confirm(`¿Está seguro de guardar al proveedor '${name}'?`, { title: 'Advertencia' })
+        const { number } = supplierAccount;
+        const res = await this.$confirm(`¿Está seguro de guardar la cuenta '${number}'?`, { title: 'Advertencia' })
         if(res) {
           if(this.mode === 'nuevo') {
-            await this.createSupplier({ supplier });
+            await this.createSupplierAccount({ supplierAccount });
           } else if(this.mode === 'editar') {
-            await this.updateSupplier({ supplier });
+            await this.updateSupplierAccount({ supplierAccount });
           }
 
           await this.$confirm('Guardado correcto!', {
@@ -198,7 +135,7 @@ export default {
   },
   created(){
     this.isOpen = this.value;
-    this.supplierModel = { ... this.supplier };
+    this.supplierAccountModel = { ... this.supplierAccount };
   }
 }
 </script>

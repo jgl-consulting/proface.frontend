@@ -1,4 +1,4 @@
-import { SUPPLIER_ACCOUNT_ENDPOINT } from '@/util/endpoints';
+import { SUPPLIER_ACCOUNTS_ENDPOINT, BANKS_ENDPOINT } from '@/util/endpoints';
 
 export default class SupplierAccountsService {
   constructor({ $axios }) {
@@ -6,23 +6,23 @@ export default class SupplierAccountsService {
   }
 
   listSupplierAccounts() {
-    return this.$axios.$get(`${SUPPLIER_ACCOUNT_ENDPOINT}/unpaged`);
+    return this.$axios.$get(`${SUPPLIER_ACCOUNTS_ENDPOINT}/unpaged`);
   }
 
-  /* getSupplierById(supplierId) {
-    return this.$axios.$get(`${SUPPLIER_ACCOUNT_ENDPOINT}/${supplierId}`);
-  }  */
+  listBanks() {
+    return this.$axios.$get(`${BANKS_ENDPOINT}/unpaged`);
+  }
 
   async createSupplierAccount(supplierAccount) {
-    await this.$axios.$post(SUPPLIER_ACCOUNT_ENDPOINT,  supplierAccount);
+    await this.$axios.$post(SUPPLIER_ACCOUNTS_ENDPOINT,  supplierAccount);
   }
 
-  async updateSupplierAccount(supplierId, supplierAccount) {
-    await this.$axios.$put(`${SUPPLIER_ACCOUNT_ENDPOINT}/${supplierId}`, supplierAccount);
+  async updateSupplierAccount(supplierAccountId, supplierAccount) {
+    await this.$axios.$put(`${SUPPLIER_ACCOUNTS_ENDPOINT}/${supplierAccountId}`, supplierAccount);
   }
 
   async deleteSupplierAccount({ id }) {
-    await this.$axios.$delete(`${SUPPLIER_ACCOUNT_ENDPOINT}/${id}`);
+    await this.$axios.$delete(`${SUPPLIER_ACCOUNTS_ENDPOINT}/${id}`);
   }
 
 }

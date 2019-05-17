@@ -190,12 +190,15 @@ export default {
         return "Editar orden de compra";
       }
     },
+    supplierAutocompleteHint() {
+      const { name } = this.purchaseOrderModel.supplier || {};
+      return name  ? name : '';
+    },
     ...mapState('purchaseOrders', [
       'purchaseStatuses',
       'suppliers'
     ]),
     purchaseOrderToSave(){
-      const { contact } = this.purchaseOrderModel;
       return JSON.parse(JSON.stringify({ 
         ...this.purchaseOrderModel,
       }));

@@ -6,6 +6,7 @@ export const SET_SUPPLIER_TYPES = 'setSupplierType';
 export const SET_COUNTRIES = 'setCountries';
 export const SET_PAGINATION = 'setPagination';
 export const SET_SUPPLIER = 'setSupplier';
+export const SET_BANKS = 'setBank';
 export const SET_PRODUCTS = 'setProducts';
 export const SET_PRODUCT_LINES = 'setProductLine';
 export const SET_PRODUCT = 'setProduct';
