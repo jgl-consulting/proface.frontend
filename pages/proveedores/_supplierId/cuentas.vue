@@ -5,8 +5,8 @@
           Listado de cuentas
         </v-subheader>
       </template>
-      <template #actions @click="openAddSupplierAccountDialog">
-        <v-btn color="accent" >
+      <template #actions>
+        <v-btn color="accent"  @click="openAddSupplierAccountDialog">
           <v-icon small>fa-plus</v-icon>
           <span class="mx-1"></span>
           <span>Nueva cuenta</span>
@@ -41,7 +41,7 @@
       <template #dialog>
         <save-supplier-account-dialog
           v-model="openSaveAccountDialog"
-          :supplierAccount="supplierAccountToSave"
+          :supplier-account="supplierAccountToSave"
           :mode="dialogMode"
         ></save-supplier-account-dialog>
       </template>
@@ -55,8 +55,9 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
   async fetch({ params: { supplierId }, route, store }) {
-    const fetchSupplierAction ='suppliers/details/fetchSupplier';
-    await store.dispatch(fetchSupplierAction, { supplierId });
+    
+    await store.dispatch('suppliers/details/fetchSupplier', { supplierId });
+    await store.dispatch('suppliers/details/fetchBanks');
   },
   components: {
     EmptyListTile,
@@ -92,11 +93,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions('suppliers/details', {
+      deleteSupplierAccountAction: 'deleteSupplierAccount'
+    }),
     openAddSupplierAccountDialog() {
       this.openSaveAccountDialog = true;
       this.supplierAccountToSave = {
         bank: { id: 0 },
-        supplier: supplier
       };
       this.dialogMode = 'nuevo';
     },
@@ -111,7 +114,7 @@ export default {
         const res = await this.$confirm(`¿Está seguro de borrar la cuenta '${number}'?`, { title: 'Advertencia' })
         if(res) {
           
-          await this.deleteSupplierAction({ supplierAccount })
+          await this.deleteSupplierAccountAction({ supplierAccount })
           
           await this.$confirm('Borrado correcto!', {
             title: 'Éxito',
@@ -122,11 +125,12 @@ export default {
         this.showError(error);
       }
     },
-    optional(object) {
-      return object || {};
-    },
     showError(error){
-      const { message, errors } = error.response.data;
+      const { message, errors } = this.$_.get(error, 'response.data', {
+        message: 'Error inesperado',
+        errors: [ error.message ]
+      });
+
       this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
         title: message, 
         color: 'error',

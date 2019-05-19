@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="value" persistent width="850">
+  <v-dialog v-model="value" persistent width="700">
     <v-card>
       <v-toolbar dark color="primary">
         <v-btn icon dark @click="closeDialog">
@@ -19,27 +19,39 @@
         <v-form>            
           <v-layout row wrap>
             <v-flex xs12 pa-2>
-              <h3 class="text--blue-grey">Datos de la cuenta</h3>
+              <h3 class="text--blue-grey">
+                Datos de la cuenta
+              </h3>
             </v-flex>
-            <v-flex xs4 pa-2>
+            <v-flex sm6 pa-2>
               <v-text-field 
                 v-model="supplierAccountModel.number"
                 label="Número de Cuenta">
               </v-text-field>
             </v-flex>
-            <v-flex xs4 pa-2>
+            <v-flex sm6 pa-2>
               <v-text-field 
                 v-model="supplierAccountModel.cci" 
                 label="CCI">
               </v-text-field>
             </v-flex>
-            <v-flex xs8 pa-2>
+            <v-flex sm12 pa-2>
               <v-text-field 
                 v-model="supplierAccountModel.description" 
                 label="Descripción">
               </v-text-field>
             </v-flex>
-            <v-flex xs8 pa-2>
+            <v-flex sm7 pa-2>
+              <v-select 
+                v-model="supplierAccountModel.bank" 
+                return-object
+                itemid="id"
+                item-text="name"
+                :items="banks"
+                label="Banco">
+              </v-select>
+            </v-flex>
+            <v-flex sm5 pa-2>
               <v-text-field 
                 v-model="supplierAccountModel.currency" 
                 label="Moneda">
@@ -67,7 +79,7 @@ export default {
     }
   },
   watch: {
-    supplier: {
+    supplierAccount: {
       handler() {
         const [ bank = {} ] = this.banks; 
         this.supplierAccountModel = JSON.parse(JSON.stringify(this.supplierAccount))
@@ -83,7 +95,7 @@ export default {
         return "Editar cuenta";
       }
     },
-    ...mapState('supplierAccounts', [
+    ...mapState('suppliers/details', [
       'banks'
     ]),
     supplierAccountToSave(){
@@ -93,7 +105,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('suppliersAccounts', [
+    ...mapActions('suppliers/details', [
       'createSupplierAccount',
       'updateSupplierAccount'
     ]),
@@ -125,7 +137,12 @@ export default {
       this.$emit("input", this.isOpen);
     },
     showError(error){
-      const { message, errors } = error.response.data;
+      console.log({ error })
+      const { message, errors } = this.$_.get(error, 'response.data', {
+        message: 'Error inesperado',
+        errors: [ error.message ]
+      });
+
       this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
         title: message, 
         color: 'error',
