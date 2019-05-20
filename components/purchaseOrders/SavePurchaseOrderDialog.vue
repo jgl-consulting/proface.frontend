@@ -5,7 +5,7 @@
         <v-btn icon dark @click="closeDialog">
           <v-icon>close</v-icon>
         </v-btn>
-        <v-toolbar-title class="text-weight-bold">
+        <v-toolbar-title class="font-weight-bold">
           {{ title }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -17,143 +17,72 @@
       </v-toolbar>
       <v-container fluid>
         <v-form>
-          <v-layout row wrap>
-            <v-flex md4>
-              <v-layout row wrap>
-                <v-flex xs12 pa-2>
-                  <h3 class="text--blue-grey">Datos de la Orden de Compra</h3>
-                </v-flex>
-                <v-flex xs12 pa-2>
-                  <v-text-field 
-                    v-model="purchaseOrderModel.nativeId" 
-                    label="Id Local">
-                  </v-text-field>
-                </v-flex>
-                <v-flex xs12 pa-2>
-                  <v-menu
-                    v-model="menuCreation"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    lazy
-                    transition="scale-transition"
-                    offset-y
-                    full-width
-                    min-width="209px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="purchaseOrderModel.creationDate"
-                        label="Fecha de Creación"
-                        readonly
-                        v-on="on"
-                      />
-                    </template>
-                    <v-date-picker 
-                      v-model="purchaseOrderModel.creationDate" 
-                      @input="menuCreation = false">
-                    </v-date-picker>
-                  </v-menu>
-                </v-flex>
-                <v-flex xs12 pa-2>
-                  <v-menu
-                    v-model="menuQuotation"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    lazy
-                    transition="scale-transition"
-                    offset-y
-                    full-width
-                    min-width="209px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="purchaseOrderModel.quotationDate"
-                        label="Fecha de Creación"
-                        readonly
-                        v-on="on"
-                      />
-                    </template>
-                    <v-date-picker 
-                      v-model="purchaseOrderModel.quotationDate" @input="menuQuotation = false">
-                    </v-date-picker>
-                  </v-menu>
-                </v-flex>
-                <v-flex xs12 pa-2>
-                  <v-menu
-                    v-model="menuBilling"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    lazy
-                    transition="scale-transition"
-                    offset-y
-                    full-width
-                    min-width="209px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="purchaseOrderModel.billingDate"
-                        label="Fecha de Creación"
-                        readonly
-                        v-on="on"
-                      />
-                    </template>
-                    <v-date-picker 
-                      v-model="purchaseOrderModel.billingDate" @input="menuBilling = false">
-                    </v-date-picker>
-                  </v-menu>
-                </v-flex>
-                <v-flex xs12 pa-2>
-                  <v-menu
-                    v-model="menuReception"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    lazy
-                    transition="scale-transition"
-                    offset-y
-                    full-width
-                    min-width="209px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="purchaseOrderModel.receptionDate"
-                        label="Fecha de Creación"
-                        readonly
-                        v-on="on"
-                      />
-                    </template>
-                    <v-date-picker 
-                      v-model="purchaseOrderModel.receptionDate" 
-                      @input="menuReception = false">
-                    </v-date-picker>
-                  </v-menu>
-                </v-flex>
-                <v-flex xs12 pa-2>               
-                  <v-autocomplete
-                    v-model="purchaseOrderModel.supplier"
-                    :items="suppliers"
-                    item-value="id"
-                    item-text="name"
-                    :hint="supplierAutocompleteHint"
-                    return-object
-                    label="Proveedor">
-                  </v-autocomplete>
-                </v-flex>
-                <v-flex xs12 pa-2> 
-                  <v-select
-                    v-model="purchaseOrderModel.status"
-                    :items="purchaseStatuses"
-                    item-value="id"
-                    item-text="description"
-                    return-object
-                    label="Estado">
-                  </v-select>
-                </v-flex>
-              </v-layout>
-            </v-flex>
-            <v-flex md8>
-              
-            </v-flex>
-          </v-layout>      
+          <form-group>
+            <template #title>
+              Datos de la Orden de Compra
+            </template>
+            <template #controls>
+              <v-flex md3 pa-2>
+                <v-text-field 
+                  v-model="purchaseOrderModel.nativeId" 
+                  label="Identificador Local">
+                </v-text-field>
+              </v-flex>
+              <v-flex md5 pa-2>               
+                <v-autocomplete
+                  v-model="purchaseOrderModel.supplier"
+                  :items="suppliers"
+                  item-value="id"
+                  item-text="name"
+                  :hint="supplierAutocompleteHint"
+                  return-object
+                  label="Proveedor">
+                </v-autocomplete>
+              </v-flex>
+              <v-flex md4 pa-2> 
+                <v-select
+                  v-model="purchaseOrderModel.status"
+                  :items="purchaseStatuses"
+                  item-value="id"
+                  item-text="description"
+                  return-object
+                  label="Estado">
+                </v-select>
+              </v-flex>
+              <v-flex md3 pa-2>
+                <datepicker
+                  v-model="purchaseOrderModel.creationDate"
+                  label="Fecha de Creación"
+                ></datepicker>
+              </v-flex>
+              <v-flex md3 pa-2>
+                <datepicker
+                  v-model="purchaseOrderModel.quotationDate"
+                  label="Fecha de Cotización"
+                ></datepicker>
+              </v-flex>
+              <v-flex md3 pa-2>
+                <datepicker
+                  v-model="purchaseOrderModel.billingDate"
+                  label="Fecha de Facturación"
+                ></datepicker>
+              </v-flex>
+              <v-flex md3 pa-2>
+                <datepicker
+                  v-model="purchaseOrderModel.receptionDate"
+                  label="Fecha de Recepción"
+                ></datepicker>
+              </v-flex>
+            </template>
+          </form-group>
+          <form-group>
+            <template #title>
+              Productos
+            </template>
+            <template #controls>
+              vDataTe
+            </template>
+          </form-group>
         </v-form>
       </v-container>
     </v-card>
@@ -162,7 +91,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import FormGroup from '@/components/common/FormGroup';
+import Datepicker from '@/components/common/Datepicker';
 export default {
+  components: {
+    FormGroup,
+    Datepicker
+  },
   props: {
     purchaseOrder: Object,
     mode: String,
@@ -184,7 +119,7 @@ export default {
         const [ supplier = {} ] = this.suppliers; 
         this.purchaseOrderModel = JSON.parse(JSON.stringify(this.purchaseOrder))
         this.purchaseOrderModel.supplier = this.purchaseOrder.supplier || supplier;
-       }
+      }
     }
   },
   computed: {

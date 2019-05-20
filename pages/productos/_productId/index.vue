@@ -51,8 +51,3 @@ export default {
   },
 }
 </script>
-<style>
-  .v-subheader {
-    text-transform: uppercase !important;
-  }
-</style>

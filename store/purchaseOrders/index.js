@@ -10,6 +10,7 @@ import {
     purchaseOrders: [],
     purchaseStatuses: [],
     suppliers: [],
+    products: [],
     page: {
       size: 0,
       totalElements: 0,
