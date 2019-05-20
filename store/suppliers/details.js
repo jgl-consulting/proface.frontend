@@ -44,7 +44,7 @@ export const actions = {
     await dispatch('fetchSupplier', { supplierId: this.$_.get(state, 'supplier.id', { })});
   },
   async fetchBanks({commit}) {
-    const banks = await this.$banks.listBanks();
+    const banks = await this.$supplierAccounts.listBanks();
     commit(SET_BANKS, banks);
   },
 }

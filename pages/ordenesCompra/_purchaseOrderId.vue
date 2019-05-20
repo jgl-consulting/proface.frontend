@@ -47,17 +47,17 @@ export default {
         },
         { 
           name: 'Detalles', 
-          route: `${mainRoute}/purchaseDetails`, 
+          route: `${mainRoute}/detalles`, 
           icon: 'fa-clipboard' 
         },
         { 
           name: 'Costos', 
-          route: `${mainRoute}/purchaseCosts`, 
+          route: `${mainRoute}/costos`, 
           icon: 'fa-coins' 
         },
         {
           name: 'Facturas',
-          route: `${mainRoute}/purchaseInvoices`, 
+          route: `${mainRoute}/facturas`, 
           icon: 'fa-file-invoice-dollar' 
         }
       ]

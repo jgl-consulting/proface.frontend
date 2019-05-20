@@ -6,4 +6,6 @@ export const PRODUCTS_ENDPOINT = '/api/products';
 export const PRODUCT_LINES_ENDPOINT = 'api/productLines';
 export const PURCHASE_ORDERS_ENDPOINT = 'api/purchaseOrders';
 export const PURCHASE_STATUSES_ENDPOINT = 'api/purchaseStatuses';
+export const PURCHASE_DETAILS_ENDPOINT = 'api/purchaseDetails';
+export const RECEPTION_STATUSES_ENDPOINT = 'api/receptionStatuses';
 export const BANKS_ENDPOINT = 'api/banks';

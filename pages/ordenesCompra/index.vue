@@ -30,12 +30,6 @@
               {{ props.item.creationDate }} 
             </td>
             <td class="text-xs-right">
-              {{ props.item.quotationDate }} 
-            </td>
-            <td class="text-xs-right">
-              {{ props.item.billingDate }} 
-            </td>
-            <td class="text-xs-right">
               {{ props.item.receptionDate }} 
             </td>
             <td class="text-xs-right">
@@ -104,10 +98,8 @@ export default {
           value: 'id'
         },
         { text: 'Id Local', value: 'nativeId' },
-        { text: 'Creación', value: 'creationDate' },
-        { text: 'Presupuesto', value: 'quotationDate' },
-        { text: 'Facturación', value: 'billingDate'},
-        { text: 'Recepción', value: 'receptionDate'},
+        { text: 'Fecha de Emisión', value: 'creationDate' },
+        { text: 'Fecha de Recepción', value: 'receptionDate'},
         { text: 'Proveedor', value: 'supplier'},
         { text: 'Estado', value: 'status' },
         { text: 'Acciones', value: 'id', sortable: false,}

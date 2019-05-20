@@ -111,9 +111,10 @@ export default {
       purchaseOrderFields: [
         { key: 'nativeId', title: 'Código local', icon: 'fa-id-card-alt' },
         { key: 'creationDate', title: 'Fecha de Creación', icon:'fa-calendar-plus'},
-        { key: 'quotationDate', title: 'Dirección', icon:'fa-calendar-day'},
-        { key: 'receptionDate', title: 'Dirección', icon:'fa-calendar-check'},
-        { key: 'billingDate', title: 'Dirección', icon:'fa-calendar'},
+        { key: 'quotationDate', title: 'Fecha de Presupuesto', icon:'fa-calendar-alt'},
+        { key: 'billingDate', title: 'Fecha de Facturación', icon:'fa-calendar-day'},
+        { key: 'receptionDate', title: 'Fecha de Recepción', icon:'fa-calendar-check'},
+        { key: 'cancellationDate', title: 'Fecha de Cancelación', icon:'fa-calendar-times'},
         { 
           key: 'supplier', 
           title: 'Proveedor', 

@@ -66,7 +66,7 @@
                 <template v-slot:activator="{ on }">
                   <v-text-field
                     v-model="purchaseOrderModel.quotationDate"
-                    label="Fecha de Creación"
+                    label="Fecha de Presupuesto"
                     prepend-icon="event"
                     readonly
                     v-on="on"
@@ -91,7 +91,7 @@
                 <template v-slot:activator="{ on }">
                   <v-text-field
                     v-model="purchaseOrderModel.billingDate"
-                    label="Fecha de Creación"
+                    label="Fecha de Facturación"
                     prepend-icon="event"
                     readonly
                     v-on="on"
@@ -116,7 +116,7 @@
                 <template v-slot:activator="{ on }">
                   <v-text-field
                     v-model="purchaseOrderModel.receptionDate"
-                    label="Fecha de Creación"
+                    label="Fecha de Recepción"
                     prepend-icon="event"
                     readonly
                     v-on="on"

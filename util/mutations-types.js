@@ -13,3 +13,4 @@ export const SET_PRODUCT = 'setProduct';
 export const SET_PURCHASE_ORDERS = 'setPurchaseOrders';
 export const SET_PURCHASE_STATUSES = 'setPurchaseStatuses';
 export const SET_PURCHASE_ORDER = 'setPurchaseOrder';
+export const SET_RECEPTION_STATUSES = 'setReceptionStatuses';

@@ -3,7 +3,7 @@ import CountriesService from '@/api/countries.service';
 import ProductsService from '@/api/products.service';
 import PurchaseOrdersService from '@/api/purchase-orders.service';
 import SupplierAccountsService from '@/api/supplier-accounts.service';
-import BanksService from '@/api/banks.service';
+import PurchaseDetailsService from '@/api/purchase-details.service';
 
 export default function(ctx, inject) {
   if (!ctx.$axios) {
@@ -14,6 +14,6 @@ export default function(ctx, inject) {
     inject('products', new ProductsService(ctx));
     inject('purchaseOrders', new PurchaseOrdersService(ctx));
     inject('supplierAccounts', new SupplierAccountsService(ctx));
-    inject('banks', new BanksService(ctx));
+    inject('purchaseDetails', new PurchaseDetailsService(ctx));
   }
 }
