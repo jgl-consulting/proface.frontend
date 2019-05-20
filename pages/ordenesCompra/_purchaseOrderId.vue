@@ -31,7 +31,7 @@ export default {
       breadcrumbs: [
         { name: 'Módulos', link: '/' },
         { name: 'Órdenes de compra', link: '/ordenesCompra' },
-        ({ purchaseOrderId }) => ({ name: purchaseOrderId  })
+        ({ params:{ purchaseOrderId }}) => ({ name: purchaseOrderId  })
       ]
   },
   asyncData({ route, params }){

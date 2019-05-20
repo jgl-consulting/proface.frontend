@@ -80,7 +80,7 @@ export default {
   meta: {
     breadcrumbs: [
       { name: 'Módulos', link: '/' },
-      { name: 'Órdenes de Compra', link: '/ordenesCompra' },
+      { name: 'Órdenes de Compra', link: '/ordenesCompra' }
     ]
   },
   components: {

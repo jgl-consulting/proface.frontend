@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="value" persistent width="850">
+  <v-dialog v-model="value" persistent fullscreen>
     <v-card>
       <v-toolbar dark color="primary">
         <v-btn icon dark @click="closeDialog">
@@ -15,140 +15,145 @@
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
-      <v-container>
-        <v-form>            
+      <v-container fluid>
+        <v-form>
           <v-layout row wrap>
-            <v-flex xs12 pa-2>
-              <h3 class="text--blue-grey">Datos de la Orden de Compra</h3>
+            <v-flex md4>
+              <v-layout row wrap>
+                <v-flex xs12 pa-2>
+                  <h3 class="text--blue-grey">Datos de la Orden de Compra</h3>
+                </v-flex>
+                <v-flex xs12 pa-2>
+                  <v-text-field 
+                    v-model="purchaseOrderModel.nativeId" 
+                    label="Id Local">
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12 pa-2>
+                  <v-menu
+                    v-model="menuCreation"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="209px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="purchaseOrderModel.creationDate"
+                        label="Fecha de Creación"
+                        readonly
+                        v-on="on"
+                      />
+                    </template>
+                    <v-date-picker 
+                      v-model="purchaseOrderModel.creationDate" 
+                      @input="menuCreation = false">
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+                <v-flex xs12 pa-2>
+                  <v-menu
+                    v-model="menuQuotation"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="209px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="purchaseOrderModel.quotationDate"
+                        label="Fecha de Creación"
+                        readonly
+                        v-on="on"
+                      />
+                    </template>
+                    <v-date-picker 
+                      v-model="purchaseOrderModel.quotationDate" @input="menuQuotation = false">
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+                <v-flex xs12 pa-2>
+                  <v-menu
+                    v-model="menuBilling"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="209px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="purchaseOrderModel.billingDate"
+                        label="Fecha de Creación"
+                        readonly
+                        v-on="on"
+                      />
+                    </template>
+                    <v-date-picker 
+                      v-model="purchaseOrderModel.billingDate" @input="menuBilling = false">
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+                <v-flex xs12 pa-2>
+                  <v-menu
+                    v-model="menuReception"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="209px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="purchaseOrderModel.receptionDate"
+                        label="Fecha de Creación"
+                        readonly
+                        v-on="on"
+                      />
+                    </template>
+                    <v-date-picker 
+                      v-model="purchaseOrderModel.receptionDate" 
+                      @input="menuReception = false">
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+                <v-flex xs12 pa-2>               
+                  <v-autocomplete
+                    v-model="purchaseOrderModel.supplier"
+                    :items="suppliers"
+                    item-value="id"
+                    item-text="name"
+                    :hint="supplierAutocompleteHint"
+                    return-object
+                    label="Proveedor">
+                  </v-autocomplete>
+                </v-flex>
+                <v-flex xs12 pa-2> 
+                  <v-select
+                    v-model="purchaseOrderModel.status"
+                    :items="purchaseStatuses"
+                    item-value="id"
+                    item-text="description"
+                    return-object
+                    label="Estado">
+                  </v-select>
+                </v-flex>
+              </v-layout>
             </v-flex>
-            <v-flex xs4 pa-2>
-              <v-text-field 
-                v-model="purchaseOrderModel.nativeId" 
-                label="Id Local">
-              </v-text-field>
+            <v-flex md8>
+              
             </v-flex>
-            <v-flex xs4 pa-2>
-              <v-menu
-                v-model="menuCreation"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="209px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="purchaseOrderModel.creationDate"
-                    label="Fecha de Creación"
-                    prepend-icon="event"
-                    readonly
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker 
-                  v-model="purchaseOrderModel.creationDate" @input="menuCreation = false">
-                </v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs4 pa-2>
-              <v-menu
-                v-model="menuQuotation"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="209px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="purchaseOrderModel.quotationDate"
-                    label="Fecha de Creación"
-                    prepend-icon="event"
-                    readonly
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker 
-                  v-model="purchaseOrderModel.quotationDate" @input="menuQuotation = false">
-                </v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs4 pa-2>
-              <v-menu
-                v-model="menuBilling"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="209px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="purchaseOrderModel.billingDate"
-                    label="Fecha de Creación"
-                    prepend-icon="event"
-                    readonly
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker 
-                  v-model="purchaseOrderModel.billingDate" @input="menuBilling = false">
-                </v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs4 pa-2>
-              <v-menu
-                v-model="menuReception"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="209px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="purchaseOrderModel.receptionDate"
-                    label="Fecha de Creación"
-                    prepend-icon="event"
-                    readonly
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker 
-                  v-model="purchaseOrderModel.receptionDate" @input="menuReception = false">
-                </v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs4 pa-2>               
-              <v-autocomplete
-                v-model="purchaseOrderModel.supplier"
-                :items="suppliers"
-                item-value="id"
-                item-text="name"
-                :hint="supplierAutocompleteHint"
-                return-object
-                label="Proveedor">
-              </v-autocomplete>
-            </v-flex>
-            <v-flex xs4 pa-2> 
-              <v-select
-                v-model="purchaseOrderModel.status"
-                :items="purchaseStatuses"
-                item-value="id"
-                item-text="description"
-                return-object
-                label="Estado">
-              </v-select>
-            </v-flex>
-          </v-layout>
+          </v-layout>      
         </v-form>
       </v-container>
     </v-card>
