@@ -63,9 +63,10 @@
         Productos
       </template>
       <template #actions>
-        <v-btn color="accent">
+        <v-btn color="accent" @click.stop="productDialog = true">
           <v-icon small>fa-plus</v-icon>
-          Nuevo Producto
+          <span class="mx-1"></span>
+          <span>Nuevo Producto</span>
         </v-btn>
       </template>
       <template #controls>
@@ -94,8 +95,12 @@ export default {
     FormGroup,
     Datepicker
   },
+  async fetch({ store }) {
+    await state.dispatch('purchaseOrders/addOrder/fetchProducts');
+  },
   data() {
     return {
+      productDialog: false,
       purchaseOrder: {},
       productoToAdd: {},
       detailHeaders: [

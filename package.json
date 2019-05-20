@@ -17,6 +17,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^2.6.0",
     "cross-env": "^5.2.0",
+    "moment": "^2.24.0",
     "nuxt": "^2.4.0",
     "query-string": "^6.5.0",
     "vue-flag-icon": "^1.0.6",
