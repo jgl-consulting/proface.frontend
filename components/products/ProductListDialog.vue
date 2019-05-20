@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="value" persistent width="850">
+  <v-dialog v-model="value" persistent width="900">
     <v-card>
       <v-toolbar dark color="primary">
         <v-btn icon dark @click="closeDialog">
@@ -8,12 +8,6 @@
         <v-toolbar-title class="font-weight-bold">
           Listado de productos
         </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn dark icon @click="saveSupplier">
-            <v-icon>fa-save</v-icon>
-          </v-btn>
-        </v-toolbar-items>
       </v-toolbar>
       <v-card-text>
         <v-layout row wrap>
@@ -46,8 +40,10 @@
                   <td class="text-xs-right">
                     {{ props.item.line.name }}
                   </td>
-                  <td class="text-xs-center" @click.stop="() => {}">
-                    
+                  <td class="text-xs-center">
+                    <v-btn flat icon color="accent" @click.stop="emitProduct(props.item)">
+                      <v-icon small>fa-plus-circle</v-icon>
+                    </v-btn>
                   </td>
                 </tr>
               </template>
@@ -62,10 +58,12 @@
 <script>
 export default {
   props: {
-    value: Boolean
+    value: Boolean,
+    products: Array,
+    page: Object
   },
   data: () => ({
-    value: false,
+    isOpen: false,
     headers: [
       {
         text: 'Id',
@@ -97,23 +95,22 @@ export default {
   watch: {
     pagination: {
       async handler() {
-        const { sortBy, descending, page, rowsPerPage } = this.pagination;
-        
-        const params = { 
-          requestPage: page - 1, 
-          size: rowsPerPage, 
-          sortBy,
-          descending
-        };
-        await this.$store.dispatch('products/fetchProducts', params);
+        this.$emit('changePagination', this.pagination);
       }
     }
   },
-  computed: {
-      ...mapState('purchaseOrders/addOrders', [
-      'products',
-      'page'
-    ])
+  methods: {
+    closeDialog() {
+      this.isOpen = false;
+      this.$emit("input", this.isOpen);
+    },
+    emitProduct(product) {
+      this.$emit('selectedProduct', product);
+      this.closeDialog();
+    }
+  },
+  created(){
+    this.isOpen = this.value;
   }
 }
 </script>

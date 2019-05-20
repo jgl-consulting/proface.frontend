@@ -63,7 +63,7 @@
         Productos
       </template>
       <template #actions>
-        <v-btn color="accent" @click.stop="productDialog = true">
+        <v-btn color="accent" @click.stop="openProductList">
           <v-icon small>fa-plus</v-icon>
           <span class="mx-1"></span>
           <span>Nuevo Producto</span>
@@ -76,33 +76,69 @@
             :items="detailItems"
             hide-actions
             class="elevation-1"
-          ></v-data-table>
+          >
+            <template v-slot:items="props">
+                <td class="text-xs-left">
+                  {{ props.item.product.name }}
+                </td>
+                <td class="text-xs-right">
+                  {{ props.item.qty }}
+                </td>
+                <td class="text-xs-center">
+                  <v-btn flat icon color="accent">
+                    <v-icon small>fa-trash</v-icon>
+                  </v-btn>
+                </td>
+              </template>
+          </v-data-table>
         </v-flex>
       </template>
     </form-group>
+    <!-- 
+      Componete del listado de productos
+      Tiene dos eventos:
+      - @selectedProduct: Se emite cuando seleccionas un producto del modal y
+      te devuelve ese producto
+      - @changePagination: Se emite cuando cambias de página y sirve para contralar la
+      paginación fuera del componente, ya que puede ser de que el listado de los productos
+      lo almacenes en otro lugar del store
+    -->
+    <product-list-dialog 
+      v-model="productDialog"
+      :products="products"
+      :page="page"
+      @selectedProduct="addProductToDetail"
+      @changePagination="productListPaginationHandler">
+    </product-list-dialog>
   </v-form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+
 import FormGroup from '@/components/common/FormGroup';
 import Datepicker from '@/components/common/Datepicker';
+// Componente que maneja la tabla
+import ProductListDialog from '@/components/products/ProductListDialog';
+
 export default {
   meta: {
     breadcrumbs: false,
   },
   components: {
     FormGroup,
-    Datepicker
+    Datepicker,
+    ProductListDialog
   },
   async fetch({ store }) {
-    await state.dispatch('purchaseOrders/addOrder/fetchProducts');
+    await store.dispatch('purchaseOrders/addOrder/fetchProducts');
   },
   data() {
     return {
       productDialog: false,
       purchaseOrder: {},
       productoToAdd: {},
+      detailItems: [],
       detailHeaders: [
         { key: 'product', text: 'Producto' },
         { key: 'qty', text: 'Cantidad' },
@@ -121,12 +157,20 @@ export default {
     ...mapState('purchaseOrders', [
       'purchaseStatuses',
       'suppliers'
+    ]),
+    ...mapState('purchaseOrders/addOrder', [
+      'products',
+      'page'
     ])
   },
   methods: {
     ...mapActions('purchaseOrders', [
       'createPurchaseOrder'
     ]),
+    
+    openProductList() {
+      this.productDialog = true;
+    },
     async savePurchaseOrder() {
       const purchaseOrder = this.purchaseOrder; 
       try {
@@ -147,6 +191,27 @@ export default {
       } catch(error) {
         this.showError(error);
       }
+    },
+    /** 
+     * Métodos del componente ProductListDialog 
+     */
+
+    // Maneja la paginación de forma externa para que el componente se pueda rehusar
+    async productListPaginationHandler({ sortBy, descending, page, rowsPerPage }) {
+        const params = { 
+          requestPage: page - 1, 
+          size: rowsPerPage, 
+          sortBy,
+          descending
+        };
+        await this.$store.dispatch('purchaseOrders/addOrder/fetchProducts', params);
+    },
+    // Añade un producto al detalle
+    addProductToDetail(selectProduct) {
+      this.detailItems.push({
+        product: selectProduct,
+        qty: 1
+      });
     },
     showError(error){
       const { message, errors } = error.response.data;
