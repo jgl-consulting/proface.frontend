@@ -24,13 +24,15 @@
             <v-flex xs4 pa-2>
               <v-text-field 
                 v-model="productModel.name"
-                label="Nombre">
+                label="Nombre"
+                :rules="nameproductRules">
               </v-text-field>
             </v-flex>
             <v-flex xs4 pa-2>
               <v-text-field 
                 v-model="productModel.nativeId" 
-                label="Id Local">
+                label="Id Local"
+                :rules="idproductRules">
               </v-text-field>
             </v-flex>
             <v-flex xs4 pa-2>
@@ -64,6 +66,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { required, maxLength } from '@/util/validators'
 export default {
   props: {
     product: Object,
@@ -98,6 +101,18 @@ export default {
       return JSON.parse(JSON.stringify({ 
         ...this.productModel
       }));
+    },
+    idproductRules() {
+      return [
+        (value) => required(value, 'El código del producto es requerido'),
+        (value) => maxLength(value, 'El valor supera el tamaño máximo',20)
+      ]
+    },
+    nameproductRules() {
+      return [
+        (value) => required(value, 'El nombre del producto es requerido'),
+        (value) => maxLength(value, 'El valor supera el tamaño máximo', 300)
+      ]
     }
   },
   methods: {

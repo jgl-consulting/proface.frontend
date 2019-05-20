@@ -23,24 +23,6 @@
                 Datos de la cuenta
               </h3>
             </v-flex>
-            <v-flex sm6 pa-2>
-              <v-text-field 
-                v-model="supplierAccountModel.number"
-                label="Número de Cuenta">
-              </v-text-field>
-            </v-flex>
-            <v-flex sm6 pa-2>
-              <v-text-field 
-                v-model="supplierAccountModel.cci" 
-                label="CCI">
-              </v-text-field>
-            </v-flex>
-            <v-flex sm12 pa-2>
-              <v-text-field 
-                v-model="supplierAccountModel.description" 
-                label="Descripción">
-              </v-text-field>
-            </v-flex>
             <v-flex sm7 pa-2>
               <v-select 
                 v-model="supplierAccountModel.bank" 
@@ -52,9 +34,35 @@
               </v-select>
             </v-flex>
             <v-flex sm5 pa-2>
-              <v-text-field 
+              <v-select 
                 v-model="supplierAccountModel.currency" 
+                :items="currencies"
+                item-value="id"
+                item-text="name"
                 label="Moneda">
+              </v-select>
+            </v-flex>
+            <v-flex sm6 pa-2>
+              <v-text-field 
+                v-model="supplierAccountModel.number"
+                label="Número de Cuenta"
+                :mask="supplierAccountModel.bank.accountNumberMask"
+                :rules="nroCtaRules">
+              </v-text-field>
+            </v-flex>
+            <v-flex sm6 pa-2>
+              <v-text-field 
+                v-model="supplierAccountModel.cci" 
+                label="CCI"
+                mask="###-#################"
+                :rules="cciRules">
+              </v-text-field>
+            </v-flex>
+            <v-flex sm12 pa-2>
+              <v-text-field 
+                v-model="supplierAccountModel.description" 
+                label="Descripción"
+                :rules="descriptionRules">
               </v-text-field>
             </v-flex>
           </v-layout>
@@ -66,6 +74,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { required, maxLength } from '@/util/validators'
+
 export default {
   props: {
     supplierAccount: Object,
@@ -75,15 +85,20 @@ export default {
   data() {
     return {
       isOpen: false,
-      supplierAccountModel: {}
+      supplierAccountModel: {},
+      currencies: [
+        { id: 'PEN', name: 'Soles' },
+        { id: 'USD', name: 'Dólares' },
+      ]
     }
   },
   watch: {
     supplierAccount: {
       handler() {
-        const [ bank = {} ] = this.banks; 
-        this.supplierAccountModel = JSON.parse(JSON.stringify(this.supplierAccount))
-        this.supplierAccountModel.bank = this.supplierAccount.bank || bank;
+        this.supplierAccountModel = JSON.parse(JSON.stringify(this.supplierAccount));
+        if(!this.supplierAccountModel.bank || this.supplierAccountModel.bank.id === 0){ 
+          this.supplierAccountModel.bank = this.banks || [{ id: 0 }];
+        }
       }
     }
   },
@@ -102,6 +117,21 @@ export default {
       return JSON.parse(JSON.stringify({ 
         ...this.supplierAccountModel,
       }));
+    },
+    nroCtaRules() {
+      return [
+        (value) => required(value, 'El número de cuenta es requerido')
+      ]
+    },
+    cciRules() {
+      return [
+        (value) => required(value, 'El número de CCI es requerido')
+      ]
+    },
+    descriptionRules() {
+      return [
+        (value) => maxLength(value, 'El valor supera el tamaño máximo', 45)
+      ]
     }
   },
   methods: {
