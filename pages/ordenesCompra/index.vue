@@ -62,6 +62,7 @@
         </template>
       </v-data-table>
     </template>
+    <!--
     <template #dialog>
       <save-purchaseOrder-dialog
         v-model="openSaveDialog"
@@ -69,6 +70,7 @@
         :mode="dialogMode"
       ></save-purchaseOrder-dialog>
     </template>
+    -->
   </simple-table-layout>
 </template>
 
@@ -90,8 +92,8 @@ export default {
   async fetch ({ store }) {
     const params = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
-    await store.dispatch('purchaseOrders/fetchPurchaseStatuses');
-    await store.dispatch('purchaseOrders/fetchSuppliers')
+   /*  await store.dispatch('purchaseOrders/fetchPurchaseStatuses');
+    await store.dispatch('purchaseOrders/fetchSuppliers') */
   },
   data() {
     return {

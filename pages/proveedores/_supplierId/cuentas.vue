@@ -1,51 +1,51 @@
 <template>
-    <simple-table-layout>
-      <template #title>
-        <v-subheader>
-          Listado de cuentas
-        </v-subheader>
-      </template>
-      <template #actions>
-        <v-btn color="accent"  @click="openAddSupplierAccountDialog">
-          <v-icon small>fa-plus</v-icon>
-          <span class="mx-1"></span>
-          <span>Nueva cuenta</span>
-        </v-btn>
-      </template>
-      <template #table>
-        <v-data-table
-          :headers="accountHeaders"
-          :items="supplierAccounts"
-          class="elevation-1"
-        >
-          <template #items="{ item }">
-            <td>{{ item.number }}</td>
-            <td class="text-xs-right">{{ item.cci }}</td>
-            <td class="text-xs-right">{{ item.description || "No cuenta con descripción" }}</td>
-            <td class="text-xs-right">{{ item.currency }}</td>
-            <td class="text-xs-right">{{ item.bank.name }}</td>
-            <td class="text-xs-right">{{ item.bank.country.name }}</td>
-            <td class="text-xs-right">
-              <v-btn class="mx-1" color="accent" dark icon flat small
-                @click.stop="openEditSupplierAccountDialog(item)">
-                <v-icon small>fa-pen</v-icon>
-              </v-btn>
-              <v-btn class="mx-1" color="deep-purple darken-2" dark icon flat small
-                @click.stop="deleteSupplierAccount(item)">
-                <v-icon small>fa-trash</v-icon>
-              </v-btn>
-            </td>
-          </template>
-        </v-data-table>
-      </template>
-      <template #dialog>
-        <save-supplier-account-dialog
-          v-model="openSaveAccountDialog"
-          :supplier-account="supplierAccountToSave"
-          :mode="dialogMode"
-        ></save-supplier-account-dialog>
-      </template>
-    </simple-table-layout>
+  <simple-table-layout>
+    <template #title>
+      <v-subheader>
+        Listado de cuentas
+      </v-subheader>
+    </template>
+    <template #actions>
+      <v-btn color="accent"  @click="openAddSupplierAccountDialog">
+        <v-icon small>fa-plus</v-icon>
+        <span class="mx-1"></span>
+        <span>Nueva cuenta</span>
+      </v-btn>
+    </template>
+    <template #table>
+      <v-data-table
+        :headers="accountHeaders"
+        :items="supplierAccounts"
+        class="elevation-1"
+      >
+        <template #items="{ item }">
+          <td>{{ item.number }}</td>
+          <td class="text-xs-right">{{ item.cci }}</td>
+          <td class="text-xs-right">{{ item.description || "No cuenta con descripción" }}</td>
+          <td class="text-xs-right">{{ item.currency }}</td>
+          <td class="text-xs-right">{{ item.bank.name }}</td>
+          <td class="text-xs-right">{{ item.bank.country.name }}</td>
+          <td class="text-xs-right">
+            <v-btn class="mx-1" color="accent" dark icon flat small
+              @click.stop="openEditSupplierAccountDialog(item)">
+              <v-icon small>fa-pen</v-icon>
+            </v-btn>
+            <v-btn class="mx-1" color="deep-purple darken-2" dark icon flat small
+              @click.stop="deleteSupplierAccount(item)">
+              <v-icon small>fa-trash</v-icon>
+            </v-btn>
+          </td>
+        </template>
+      </v-data-table>
+    </template>
+    <template #dialog>
+      <save-supplier-account-dialog
+        v-model="openSaveAccountDialog"
+        :supplier-account="supplierAccountToSave"
+        :mode="dialogMode"
+      ></save-supplier-account-dialog>
+    </template>
+  </simple-table-layout>
 </template>
 
 <script>

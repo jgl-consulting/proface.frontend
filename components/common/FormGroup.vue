@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-layout row wrap>
+    <v-layout py-2 px-0 row wrap>
       <v-subheader class="px-2">
         <slot name="title"></slot>
       </v-subheader>

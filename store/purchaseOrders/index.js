@@ -1,15 +1,11 @@
 import { 
     SET_PURCHASE_ORDERS,
-    SET_PURCHASE_STATUSES, 
-    SET_SUPPLIERS,
     SET_PAGE,
     SET_PAGINATION
   } from '@/util/mutations-types';
   import _ from 'lodash';
   export const state = () => ({
     purchaseOrders: [],
-    purchaseStatuses: [],
-    suppliers: [],
     products: [],
     page: {
       size: 0,
@@ -30,12 +26,6 @@ import {
     [SET_PURCHASE_ORDERS](state, purchaseOrders){
       state.purchaseOrders = purchaseOrders;
     },
-    [SET_PURCHASE_STATUSES](state, purchaseStatuses){
-      state.purchaseStatuses = purchaseStatuses;
-    },
-    [SET_SUPPLIERS](state, suppliers){
-      state.suppliers = suppliers;
-    },
     [SET_PAGE](state, page) {
       state.page = page;
     },
@@ -51,14 +41,6 @@ import {
       commit(SET_PURCHASE_ORDERS, purchaseOrders);
       commit(SET_PAGE, page);
       commit(SET_PAGINATION, { requestPage, size, sortBy, descending })
-    },
-    async fetchPurchaseStatuses({ commit }) {
-      const purchaseStatuses = await this.$purchaseOrders.listPurchaseStatuses();
-      commit(SET_PURCHASE_STATUSES, purchaseStatuses);
-    },
-    async fetchSuppliers({commit}) {
-      const suppliers = await this.$purchaseOrders.listSuppliers();
-      commit(SET_SUPPLIERS, suppliers);
     },
     async createPurchaseOrder({ dispatch }, { purchaseOrder }) {
       await this.$purchaseOrders.createPurchaseOrder(purchaseOrder);

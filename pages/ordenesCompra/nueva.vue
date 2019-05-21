@@ -22,7 +22,23 @@
             label="Proveedor">
           </v-autocomplete>
         </v-flex>
-        <v-flex md4 pa-2> 
+        <v-flex md4 pa-2>               
+          <v-select
+            v-model="purchaseOrder.account"
+            :items="$_.get(purchaseOrder, 'supplier.accounts',[])"
+            item-value="id"
+            item-text="number"
+            return-object
+            label="Cuenta">
+            <template #item="{ item }">
+              {{ item.description }} - {{ item.currency }}
+            </template>
+            <template #selection="{ item }">
+              {{ item.description }} - {{ item.currency }}
+            </template>
+          </v-select>
+        </v-flex>
+        <v-flex md2 pa-2> 
           <v-select
             v-model="productoToAdd"
             :items="purchaseStatuses"
@@ -73,16 +89,56 @@
         <v-flex xs12>
           <v-data-table
             :headers="detailHeaders"
-            :items="detailItems"
+            :items="purchaseOrderItems"
             hide-actions
             class="elevation-1"
           >
             <template v-slot:items="props">
                 <td class="text-xs-left">
-                  {{ props.item.product.name }}
+                  {{ props.item.name }}
                 </td>
                 <td class="text-xs-right">
-                  {{ props.item.qty }}
+                  {{ props.item.salePrice }}
+                </td>
+                <td>
+                  <v-edit-dialog
+                    class="text-xs-right"
+                    :return-value.sync="props.item.qty"
+                    lazy
+                  > 
+                  <span>{{ props.item.qty }}</span>
+                    <template v-slot:input>
+                      <v-text-field
+                        type="number"
+                        v-model="props.item.qty"
+                        label="Cantidad"
+                        single-line
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </td>
+                <td class="text-xs-right">
+                  {{ props.item.salePrice * props.item.qty }}
+                </td>
+                <td>
+                  <v-edit-dialog
+                    class="text-xs-right"
+                    :return-value.sync="props.item.discount"
+                    lazy
+                  > 
+                  <span>{{ props.item.discount }}</span>
+                    <template v-slot:input>
+                      <v-text-field
+                        type="number"
+                        v-model="props.item.discount"
+                        label="Descuento"
+                        single-line
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </td>
+                <td class="text-xs-right">
+                  {{ props.item.salePrice * props.item.qty * (100 - props.item.discount)/100 }}
                 </td>
                 <td class="text-xs-center">
                   <v-btn flat icon color="accent">
@@ -91,6 +147,9 @@
                 </td>
               </template>
           </v-data-table>
+        </v-flex>
+        <v-flex class="text-xs-right" xs12 mt-5>
+          <h2>Total: {{ purchaseOrderAmount }}</h2>
         </v-flex>
       </template>
     </form-group>
@@ -132,21 +191,27 @@ export default {
   },
   async fetch({ store }) {
     await store.dispatch('purchaseOrders/addOrder/fetchProducts');
+    await store.dispatch('purchaseOrders/addOrder/fetchPurchaseStatuses');
+    await store.dispatch('purchaseOrders/addOrder/fetchSuppliers');
   },
   data() {
     return {
       productDialog: false,
       purchaseOrder: {},
       productoToAdd: {},
-      detailItems: [],
+      purchaseOrderItems: [],
       detailHeaders: [
-        { key: 'product', text: 'Producto' },
-        { key: 'qty', text: 'Cantidad' },
-        { key: 'product', text: '¿Eliminar?' }
+        { sortable: false, key: 'name', text: 'Producto' },
+        { sortable: false, key: 'salePrice', text: 'Precio unitario' },
+        { sortable: false, key: 'qty', text: 'Cantidad' },
+        { sortable: false, key: 'qty', text: 'Precio de venta' },
+        { sortable: false, key: 'discount', text: 'Descuento (%)' },
+        { sortable: false, key: 'discount', text: 'Precio final' },
+        { sortable: false, key: 'product', text: '¿Eliminar?' }
       ]
     }
   },
-  computed: {
+  computed: { 
     title() {
       return "Nueva orden de compra";
     },
@@ -154,14 +219,17 @@ export default {
       const { name } = this.purchaseOrder.supplier || {};
       return name  ? name : '';
     },
-    ...mapState('purchaseOrders', [
+    ...mapState('purchaseOrders/addOrder', [
+      'products',
+      'page',
       'purchaseStatuses',
       'suppliers'
     ]),
-    ...mapState('purchaseOrders/addOrder', [
-      'products',
-      'page'
-    ])
+    purchaseOrderAmount() {
+      return this.purchaseOrderItems.reduce(
+        (totalAmount, { qty, salePrice, discount }) => totalAmount + salePrice * qty * (100 - discount) / 100, 
+      0);
+    }
   },
   methods: {
     ...mapActions('purchaseOrders', [
@@ -208,9 +276,11 @@ export default {
     },
     // Añade un producto al detalle
     addProductToDetail(selectProduct) {
-      this.detailItems.push({
-        product: selectProduct,
-        qty: 1
+      console.log({selectProduct})
+      this.purchaseOrderItems.push({
+        ...selectProduct,
+        qty: 1,
+        discount: 0
       });
     },
     showError(error){
