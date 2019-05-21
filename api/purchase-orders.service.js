@@ -16,10 +16,8 @@ export default class PurchaseOrdersService {
       }
     });
     
-    console.log({ purchaseOrder });
-    
     return { 
-      purchaseOrders,
+      purchaseOrders: purchaseOrders.content,
       page:  { 
         totalElements: purchaseOrders.totalElements,
         totalPages: purchaseOrders.totalPages,
@@ -36,7 +34,7 @@ export default class PurchaseOrdersService {
     });
     
     return { 
-      purchaseOrders,
+      purchaseOrders: purchaseOrders.content,
       page:  { 
         totalElements: purchaseOrders.totalElements,
         totalPages: purchaseOrders.totalPages,

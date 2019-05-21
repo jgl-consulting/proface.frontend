@@ -17,7 +17,6 @@
               :items="products"
               :expand="expand"
               item-key="id"
-              class="elevation-1"
               :total-items="page.totalElements"
               :pagination.sync="pagination"
               :rows-per-page-items="pageSizes"

@@ -1,17 +1,18 @@
 <template>
   <v-form>
+    <h1>Registrar Orden de Compra</h1>
     <form-group>
       <template #title>
         Datos de la Orden de Compra
       </template>
       <template #controls>
-        <v-flex md3 pa-2>
+        <v-flex md2 pa-2>
           <v-text-field 
             v-model="purchaseOrder.nativeId" 
             label="Identificador Local">
           </v-text-field>
         </v-flex>
-        <v-flex md5 pa-2>               
+        <v-flex md4 pa-2>               
           <v-autocomplete
             v-model="purchaseOrder.supplier"
             :items="suppliers"
@@ -22,7 +23,7 @@
             label="Proveedor">
           </v-autocomplete>
         </v-flex>
-        <v-flex md4 pa-2>               
+        <v-flex md3 pa-2>               
           <v-select
             v-model="purchaseOrder.account"
             :items="$_.get(purchaseOrder, 'supplier.accounts',[])"
@@ -38,40 +39,48 @@
             </template>
           </v-select>
         </v-flex>
-        <v-flex md2 pa-2> 
-          <v-select
-            v-model="productoToAdd"
-            :items="purchaseStatuses"
-            item-value="id"
-            item-text="description"
-            return-object
-            label="Estado">
-          </v-select>
-        </v-flex>
         <v-flex md3 pa-2>
-          <datepicker
-            v-model="purchaseOrder.creationDate"
-            label="Fecha de Creación"
-          ></datepicker>
+          <v-checkbox
+            v-model="isAnOldPurchaseOrder"
+            label="¿La orden compra es antigua?"
+          ></v-checkbox>
         </v-flex>
-        <v-flex md3 pa-2>
-          <datepicker
-            v-model="purchaseOrder.quotationDate"
-            label="Fecha de Cotización"
-          ></datepicker>
-        </v-flex>
-        <v-flex md3 pa-2>
-          <datepicker
-            v-model="purchaseOrder.billingDate"
-            label="Fecha de Facturación"
-          ></datepicker>
-        </v-flex>
-        <v-flex md3 pa-2>
-          <datepicker
-            v-model="purchaseOrder.receptionDate"
-            label="Fecha de Recepción"
-          ></datepicker>
-        </v-flex>
+        <template v-if="isAnOldPurchaseOrder">
+          <v-flex md4 pa-2> 
+            <v-select
+              v-model="productoToAdd"
+              :items="purchaseStatuses"
+              item-value="id"
+              item-text="description"
+              return-object
+              label="Estado">
+            </v-select>
+          </v-flex>
+          <v-flex md2 pa-2>
+            <datepicker
+              v-model="purchaseOrder.creationDate"
+              label="Fecha de Creación"
+            ></datepicker>
+          </v-flex>
+          <v-flex md2 pa-2>
+            <datepicker
+              v-model="purchaseOrder.quotationDate"
+              label="Fecha de Cotización"
+            ></datepicker>
+          </v-flex>
+          <v-flex md2 pa-2>
+            <datepicker
+              v-model="purchaseOrder.billingDate"
+              label="Fecha de Facturación"
+            ></datepicker>
+          </v-flex>
+          <v-flex md2 pa-2>
+            <datepicker
+              v-model="purchaseOrder.receptionDate"
+              label="Fecha de Recepción"
+            ></datepicker>
+          </v-flex>
+        </template>
       </template>
     </form-group>
     <form-group>
@@ -86,7 +95,7 @@
         </v-btn>
       </template>
       <template #controls>
-        <v-flex xs12>
+        <v-flex xs12 px-2>
           <v-data-table
             :headers="detailHeaders"
             :items="purchaseOrderItems"
@@ -94,62 +103,64 @@
             class="elevation-1"
           >
             <template v-slot:items="props">
-                <td class="text-xs-left">
-                  {{ props.item.name }}
-                </td>
-                <td class="text-xs-right">
-                  {{ props.item.salePrice }}
-                </td>
-                <td>
-                  <v-edit-dialog
-                    class="text-xs-right"
-                    :return-value.sync="props.item.qty"
-                    lazy
-                  > 
-                  <span>{{ props.item.qty }}</span>
-                    <template v-slot:input>
-                      <v-text-field
-                        type="number"
-                        v-model="props.item.qty"
-                        label="Cantidad"
-                        single-line
-                      ></v-text-field>
-                    </template>
-                  </v-edit-dialog>
-                </td>
-                <td class="text-xs-right">
-                  {{ props.item.salePrice * props.item.qty }}
-                </td>
-                <td>
-                  <v-edit-dialog
-                    class="text-xs-right"
-                    :return-value.sync="props.item.discount"
-                    lazy
-                  > 
-                  <span>{{ props.item.discount }}</span>
-                    <template v-slot:input>
-                      <v-text-field
-                        type="number"
-                        v-model="props.item.discount"
-                        label="Descuento"
-                        single-line
-                      ></v-text-field>
-                    </template>
-                  </v-edit-dialog>
-                </td>
-                <td class="text-xs-right">
-                  {{ props.item.salePrice * props.item.qty * (100 - props.item.discount)/100 }}
-                </td>
-                <td class="text-xs-center">
-                  <v-btn flat icon color="accent">
-                    <v-icon small>fa-trash</v-icon>
-                  </v-btn>
-                </td>
-              </template>
+              <td class="text-xs-left">
+                {{ props.item.name }}
+              </td>
+              <td class="text-xs-right">
+                {{ props.item.salePrice }}
+              </td>
+              <td>
+                <v-edit-dialog
+                  class="text-xs-right"
+                  :return-value.sync="props.item.qty"
+                  lazy
+                > 
+                <span>{{ props.item.qty }} unidades</span>
+                  <template v-slot:input>
+                    <v-text-field
+                      type="number"
+                      v-model="props.item.qty"
+                      label="Cantidad"
+                      single-line
+                    ></v-text-field>
+                  </template>
+                </v-edit-dialog>
+              </td>
+              <td class="text-xs-right">
+                {{ props.item.salePrice * props.item.qty }}
+              </td>
+              <td>
+                <v-edit-dialog
+                  class="text-xs-right"
+                  :return-value.sync="props.item.discount"
+                  lazy
+                > 
+                <span>{{ props.item.discount }} %</span>
+                  <template v-slot:input>
+                    <v-text-field
+                      type="number"
+                      v-model="props.item.discount"
+                      label="Descuento"
+                      single-line
+                    ></v-text-field>
+                  </template>
+                </v-edit-dialog>
+              </td>
+              <td class="text-xs-right">
+                {{ props.item.salePrice * props.item.qty * (100 - props.item.discount)/100 }}
+              </td>
+              <td class="text-xs-center">
+                <v-btn flat icon color="accent">
+                  <v-icon small>fa-trash</v-icon>
+                </v-btn>
+              </td>
+            </template>
+            <template #footer>
+              <td class="text-sm-right" :colspan="detailHeaders.length">
+                <h3>Total: {{ purchaseOrderAmount }}</h3>
+              </td>
+            </template>
           </v-data-table>
-        </v-flex>
-        <v-flex class="text-xs-right" xs12 mt-5>
-          <h2>Total: {{ purchaseOrderAmount }}</h2>
         </v-flex>
       </template>
     </form-group>
@@ -197,6 +208,7 @@ export default {
   data() {
     return {
       productDialog: false,
+      isAnOldPurchaseOrder: false,
       purchaseOrder: {},
       productoToAdd: {},
       purchaseOrderItems: [],

@@ -15,32 +15,32 @@
         :pagination.sync="pagination"
         :rows-per-page-items="pageSizes"
         rows-per-page-text="Tamaño de página">
-        <template v-slot:items="props">
-          <td>{{ props.item.id }}</td>
+        <template v-slot:items="{ item }">
+          <td>{{ item.id }}</td>
           <td class="text-xs-right">
-            {{ props.item.nativeId }}
+            {{ item.nativeId }}
           </td>
           <td class="text-xs-right">
-            {{ props.item.creationDate }} 
+            {{ item.creationDate }} 
           </td>
           <td class="text-xs-right">
-            {{ props.item.quotationDate }} 
+            {{ item.quotationDate }} 
           </td>
           <td class="text-xs-right">
-            {{ props.item.billingDate }} 
+            {{ item.billingDate }} 
           </td>
           <td class="text-xs-right">
-            {{ props.item.receptionDate }} 
+            {{ item.receptionDate }} 
           </td>
           <td class="text-xs-right">
-            {{ props.item.supplier.name }}
+            {{ item.supplier.name }}
           </td>
           <td class="text-xs-right">
-            {{ props.item.status.description }}
+            {{ item.status.description }}
           </td>
           <td class="text-xs-center" @click.stop="() => {}">
             <v-btn class="mx-1" color="primary" dark icon flat small
-              nuxt :to="props.item.id | path($route.fullPath)">
+              nuxt :to="item.id | orderDetailPath ">
               <v-icon small>fa-ellipsis-v</v-icon>
             </v-btn>
           </td>
@@ -51,14 +51,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   async fetch({ params: { supplierId }, route, store }) {
-    const params = { requestPage: 0, size: 20, sortBy: undefined };
+    const pagination = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch('suppliers/details/fetchSupplier', { supplierId });
     await store.dispatch('suppliers/details/fetchPurchaseOrderBySupplier', { 
       supplierId, 
-      params
+      pagination
     });
+  },
+  asyncData({params: { supplierId }}) {
+    return {
+      supplierId
+    }
   },
   data: () => ({
     headers: [
@@ -85,29 +91,35 @@ export default {
     },
     expand: false,
     pageSizes: [20, 30, 50, 100],
-    purchaseOrderToSave: {
-      status: { id: 0 },
-      supplier: { id: 0 }
-    },
   }),
   watch: {
     pagination: {
       async handler() {
         const { sortBy, descending, page, rowsPerPage } = this.pagination;
         
-        const params = { 
+        const pagination = { 
           requestPage: page - 1, 
           size: rowsPerPage, 
           sortBy,
           descending
         };
-        await this.$store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
+        await this.$store.dispatch('suppliers/details/fetchPurchaseOrderBySupplier', { 
+          supplierId: this.supplierId,
+          pagination 
+        });
       }
     }
   },
+  computed: {
+    ...mapState('suppliers/details', [
+      'purchaseOrders',
+      'page'
+    ])
+  },
+  filters: {
+    orderDetailPath(orderPurchaseId) {
+      return `/ordenesCompra/${orderPurchaseId}`;
+    }
+  }
 }
 </script>
-
-<style>
-
-</style>

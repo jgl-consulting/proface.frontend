@@ -11,7 +11,7 @@
     "generate": "nuxt generate",
     "test": "jest",
     "heroku-postbuild": "npm run build",
-    "dev-debug": "node --debug node_modules/.bin/nuxt"
+    "dev-debug": "node --inspect node_modules/.bin/nuxt"
   },
   "dependencies": {
     "@nuxtjs/auth": "^4.5.3",
