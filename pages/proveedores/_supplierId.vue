@@ -12,13 +12,7 @@
       </h1>
     </v-layout>
     <v-tabs v-model="activeTab" icons-and-text fixed-tabs grow>
-      <v-tab 
-        v-for="(tab, id) of tabs" 
-        :key="id" 
-        :to="tab.route" 
-        exact
-        nuxt
-      >
+      <v-tab v-for="(tab, id) of tabs" :key="id" :to="tab.route" exact nuxt>
         {{ tab.name }}
         <v-icon>{{ tab.icon }}</v-icon>
       </v-tab>
@@ -30,52 +24,52 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   meta: {
-      breadcrumbs: [
-        { name: 'Módulos', link: '/' },
-        { name: 'Proveedores', link: '/proveedores' },
-        function({ params }){
-          return { name: params.supplierId };
-        }
-      ]
+    breadcrumbs: [
+      { name: "Módulos", link: "/" },
+      { name: "Proveedores", link: "/proveedores" },
+      function({ params }) {
+        return { name: params.supplierId };
+      }
+    ]
   },
-  asyncData({ route, params }){
+  asyncData({ route, params }) {
     const { path } = route;
-    const mainRoute = `/proveedores/${params.supplierId}`
+    const mainRoute = `/proveedores/${params.supplierId}`;
     return {
       activeTab: path,
       tabs: [
-        { 
-          name: 'Datos generales', 
-          route: `${mainRoute}`, 
-          icon: 'fa-info-circle' 
+        {
+          name: "Datos generales",
+          route: `${mainRoute}`,
+          icon: "fa-info-circle"
         },
-        { 
-          name: 'Cuentas Bancarias', 
-          route: `${mainRoute}/cuentas`, 
-          icon: 'fa-piggy-bank' 
+        {
+          name: "Cuentas Bancarias",
+          route: `${mainRoute}/cuentas`,
+          icon: "fa-piggy-bank"
         },
-        { 
-          name: 'Ordenes de compra', 
-          route: `${mainRoute}/ordenes`, 
-          icon: 'fa-clipboard' 
+        {
+          name: "Ordenes de compra",
+          route: `${mainRoute}/ordenes`,
+          icon: "fa-clipboard"
         }
       ]
-    }
+    };
   },
   computed: {
-    ...mapState('suppliers/details', ['supplier'])
+    ...mapState("suppliers/details", ["supplier"])
   }
-}
+};
 </script>
 <style>
-  .object-demo {
-    padding: 10px;
-    color: #FFFFFF;
-    background-color: #37474F;
-    border-radius: 8px;
-  }
+.object-demo {
+  padding: 10px;
+  color: #ffffff;
+  background-color: #37474f;
+  border-radius: 8px;
+}
 </style>

@@ -1,23 +1,17 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <v-subheader>
-        Listado de cuentas
-      </v-subheader>
+      <v-subheader>Listado de cuentas</v-subheader>
     </template>
     <template #actions>
-      <v-btn color="accent"  @click="openAddSupplierAccountDialog">
+      <v-btn color="accent" @click="openAddSupplierAccountDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1"></span>
         <span>Nueva cuenta</span>
       </v-btn>
     </template>
     <template #table>
-      <v-data-table
-        :headers="accountHeaders"
-        :items="supplierAccounts"
-        class="elevation-1"
-      >
+      <v-data-table :headers="accountHeaders" :items="supplierAccounts" class="elevation-1">
         <template #items="{ item }">
           <td>{{ item.number }}</td>
           <td class="text-xs-right">{{ item.cci }}</td>
@@ -26,12 +20,26 @@
           <td class="text-xs-right">{{ item.bank.name }}</td>
           <td class="text-xs-right">{{ item.bank.country.name }}</td>
           <td class="text-xs-right">
-            <v-btn class="mx-1" color="accent" dark icon flat small
-              @click.stop="openEditSupplierAccountDialog(item)">
+            <v-btn
+              class="mx-1"
+              color="accent"
+              dark
+              icon
+              flat
+              small
+              @click.stop="openEditSupplierAccountDialog(item)"
+            >
               <v-icon small>fa-pen</v-icon>
             </v-btn>
-            <v-btn class="mx-1" color="deep-purple darken-2" dark icon flat small
-              @click.stop="deleteSupplierAccount(item)">
+            <v-btn
+              class="mx-1"
+              color="deep-purple darken-2"
+              dark
+              icon
+              flat
+              small
+              @click.stop="deleteSupplierAccount(item)"
+            >
               <v-icon small>fa-trash</v-icon>
             </v-btn>
           </td>
@@ -49,15 +57,13 @@
 </template>
 
 <script>
-import EmptyListTile from '@/components/common/EmptyListTile';
-import SaveSupplierAccountDialog from '@/components/suppliers/SaveSupplierAccountDialog';
-import { mapState, mapActions } from 'vuex';
-
+import EmptyListTile from "@/components/common/EmptyListTile";
+import SaveSupplierAccountDialog from "@/components/suppliers/SaveSupplierAccountDialog";
+import { mapState, mapActions } from "vuex";
 export default {
   async fetch({ params: { supplierId }, route, store }) {
-    
-    await store.dispatch('suppliers/details/fetchSupplier', { supplierId });
-    await store.dispatch('suppliers/details/fetchBanks');
+    await store.dispatch("suppliers/details/fetchSupplier", { supplierId });
+    await store.dispatch("suppliers/details/fetchBanks");
   },
   components: {
     EmptyListTile,
@@ -66,80 +72,77 @@ export default {
   data: () => ({
     accountHeaders: [
       {
-        text: 'Número de cuenta',
-        align: 'left',
-        value: 'number'
+        text: "Número de cuenta",
+        align: "left",
+        value: "number"
       },
-      { text: 'CCI', value: 'cci' },
-      { text: 'Descripción', value: 'description' },
-      { text: 'Moneda', value: 'currency' },
-      { text: 'Banco', value: 'bank' },
-      { text: 'País', value: 'bank' },
-      { text: 'Acciones', value: 'id', sortable: false }
+      { text: "CCI", value: "cci" },
+      { text: "Descripción", value: "description" },
+      { text: "Moneda", value: "currency" },
+      { text: "Banco", value: "bank" },
+      { text: "País", value: "bank" },
+      { text: "Acciones", value: "id", sortable: false }
     ],
     supplierAccountToSave: {
       bank: { id: 0 }
     },
     openSaveAccountDialog: false,
-    dialogMode: 'nuevo'
+    dialogMode: "nuevo"
   }),
   computed: {
-    ...mapState('suppliers/details',[
-      'supplier'
-    ]),
+    ...mapState("suppliers/details", ["supplier"]),
     supplierAccounts() {
       return this.supplier.accounts || [];
     }
   },
   methods: {
-    ...mapActions('suppliers/details', {
-      deleteSupplierAccountAction: 'deleteSupplierAccount'
+    ...mapActions("suppliers/details", {
+      deleteSupplierAccountAction: "deleteSupplierAccount"
     }),
     openAddSupplierAccountDialog() {
       this.openSaveAccountDialog = true;
       this.supplierAccountToSave = {
-        bank: { id: 0 },
+        bank: { id: 0 }
       };
-      this.dialogMode = 'nuevo';
+      this.dialogMode = "nuevo";
     },
     openEditSupplierAccountDialog(supplierAccount) {
       this.openSaveAccountDialog = true;
       this.supplierAccountToSave = supplierAccount;
-      this.dialogMode = 'editar';
+      this.dialogMode = "editar";
     },
-    async deleteSupplierAccount(supplierAccount){
+    async deleteSupplierAccount(supplierAccount) {
       try {
         const { number } = supplierAccount;
-        const res = await this.$confirm(`¿Está seguro de borrar la cuenta '${number}'?`, { title: 'Advertencia' })
-        if(res) {
-          
-          await this.deleteSupplierAccountAction({ supplierAccount })
-          
-          await this.$confirm('Borrado correcto!', {
-            title: 'Éxito',
-            color: 'success'
+        const res = await this.$confirm(
+          `¿Está seguro de borrar la cuenta '${number}'?`,
+          { title: "Advertencia" }
+        );
+        if (res) {
+          await this.deleteSupplierAccountAction({ supplierAccount });
+          await this.$confirm("Borrado correcto!", {
+            title: "Éxito",
+            color: "success"
           });
         }
-      } catch(error) {
+      } catch (error) {
         this.showError(error);
       }
     },
-    showError(error){
-      const { message, errors } = this.$_.get(error, 'response.data', {
-        message: 'Error inesperado',
-        errors: [ error.message ]
+    showError(error) {
+      const { message, errors } = this.$_.get(error, "response.data", {
+        message: "Error inesperado",
+        errors: [error.message]
       });
-
-      this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
-        title: message, 
-        color: 'error',
+      this.$confirm(errors.map(e => e.errorMessage).join("\n"), {
+        title: message,
+        color: "error",
         width: 500
       });
-    },
+    }
   }
-}
+};
 </script>
 
 <style>
-
 </style>

@@ -5,9 +5,7 @@
         <v-btn icon dark @click="closeDialog">
           <v-icon>close</v-icon>
         </v-btn>
-        <v-toolbar-title class="font-weight-bold">
-          {{ title }}
-        </v-toolbar-title>
+        <v-toolbar-title class="font-weight-bold">{{ title }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-btn dark icon @click="saveSupplierAccount">
@@ -16,54 +14,54 @@
         </v-toolbar-items>
       </v-toolbar>
       <v-container>
-        <v-form>            
+        <v-form ref="supplierAccountForm" v-model="valid" lazy-validation>
           <v-layout row wrap>
             <v-flex xs12 pa-2>
-              <h3 class="text--blue-grey">
-                Datos de la cuenta
-              </h3>
+              <h3 class="text--blue-grey">Datos de la cuenta</h3>
             </v-flex>
             <v-flex sm8 pa-2>
-              <v-select 
-                v-model="supplierAccountModel.bank" 
+              <v-select
+                v-model="supplierAccountModel.bank"
                 return-object
                 itemid="id"
                 item-text="name"
                 :items="banks"
-                label="Banco">
-              </v-select>
+                label="Banco"
+                :rules="bankRules"
+              ></v-select>
             </v-flex>
             <v-flex sm4 pa-2>
-              <v-select 
-                v-model="supplierAccountModel.currency" 
+              <v-select
+                v-model="supplierAccountModel.currency"
                 :items="currencies"
                 item-value="id"
                 item-text="name"
-                label="Moneda">
-              </v-select>
+                label="Moneda"
+                :rules="currencyRules"
+              ></v-select>
             </v-flex>
             <v-flex sm6 pa-2>
-              <v-text-field 
+              <v-text-field
                 v-model="supplierAccountModel.number"
                 label="Número de Cuenta"
                 :mask="supplierAccountModel.bank.accountNumberMask"
-                :rules="nroCtaRules">
-              </v-text-field>
+                :rules="nroCtaRules"
+              ></v-text-field>
             </v-flex>
             <v-flex sm6 pa-2>
-              <v-text-field 
-                v-model="supplierAccountModel.cci" 
+              <v-text-field
+                v-model="supplierAccountModel.cci"
                 label="CCI"
                 mask="###-#################"
-                :rules="cciRules">
-              </v-text-field>
+                :rules="cciRules"
+              ></v-text-field>
             </v-flex>
             <v-flex sm12 pa-2>
-              <v-text-field 
-                v-model="supplierAccountModel.description" 
+              <v-text-field
+                v-model="supplierAccountModel.description"
                 label="Descripción"
-                :rules="descriptionRules">
-              </v-text-field>
+                :rules="descriptionRules"
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -73,9 +71,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { required, maxLength } from '@/util/validators'
-
+import { mapState, mapActions } from "vuex";
+import { required, maxLength, referenced } from "@/util/validators";
 export default {
   props: {
     supplierAccount: Object,
@@ -87,102 +84,117 @@ export default {
       isOpen: false,
       supplierAccountModel: {},
       currencies: [
-        { id: 'PEN', name: 'Soles' },
-        { id: 'USD', name: 'Dólares' },
-      ]
-    }
+        { id: "PEN", name: "Nuevos Soles" },
+        { id: "USD", name: "Dólares Americanos" },
+        { id: "EUR", name: "Euros" }
+      ],
+      valid: true
+    };
   },
   watch: {
     supplierAccount: {
       handler() {
-        this.supplierAccountModel = JSON.parse(JSON.stringify(this.supplierAccount));
-        if(!this.supplierAccountModel.bank || this.supplierAccountModel.bank.id === 0){ 
-          this.supplierAccountModel.bank = this.banks || [{ id: 0 }];
-        }
+        const [bank = {}] = this.banks;
+        this.supplierAccountModel = JSON.parse(
+          JSON.stringify(this.supplierAccount)
+        );
+        this.supplierAccountModel.bank = this.supplierAccount.bank || bank;
       }
     }
   },
   computed: {
     title() {
-      if(this.mode == 'nuevo') {
+      if (this.mode == "nuevo") {
         return "Nueva cuenta";
-      } else if (this.mode == 'editar') {
+      } else if (this.mode == "editar") {
         return "Editar cuenta";
       }
     },
-    ...mapState('suppliers/details', [
-      'banks'
-    ]),
-    supplierAccountToSave(){
-      return JSON.parse(JSON.stringify({ 
-        ...this.supplierAccountModel,
-      }));
+    ...mapState("suppliers/details", ["banks"]),
+    supplierAccountToSave() {
+      return JSON.parse(
+        JSON.stringify({
+          ...this.supplierAccountModel
+        })
+      );
+    },
+    bankRules() {
+      return [value => referenced(value, "El banco es requerido")];
+    },
+    currencyRules() {
+      return [value => required(value, "La moneda es requerida")];
     },
     nroCtaRules() {
-      return [
-        (value) => required(value, 'El número de cuenta es requerido')
-      ]
+      return [value => required(value, "El número de cuenta es requerido")];
     },
     cciRules() {
-      return [
-        (value) => required(value, 'El número de CCI es requerido')
-      ]
+      return [value => required(value, "El número de CCI es requerido")];
     },
     descriptionRules() {
       return [
-        (value) => maxLength(value, 'El valor supera el tamaño máximo', 45)
-      ]
+        value => maxLength(value, "El valor supera el tamaño máximo", 45)
+      ];
     }
   },
   methods: {
-    ...mapActions('suppliers/details', [
-      'createSupplierAccount',
-      'updateSupplierAccount'
+    ...mapActions("suppliers/details", [
+      "createSupplierAccount",
+      "updateSupplierAccount"
     ]),
     async saveSupplierAccount() {
-      const supplierAccount = this.supplierAccountToSave; 
-      try {
-        const { number } = supplierAccount;
-        const res = await this.$confirm(`¿Está seguro de guardar la cuenta '${number}'?`, { title: 'Advertencia' })
-        if(res) {
-          if(this.mode === 'nuevo') {
-            await this.createSupplierAccount({ supplierAccount });
-          } else if(this.mode === 'editar') {
-            await this.updateSupplierAccount({ supplierAccount });
+      if (this.$refs.supplierAccountForm.validate()) {
+        const supplierAccount = this.supplierAccountToSave;
+        try {
+          const { number } = supplierAccount;
+          const res = await this.$confirm(
+            `¿Está seguro de guardar la cuenta '${number}'?`,
+            { title: "Advertencia" }
+          );
+          if (res) {
+            if (this.mode === "nuevo") {
+              await this.createSupplierAccount({ supplierAccount });
+            } else if (this.mode === "editar") {
+              await this.updateSupplierAccount({ supplierAccount });
+            }
+            await this.$confirm("Guardado correcto!", {
+              title: "Éxito",
+              color: "success"
+            });
+            this.closeDialog();
           }
-
-          await this.$confirm('Guardado correcto!', {
-            title: 'Éxito',
-            color: 'success'
-          });
-
-          this.closeDialog();
+        } catch (error) {
+          this.showError(error);
         }
-      } catch(error) {
-        this.showError(error);
+      } else {
+        this.showError({
+          response: {
+            data: {
+              message: "Error de Validación",
+              errors: [{ errorMessage: "Existen campos que no son válidos." }]
+            }
+          }
+        });
       }
     },
     closeDialog() {
       this.isOpen = false;
       this.$emit("input", this.isOpen);
     },
-    showError(error){
-      console.log({ error })
-      const { message, errors } = this.$_.get(error, 'response.data', {
-        message: 'Error inesperado',
-        errors: [ error.message ]
+    showError(error) {
+      const { message, errors } = this.$_.get(error, "response.data", {
+        message: "Error inesperado",
+        errors: [error.message]
       });
-
-      this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
-        title: message, 
-        color: 'error',
+      this.$confirm(errors.map(e => e.errorMessage).join("\n"), {
+        title: message,
+        color: "error",
         width: 500
       });
     }
   },
-  created(){
+  created() {
     this.isOpen = this.value;
-    this.supplierAccountModel = { ... this.supplierAccount };
+    this.supplierAccountModel = { ...this.supplierAccount };
   }
-}
+};
 </script>
