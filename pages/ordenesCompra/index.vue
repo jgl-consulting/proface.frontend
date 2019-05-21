@@ -92,8 +92,6 @@ export default {
   async fetch ({ store }) {
     const params = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
-   /*  await store.dispatch('purchaseOrders/fetchPurchaseStatuses');
-    await store.dispatch('purchaseOrders/fetchSuppliers') */
   },
   data() {
     return {

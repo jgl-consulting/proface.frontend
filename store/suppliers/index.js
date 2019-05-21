@@ -35,11 +35,11 @@ export const mutations = {
   [SET_PAGE](state, page) {
     state.page = page;
   },
-  [SET_COUNTRIES](state, countries) {
-    state.countries = countries;
-  },
   [SET_PAGINATION](state, pagination) {
     state.pagination = pagination;
+  },
+  [SET_COUNTRIES](state, countries) {
+    state.countries = countries;
   }
 }
 export const actions = {

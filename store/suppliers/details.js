@@ -1,10 +1,16 @@
 import { 
   SET_SUPPLIER,
-  SET_BANKS
+  SET_BANKS,
+  SET_PURCHASE_ORDERS,
+  SET_PAGE,
+  SET_PAGINATION
 } from '@/util/mutations-types'
 export const state = () => ({
   supplier: {},
-  banks: []
+  banks: [],
+  purchaseOrders: [],
+  page: {},
+  pagination: {}
 });
 
 export const mutations = {
@@ -13,7 +19,16 @@ export const mutations = {
   },
   [SET_BANKS](state, banks) {
     state.banks = banks;
-  }
+  },
+  [SET_PURCHASE_ORDERS](state, purchaseOrders) {
+    state.purchaseOrders = purchaseOrders;
+  },
+  [SET_PAGE](state, page) {
+    state.page = page;
+  },
+  [SET_PAGINATION](state, pagination) {
+    state.pagination = pagination;
+  },
 }
 
 export const actions = {
@@ -21,6 +36,20 @@ export const actions = {
     const supplier = await this.$suppliers.getSupplierById(supplierId);
     commit(SET_SUPPLIER, supplier);
     return supplier;
+  },
+  async fetchPurchaseOrderBySupplier({ state, commit }, { supplierId, pagination }) {
+    const { requestPage, size, sortBy, descending } = pagination || state.pagination;
+    const direction = descending ? 'desc' : 'asc';
+    const { purchaseOrders, page } = await this.$purchaseOrders.listPurchaseOrdersBySupplier(
+      supplierId, 
+      requestPage, 
+      size,
+      sortBy, 
+      direction
+    );
+    commit(SET_PURCHASE_ORDERS, purchaseOrders);
+    commit(SET_PAGE, page);
+    commit(SET_PAGINATION, { requestPage, size, sortBy, descending })
   },
   async createSupplierAccount({ state, dispatch }, { supplierAccount }) {
     
