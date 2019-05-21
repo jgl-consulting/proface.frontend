@@ -102,5 +102,69 @@ export default {
   optional(object) {
     return object || {};
   },
+  asyncData({params: { supplierId }}) {
+    return {
+      supplierId
+    }
+  },
+  data: () => ({
+    headers: [
+      {
+        text: 'Id',
+        align: 'left',
+        sortable: false,
+        value: 'id'
+      },
+      { text: 'Id Local', value: 'nativeId' },
+      { text: 'Creación', value: 'creationDate' },
+      { text: 'Presupuesto', value: 'quotationDate' },
+      { text: 'Facturación', value: 'billingDate'},
+      { text: 'Recepción', value: 'receptionDate'},
+      { text: 'Proveedor', value: 'supplier'},
+      { text: 'Estado', value: 'status' },
+      { text: 'Acciones', value: 'id', sortable: false,}
+    ],
+    pagination: {
+      descending: false,
+      page: 1,
+      rowsPerPage: 20,// -1 for All",
+      sortBy: 'id'
+    },
+    expand: false,
+    pageSizes: [20, 30, 50, 100],
+  }),
+  watch: {
+    pagination: {
+      async handler() {
+        const { sortBy, descending, page, rowsPerPage } = this.pagination;
+        
+        const pagination = { 
+          requestPage: page - 1, 
+          size: rowsPerPage, 
+          sortBy,
+          descending
+        };
+        await this.$store.dispatch('suppliers/details/fetchPurchaseOrderBySupplier', { 
+          supplierId: this.supplierId,
+          pagination 
+        });
+      }
+    }
+  },
+  computed: {
+    ...mapState('suppliers/details', [
+      'purchaseOrders',
+      'page'
+    ])
+  },
+  filters: {
+    orderDetailPath(orderPurchaseId) {
+      return `/ordenesCompra/${orderPurchaseId}`;
+    }
+  }
 }
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> 8b20060adca5d9e75e8de29954fe00829817b677

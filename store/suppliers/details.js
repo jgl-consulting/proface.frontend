@@ -48,6 +48,20 @@ export const actions = {
     commit(SET_SUPPLIER, supplier);
     return supplier;
   },
+  async fetchPurchaseOrderBySupplier({ state, commit }, { supplierId, pagination }) {
+    const { requestPage, size, sortBy, descending } = pagination || state.pagination;
+    const direction = descending ? 'desc' : 'asc';
+    const { purchaseOrders, page } = await this.$purchaseOrders.listPurchaseOrdersBySupplier(
+      supplierId, 
+      requestPage, 
+      size,
+      sortBy, 
+      direction
+    );
+    commit(SET_PURCHASE_ORDERS, purchaseOrders);
+    commit(SET_PAGE, page);
+    commit(SET_PAGINATION, { requestPage, size, sortBy, descending })
+  },
   async createSupplierAccount({ state, dispatch }, { supplierAccount }) {
     
     await this.$supplierAccounts.createSupplierAccount({

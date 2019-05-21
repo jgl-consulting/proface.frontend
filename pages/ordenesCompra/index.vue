@@ -4,7 +4,7 @@
       <h1>Órdenes de Compra</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddPurchaseOrderDialog">
+      <v-btn color="accent" to="/ordenesCompra/nueva" nuxt>
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva orden de compra</span>
       </v-btn>
@@ -56,13 +56,6 @@
         </template>
       </v-data-table>
     </template>
-    <template #dialog>
-      <save-purchaseOrder-dialog
-        v-model="openSaveDialog"
-        :purchaseOrder="purchaseOrderToSave"
-        :mode="dialogMode"
-      ></save-purchaseOrder-dialog>
-    </template>
   </simple-table-layout>
 </template>
 
@@ -84,8 +77,6 @@ export default {
   async fetch ({ store }) {
     const params = { requestPage: 0, size: 20, sortBy: undefined};
     await store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
-    await store.dispatch('purchaseOrders/fetchPurchaseStatuses');
-    await store.dispatch('purchaseOrders/fetchSuppliers')
   },
   data() {
     return {

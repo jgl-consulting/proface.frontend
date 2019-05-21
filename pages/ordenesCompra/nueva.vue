@@ -1,17 +1,18 @@
 <template>
   <v-form>
+    <h1>Registrar Orden de Compra</h1>
     <form-group>
       <template #title>
         Datos de la Orden de Compra
       </template>
       <template #controls>
-        <v-flex md3 pa-2>
+        <v-flex md2 pa-2>
           <v-text-field 
             v-model="purchaseOrder.nativeId" 
             label="Identificador Local">
           </v-text-field>
         </v-flex>
-        <v-flex md5 pa-2>               
+        <v-flex md4 pa-2>               
           <v-autocomplete
             v-model="purchaseOrder.supplier"
             :items="suppliers"
@@ -22,40 +23,64 @@
             label="Proveedor">
           </v-autocomplete>
         </v-flex>
-        <v-flex md4 pa-2> 
+        <v-flex md3 pa-2>               
           <v-select
-            v-model="productoToAdd"
-            :items="purchaseStatuses"
+            v-model="purchaseOrder.account"
+            :items="$_.get(purchaseOrder, 'supplier.accounts',[])"
             item-value="id"
-            item-text="description"
+            item-text="number"
             return-object
-            label="Estado">
+            label="Cuenta">
+            <template #item="{ item }">
+              {{ item.description }} - {{ item.currency }}
+            </template>
+            <template #selection="{ item }">
+              {{ item.description }} - {{ item.currency }}
+            </template>
           </v-select>
         </v-flex>
         <v-flex md3 pa-2>
-          <datepicker
-            v-model="purchaseOrder.creationDate"
-            label="Fecha de Creación"
-          ></datepicker>
+          <v-checkbox
+            v-model="isAnOldPurchaseOrder"
+            label="¿La orden compra es antigua?"
+          ></v-checkbox>
         </v-flex>
-        <v-flex md3 pa-2>
-          <datepicker
-            v-model="purchaseOrder.quotationDate"
-            label="Fecha de Cotización"
-          ></datepicker>
-        </v-flex>
-        <v-flex md3 pa-2>
-          <datepicker
-            v-model="purchaseOrder.billingDate"
-            label="Fecha de Facturación"
-          ></datepicker>
-        </v-flex>
-        <v-flex md3 pa-2>
-          <datepicker
-            v-model="purchaseOrder.receptionDate"
-            label="Fecha de Recepción"
-          ></datepicker>
-        </v-flex>
+        <template v-if="isAnOldPurchaseOrder">
+          <v-flex md4 pa-2> 
+            <v-select
+              v-model="productoToAdd"
+              :items="purchaseStatuses"
+              item-value="id"
+              item-text="description"
+              return-object
+              label="Estado">
+            </v-select>
+          </v-flex>
+          <v-flex md2 pa-2>
+            <datepicker
+              v-model="purchaseOrder.creationDate"
+              label="Fecha de Creación"
+            ></datepicker>
+          </v-flex>
+          <v-flex md2 pa-2>
+            <datepicker
+              v-model="purchaseOrder.quotationDate"
+              label="Fecha de Cotización"
+            ></datepicker>
+          </v-flex>
+          <v-flex md2 pa-2>
+            <datepicker
+              v-model="purchaseOrder.billingDate"
+              label="Fecha de Facturación"
+            ></datepicker>
+          </v-flex>
+          <v-flex md2 pa-2>
+            <datepicker
+              v-model="purchaseOrder.receptionDate"
+              label="Fecha de Recepción"
+            ></datepicker>
+          </v-flex>
+        </template>
       </template>
     </form-group>
     <form-group>
@@ -63,49 +88,142 @@
         Productos
       </template>
       <template #actions>
-        <v-btn color="accent">
+        <v-btn color="accent" @click.stop="openProductList">
           <v-icon small>fa-plus</v-icon>
-          Nuevo Producto
+          <span class="mx-1"></span>
+          <span>Nuevo Producto</span>
         </v-btn>
       </template>
       <template #controls>
-        <v-flex xs12>
+        <v-flex xs12 px-2>
           <v-data-table
             :headers="detailHeaders"
-            :items="detailItems"
+            :items="purchaseOrderItems"
             hide-actions
             class="elevation-1"
-          ></v-data-table>
+          >
+            <template v-slot:items="props">
+              <td class="text-xs-left">
+                {{ props.item.name }}
+              </td>
+              <td class="text-xs-right">
+                {{ props.item.salePrice }}
+              </td>
+              <td>
+                <v-edit-dialog
+                  class="text-xs-right"
+                  :return-value.sync="props.item.qty"
+                  lazy
+                > 
+                <span>{{ props.item.qty }} unidades</span>
+                  <template v-slot:input>
+                    <v-text-field
+                      type="number"
+                      v-model="props.item.qty"
+                      label="Cantidad"
+                      single-line
+                    ></v-text-field>
+                  </template>
+                </v-edit-dialog>
+              </td>
+              <td class="text-xs-right">
+                {{ props.item.salePrice * props.item.qty }}
+              </td>
+              <td>
+                <v-edit-dialog
+                  class="text-xs-right"
+                  :return-value.sync="props.item.discount"
+                  lazy
+                > 
+                <span>{{ props.item.discount }} %</span>
+                  <template v-slot:input>
+                    <v-text-field
+                      type="number"
+                      v-model="props.item.discount"
+                      label="Descuento"
+                      single-line
+                    ></v-text-field>
+                  </template>
+                </v-edit-dialog>
+              </td>
+              <td class="text-xs-right">
+                {{ props.item.salePrice * props.item.qty * (100 - props.item.discount)/100 }}
+              </td>
+              <td class="text-xs-center">
+                <v-btn flat icon color="accent">
+                  <v-icon small>fa-trash</v-icon>
+                </v-btn>
+              </td>
+            </template>
+            <template #footer>
+              <td class="text-sm-right" :colspan="detailHeaders.length">
+                <h3>Total: {{ purchaseOrderAmount }}</h3>
+              </td>
+            </template>
+          </v-data-table>
         </v-flex>
       </template>
     </form-group>
+    <!-- 
+      Componete del listado de productos
+      Tiene dos eventos:
+      - @selectedProduct: Se emite cuando seleccionas un producto del modal y
+      te devuelve ese producto
+      - @changePagination: Se emite cuando cambias de página y sirve para contralar la
+      paginación fuera del componente, ya que puede ser de que el listado de los productos
+      lo almacenes en otro lugar del store
+    -->
+    <product-list-dialog 
+      v-model="productDialog"
+      :products="products"
+      :page="page"
+      @selectedProduct="addProductToDetail"
+      @changePagination="productListPaginationHandler">
+    </product-list-dialog>
   </v-form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+
 import FormGroup from '@/components/common/FormGroup';
 import Datepicker from '@/components/common/Datepicker';
+// Componente que maneja la tabla
+import ProductListDialog from '@/components/products/ProductListDialog';
+
 export default {
   meta: {
     breadcrumbs: false,
   },
   components: {
     FormGroup,
-    Datepicker
+    Datepicker,
+    ProductListDialog
+  },
+  async fetch({ store }) {
+    await store.dispatch('purchaseOrders/addOrder/fetchProducts');
+    await store.dispatch('purchaseOrders/addOrder/fetchPurchaseStatuses');
+    await store.dispatch('purchaseOrders/addOrder/fetchSuppliers');
   },
   data() {
     return {
+      productDialog: false,
+      isAnOldPurchaseOrder: false,
       purchaseOrder: {},
       productoToAdd: {},
+      purchaseOrderItems: [],
       detailHeaders: [
-        { key: 'product', text: 'Producto' },
-        { key: 'qty', text: 'Cantidad' },
-        { key: 'product', text: '¿Eliminar?' }
+        { sortable: false, key: 'name', text: 'Producto' },
+        { sortable: false, key: 'salePrice', text: 'Precio unitario' },
+        { sortable: false, key: 'qty', text: 'Cantidad' },
+        { sortable: false, key: 'qty', text: 'Precio de venta' },
+        { sortable: false, key: 'discount', text: 'Descuento (%)' },
+        { sortable: false, key: 'discount', text: 'Precio final' },
+        { sortable: false, key: 'product', text: '¿Eliminar?' }
       ]
     }
   },
-  computed: {
+  computed: { 
     title() {
       return "Nueva orden de compra";
     },
@@ -113,15 +231,26 @@ export default {
       const { name } = this.purchaseOrder.supplier || {};
       return name  ? name : '';
     },
-    ...mapState('purchaseOrders', [
+    ...mapState('purchaseOrders/addOrder', [
+      'products',
+      'page',
       'purchaseStatuses',
       'suppliers'
-    ])
+    ]),
+    purchaseOrderAmount() {
+      return this.purchaseOrderItems.reduce(
+        (totalAmount, { qty, salePrice, discount }) => totalAmount + salePrice * qty * (100 - discount) / 100, 
+      0);
+    }
   },
   methods: {
     ...mapActions('purchaseOrders', [
       'createPurchaseOrder'
     ]),
+    
+    openProductList() {
+      this.productDialog = true;
+    },
     async savePurchaseOrder() {
       const purchaseOrder = this.purchaseOrder; 
       try {
@@ -142,6 +271,29 @@ export default {
       } catch(error) {
         this.showError(error);
       }
+    },
+    /** 
+     * Métodos del componente ProductListDialog 
+     */
+
+    // Maneja la paginación de forma externa para que el componente se pueda rehusar
+    async productListPaginationHandler({ sortBy, descending, page, rowsPerPage }) {
+        const params = { 
+          requestPage: page - 1, 
+          size: rowsPerPage, 
+          sortBy,
+          descending
+        };
+        await this.$store.dispatch('purchaseOrders/addOrder/fetchProducts', params);
+    },
+    // Añade un producto al detalle
+    addProductToDetail(selectProduct) {
+      console.log({selectProduct})
+      this.purchaseOrderItems.push({
+        ...selectProduct,
+        qty: 1,
+        discount: 0
+      });
     },
     showError(error){
       const { message, errors } = error.response.data;

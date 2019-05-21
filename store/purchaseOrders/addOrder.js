@@ -1,13 +1,15 @@
 import { 
-    SET_PRODUCTS,
-    SET_PRODUCT_LINES, 
-    SET_PAGE,
-    SET_PAGINATION
+  SET_PRODUCTS,
+  SET_PAGE,
+  SET_PAGINATION,
+  SET_PURCHASE_STATUSES, 
+  SET_SUPPLIERS,
 } from '@/util/mutations-types';
 import _ from 'lodash';
 export const state = () => ({
   products: [],
-  productLines: [],
+  purchaseStatuses: [],
+  suppliers: [],
   page: {
     size: 0,
     totalElements: 0,
@@ -27,14 +29,17 @@ export const mutations = {
   [SET_PRODUCTS](state, products){
     state.products = products;
   },
-  [SET_PRODUCT_LINES](state, productLines){
-    state.productLines = productLines;
-  },
   [SET_PAGE](state, page) {
     state.page = page;
   },
   [SET_PAGINATION](state, pagination) {
     state.pagination = pagination;
+  },
+  [SET_PURCHASE_STATUSES](state, purchaseStatuses){
+    state.purchaseStatuses = purchaseStatuses;
+  },
+  [SET_SUPPLIERS](state, suppliers){
+    state.suppliers = suppliers;
   }
 }
 export const actions = {
@@ -46,20 +51,13 @@ export const actions = {
     commit(SET_PAGE, page);
     commit(SET_PAGINATION, { requestPage, size, sortBy, descending })
   },
-  async fetchProductLines({ commit }) {
-    const productLines = await this.$products.listProductLines();
-    commit(SET_PRODUCT_LINES, productLines);
+  
+  async fetchPurchaseStatuses({ commit }) {
+    const purchaseStatuses = await this.$purchaseOrders.listPurchaseStatuses();
+    commit(SET_PURCHASE_STATUSES, purchaseStatuses);
   },
-  async createProduct({ dispatch }, { product }) {
-    await this.$products.createProduct(product);
-    await dispatch('fetchProducts');
+  async fetchSuppliers({commit}) {
+    const suppliers = await this.$purchaseOrders.listSuppliers();
+    commit(SET_SUPPLIERS, suppliers);
   },
-  async updateProduct({ dispatch }, { product }) {
-    await this.$products.updateProduct(product);
-    await dispatch('fetchProducts');
-  },
-  async deleteProduct({ dispatch }, { product }) {
-    await this.$products.deleteProduct(product);
-    await dispatch('fetchProducts');
-  }
 }
