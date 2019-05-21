@@ -23,7 +23,7 @@
                 Datos de la cuenta
               </h3>
             </v-flex>
-            <v-flex sm7 pa-2>
+            <v-flex sm8 pa-2>
               <v-select 
                 v-model="supplierAccountModel.bank" 
                 return-object
@@ -33,7 +33,7 @@
                 label="Banco">
               </v-select>
             </v-flex>
-            <v-flex sm5 pa-2>
+            <v-flex sm4 pa-2>
               <v-select 
                 v-model="supplierAccountModel.currency" 
                 :items="currencies"

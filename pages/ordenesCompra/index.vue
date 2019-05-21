@@ -74,7 +74,7 @@ export default {
   meta: {
     breadcrumbs: [
       { name: 'Módulos', link: '/' },
-      { name: 'Órdenes de Compra', link: '/ordenesCompra' },
+      { name: 'Órdenes de Compra', link: '/ordenesCompra' }
     ]
   },
   components: {
@@ -82,7 +82,7 @@ export default {
     SavePurchaseOrderDialog
   },
   async fetch ({ store }) {
-    const params = { requestPage: 0, size: 20, sortBy: undefined };
+    const params = { requestPage: 0, size: 20, sortBy: undefined};
     await store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
     await store.dispatch('purchaseOrders/fetchPurchaseStatuses');
     await store.dispatch('purchaseOrders/fetchSuppliers')
@@ -98,7 +98,7 @@ export default {
           value: 'id'
         },
         { text: 'Id Local', value: 'nativeId' },
-        { text: 'Fecha de Emisión', value: 'creationDate' },
+        { text: 'Fecha de Emisión', value: 'creationDate'},
         { text: 'Fecha de Recepción', value: 'receptionDate'},
         { text: 'Proveedor', value: 'supplier'},
         { text: 'Estado', value: 'status' },

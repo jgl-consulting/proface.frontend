@@ -1,32 +1,37 @@
 import _ from 'lodash';
 import menus from '@/util/menus';
 
-const excluded = [
-  'login'
-]
-
-export default function ({ store, params, route}) {
+export default function ({ store, params, route }) {
   const { name, meta } = route;
-  if(!_.includes(excluded, name)) {
+  const breadcrumbs = getBreadcrumbs(meta,{ params, route, store });
+
+  if(breadcrumbs) {
     store.dispatch('loadPageInfo', {
       title: getTitle(name),
-      breadcrumbs: getBreadcrumbs({ meta, params, route })
+      breadcrumbs 
     });
   }
 }
 
 function getTitle(name) {
   const [ id ] = name.split("-");
-  const { title } =  _.find(menus, menu => menu.id === id) || { title: 'Inicio' }
+  const menu = _.find(menus, menu => menu.id === id);
+  const { title } =  menu || { title: 'Inicio' };
   return title;
 }
 
-function getBreadcrumbs({ meta, params, route }) {
-  const { breadcrumbs = [] } = meta.reduce(
+function metaToObject(meta) {
+  return meta.reduce(
     (metadata, item) => ({ ...metadata, ...item})
   , {});
-  
-  return breadcrumbs.map(
-    bc => bc instanceof Function ? bc(params, route) : bc
-  );
+}
+
+function getBreadcrumbs(meta, context) {
+  const breadcrumbs = _.get(metaToObject(meta), 'breadcrumbs', false);
+  let renderBreadcrumbs = bc => isFunction(bc) ? bc(context) : bc;
+  return breadcrumbs ? breadcrumbs.map(renderBreadcrumbs):[];
+}
+
+function isFunction(ref) {
+  return ref instanceof Function;
 }

@@ -35,25 +35,6 @@
                 :rules="nativeIdRules">
               </v-text-field>
             </v-flex>
-            <!-- verificar o borrar
-            <v-flex xs4 pa-2> 
-              <v-select
-                v-model="supplierModel.type"
-                :items="supplierTypes"
-                item-value="id"
-                item-text="name"
-                return-object
-                label="Tipo">
-              </v-select>
-            </v-flex>
-           verificar o borrar-->
-            <v-flex xs8 pa-2>
-              <v-text-field 
-                v-model="supplierModel.address" 
-                label="Dirección"
-                :rules="addressRules">
-              </v-text-field>
-            </v-flex>
             <v-flex xs4 pa-2>
               <v-autocomplete
                 v-model="supplierModel.country"
@@ -71,6 +52,25 @@
                   ></flag>
                 </template>
               </v-autocomplete>
+            </v-flex>
+            <!-- verificar o borrar
+            <v-flex xs4 pa-2> 
+              <v-select
+                v-model="supplierModel.type"
+                :items="supplierTypes"
+                item-value="id"
+                item-text="name"
+                return-object
+                label="Tipo">
+              </v-select>
+            </v-flex>
+           verificar o borrar-->
+            <v-flex xs12 pa-2>
+              <v-text-field 
+                v-model="supplierModel.address" 
+                label="Dirección"
+                :rules="addressRules">
+              </v-text-field>
             </v-flex>
           </v-layout>
           <v-divider class="mt-2 mb-4"></v-divider>
@@ -92,14 +92,14 @@
                 :rules="contactLastnameRules">
               </v-text-field>
             </v-flex>
-            <v-flex xs4 pa-2>
+            <v-flex xs2 pa-2>
               <v-text-field 
                 v-model="supplierModel.contact.phone" 
                 label="Teléfono"
                 :rules="contactPhoneRules">
               </v-text-field>
             </v-flex>
-            <v-flex xs8 pa-2>
+            <v-flex xs10 pa-2>
               <v-text-field 
                 v-model="supplierModel.contact.email" 
                 label="Correo electrónico"

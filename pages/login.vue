@@ -43,6 +43,9 @@ import Notification from '@/components/common/Notification'
 import ProfaceLogo from '@/components/common/ProfaceLogo'
 
 export default {
+  meta: {
+    breadcrumbs: false
+  },
   loading: false,
   components: {
     Notification,

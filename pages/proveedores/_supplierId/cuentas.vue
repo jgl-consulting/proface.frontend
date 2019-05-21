@@ -68,7 +68,6 @@ export default {
       {
         text: 'Número de cuenta',
         align: 'left',
-        sortable: false,
         value: 'number'
       },
       { text: 'CCI', value: 'cci' },
@@ -76,7 +75,7 @@ export default {
       { text: 'Moneda', value: 'currency' },
       { text: 'Banco', value: 'bank' },
       { text: 'País', value: 'bank' },
-      { text: 'Acciones', value: 'id' }
+      { text: 'Acciones', value: 'id', sortable: false }
     ],
     supplierAccountToSave: {
       bank: { id: 0 }

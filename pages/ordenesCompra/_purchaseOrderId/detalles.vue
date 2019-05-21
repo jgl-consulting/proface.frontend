@@ -55,7 +55,8 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
   async fetch({ params: { purchaseOrderId }, route, store }) {
-    await store.dispatch('purchaseOrders/details/fetchSupplier', { purchaseOrderId });
+    await store.dispatch('purchaseOrders/details/fetchPurchaseOrder', { purchaseOrderId });
+    await store.dispatch('purchaseOrders/details/fetchProducts');
     await store.dispatch('purchaseOrders/details/fetchReceptionStatuses');
   },
   components: {
@@ -70,10 +71,11 @@ export default {
       { text: 'Descuento', value: 'disscount' },
       { text: 'Precio Final', value: 'finalPrice' },
       { text: 'Estado', value: 'status' },
-      { text: 'Acciones', value: 'id' }
+      { text: 'Acciones', value: 'id', sortable: false }
     ],
     purchaseDetailToSave: {
-      status: { id: 0 }
+      status: { id: 0 },
+      product: { id: 0}
     },
     openSaveDetailDialog: false,
     dialogMode: 'nuevo'
@@ -81,7 +83,10 @@ export default {
   computed: {
     ...mapState('purchaseOrders/details',[
       'purchaseOrder'
-    ])
+    ]),
+    purchaseDetails() {
+      return this.purchaseOrder.details || [];
+    }
   },
   methods: {
     ...mapActions('purchaseOrders/details', {
@@ -91,6 +96,7 @@ export default {
       this.openSaveDetailDialog = true;
       this.purchaseDetailToSave = {
         status: { id: 0 },
+        product: { id: 0}
       };
       this.dialogMode = 'nuevo';
     },
@@ -102,7 +108,7 @@ export default {
     async deletePurchaseDetail(purchaseDetail){
       try {
         const { product } = purchaseDetail;
-        const res = await this.$confirm(`¿Está seguro de borrar la cuenta '${product.name}'?`, { title: 'Advertencia' })
+        const res = await this.$confirm(`¿Está seguro de borrar el detalle del producto '${product.name}'?`, { title: 'Advertencia' })
         if(res) {
           
           await this.deletePurchaseDetailAction({ purchaseDetail })

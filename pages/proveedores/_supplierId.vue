@@ -37,7 +37,9 @@ export default {
       breadcrumbs: [
         { name: 'Módulos', link: '/' },
         { name: 'Proveedores', link: '/proveedores' },
-        ({ supplierId }) => ({ name: supplierId  })
+        function({ params }){
+          return { name: params.supplierId };
+        }
       ]
   },
   asyncData({ route, params }){

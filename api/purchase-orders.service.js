@@ -27,6 +27,27 @@ export default class PurchaseOrdersService {
     }
   }
 
+  async listPurchaseOrdersBySupplier(page, size, sortBy, direction, supplierId) {
+    const purchaseOrders = await this.$axios.$get(`${PURCHASE_ORDERS_ENDPOINT}/supplier/${supplierId}`, {
+      params: { page, size, sort: sortBy ? `${sortBy},${direction}`: sortBy}
+    });
+    
+    const extract = (purchaseOrder) => ({
+      ...purchaseOrder
+    });
+
+    return { 
+      purchaseOrders: purchaseOrders.content.map(extract),
+      page:  { 
+        totalElements: purchaseOrders.totalElements,
+        totalPages: purchaseOrders.totalPages,
+        page: purchaseOrders.page,
+        size: purchaseOrders.size,
+        isSorted: purchaseOrders.isSorted
+      }
+    }
+  }
+
   listPurchaseStatuses() {
     return this.$axios.$get(`${PURCHASE_STATUSES_ENDPOINT}/unpaged`);
   }
