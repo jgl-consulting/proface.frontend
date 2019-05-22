@@ -1,8 +1,7 @@
-import { 
-  PURCHASE_DETAILS_ENDPOINT, 
-  RECEPTION_STATUSES_ENDPOINT, 
-  PRODUCTS_ENDPOINT } 
-from '@/util/endpoints';
+import {
+  PURCHASE_DETAILS_ENDPOINT
+}
+  from '@/util/endpoints';
 
 export default class PurchaseDetailsService {
   constructor({ $axios }) {
@@ -13,13 +12,6 @@ export default class PurchaseDetailsService {
     return this.$axios.$get(`${PURCHASE_DETAILS_ENDPOINT}/unpaged`);
   }
 
-  listProducts() {
-    return this.$axios.$get(`${PRODUCTS_ENDPOINT}/unpaged`)
-  }
-
-  listReceptionStatuses() {
-    return this.$axios.$get(`${RECEPTION_STATUSES_ENDPOINT}/unpaged`);
-  }
 
   async createPurchaseDetail(purchaseDetail) {
     await this.$axios.$post(PURCHASE_DETAILS_ENDPOINT, purchaseDetail);

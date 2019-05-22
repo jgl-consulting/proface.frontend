@@ -52,7 +52,7 @@ export const actions = {
     commit(SET_PAGINATION, { requestPage, size, sortBy, descending })
   },
   async fetchSupplierTypes({ commit }) {
-    const supplierTypes = await this.$suppliers.listSupplierTypes();
+    const supplierTypes = await this.$supplierTypes.listSupplierTypes();
     commit(SET_SUPPLIER_TYPES, supplierTypes);
   },
   async fetchCountries({commit}) {

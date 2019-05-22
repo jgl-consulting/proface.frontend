@@ -1,6 +1,4 @@
 import { PURCHASE_ORDERS_ENDPOINT } from '@/util/endpoints';
-import { PURCHASE_STATUSES_ENDPOINT } from '@/util/endpoints';
-import { SUPPLIERS_ENDPOINT } from '@/util/endpoints';
 export default class PurchaseOrdersService {
   constructor({ $axios }) {
     this.$axios = $axios;
@@ -42,14 +40,6 @@ export default class PurchaseOrdersService {
         isSorted: purchaseOrders.isSorted
       }
     }
-  }
-
-  listPurchaseStatuses() {
-    return this.$axios.$get(`${PURCHASE_STATUSES_ENDPOINT}/unpaged`);
-  }
-
-  listSuppliers() {
-    return this.$axios.$get(`${SUPPLIERS_ENDPOINT}/unpaged`)
   }
 
   getPurchaseOrderById(purchaseOrderId) {

@@ -53,11 +53,11 @@ export const actions = {
   },
   
   async fetchPurchaseStatuses({ commit }) {
-    const purchaseStatuses = await this.$purchaseOrders.listPurchaseStatuses();
+    const purchaseStatuses = await this.$purchaseStatuses.listPurchaseStatuses();
     commit(SET_PURCHASE_STATUSES, purchaseStatuses);
   },
   async fetchSuppliers({commit}) {
-    const suppliers = await this.$purchaseOrders.listSuppliers();
+    const suppliers = await this.$suppliers.listSuppliers();
     commit(SET_SUPPLIERS, suppliers);
   },
 }

@@ -1,5 +1,4 @@
 import { SUPPLIERS_ENDPOINT } from '@/util/endpoints';
-import { SUPPLIER_TYPES_ENDPOINT } from '@/util/endpoints';
 export default class SuppliersService {
   constructor({ $axios }) {
     this.$axios = $axios;
@@ -28,8 +27,8 @@ export default class SuppliersService {
     }
   }
 
-  listSupplierTypes() {
-    return this.$axios.$get(`${SUPPLIER_TYPES_ENDPOINT}/unpaged`);
+  async listSuppliers() {
+    return  await this.$axios.$get(`${SUPPLIERS_ENDPOINT}/unpaged`);
   }
 
   getSupplierById(supplierId) {

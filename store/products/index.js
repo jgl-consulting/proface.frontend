@@ -47,7 +47,7 @@ export const actions = {
     commit(SET_PAGINATION, { requestPage, size, sortBy, descending })
   },
   async fetchProductLines({ commit }) {
-    const productLines = await this.$products.listProductLines();
+    const productLines = await this.$productLines.listProductLines();
     commit(SET_PRODUCT_LINES, productLines);
   },
   async createProduct({ dispatch }, { product }) {

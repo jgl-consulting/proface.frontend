@@ -28,7 +28,7 @@ import {
       return purchaseOrder;
     },
     async fetchProducts({commit}) {
-      const products = await this.$purchaseDetails.listProducts();
+      const products = await this.$products.listProducts();
       commit(SET_PRODUCTS, products);
     },
     async createPurchaseDetail({ state, dispatch }, { purchaseDetail }) {
@@ -56,7 +56,55 @@ import {
       await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
     },
     async fetchReceptionStatuses({commit}) {
-      const receptionStatuses = await this.$purchaseDetails.listReceptionStatuses();
+      const receptionStatuses = await this.$receptionStatuses.listReceptionStatuses();
       commit(SET_RECEPTION_STATUSES, receptionStatuses);
+    },
+    async createPurchaseCost({ state, dispatch }, { purchaseCost }) {
+    
+      await this.$purchaseCosts.createPurchaseCost({
+        ...purchaseCost,
+        purchase: state.purchaseOrder
+      });
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
+    },
+    async updatePurchaseCost({ state, dispatch }, { purchaseCost }) {
+      
+      await this.$purchaseCosts.updatePurchaseCost({
+        ...purchaseCost,
+        purchase: state.purchaseOrder
+      });
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
+    },
+    async deletePurchaseCost({ state, dispatch }, { purchaseCost }) {
+      
+      await this.$purchaseCosts.deletePurchaseCost({
+        ...purchaseCost,
+        purchase: state.purchaseOrder
+      });
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
+    },
+    async createPurchaseInvoice({ state, dispatch }, { purchaseInvoice }) {
+    
+      await this.$purchaseInvoices.createPurchaseInvoice({
+        ...purchaseInvoice,
+        purchase: state.purchaseOrder
+      });
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
+    },
+    async updatePurchaseInvoice({ state, dispatch }, { purchaseInvoice }) {
+      
+      await this.$purchaseInvoices.updatePurchaseInvoice({
+        ...purchaseInvoice,
+        purchase: state.purchaseOrder
+      });
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
+    },
+    async deletePurchaseInvoice({ state, dispatch }, { purchaseInvoice }) {
+      
+      await this.$purchaseInvoices.deletePurchaseInvoice({
+        ...purchaseInvoice,
+        purchase: state.purchaseOrder
+      });
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
     },
   }
