@@ -8,7 +8,7 @@
 
 <script>
 import { mapState } from "vuex";
-import ModelDetail from "@/components/products/ModelDetail";
+import ModelDetail from "@/components/common/ModelDetail";
 export default {
   async fetch({ params, route, store }) {
     const { productId } = params;
