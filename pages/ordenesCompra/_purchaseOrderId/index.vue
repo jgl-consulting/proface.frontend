@@ -5,7 +5,7 @@
     </v-flex>
     <v-flex md6 px-2>
       <v-subheader>Estado</v-subheader>
-      <model-timeline :fields="stateFields" :model="purchaseOrder"></model-timeline>
+      <model-timeline emptyTitle="La orden de compra no tiene seguimiento" :fields="stateFields" :model="purchaseOrder"></model-timeline>
     </v-flex>
   </v-layout>
 </template>

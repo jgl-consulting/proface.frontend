@@ -19,36 +19,48 @@
         :total-items="page.totalElements"
         :pagination.sync="pagination"
         :rows-per-page-items="pageSizes"
-        rows-per-page-text="Tamaño de página">
+        rows-per-page-text="Tamaño de página"
+      >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
             <td>{{ props.item.id }}</td>
-            <td class="text-xs-right">
-              {{ props.item.nativeId }}
-            </td>
-            <td class="text-xs-right">
-              {{ props.item.creationDate }} 
-            </td>
-            <td class="text-xs-right">
-              {{ props.item.receptionDate }} 
-            </td>
-            <td class="text-xs-right">
-              {{ props.item.supplier.name }}
-            </td>
-            <td class="text-xs-right">
-              {{ props.item.status.description }}
-            </td>
-            <td class="text-xs-center" @click.stop="() => {}">
-              <v-btn class="mx-1" color="primary" dark icon flat small
-                nuxt :to="props.item.id | path($route.fullPath)">
+            <td class="text-xs-left">{{ props.item.nativeId }}</td>
+            <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
+            <td class="text-xs-left">{{ props.item.supplier.name }}</td>
+            <td class="text-xs-left">{{ props.item.status.description }}</td>
+            <td class="text-xs-left" @click.stop="() => {}">
+              <v-btn
+                class="mx-1"
+                color="primary"
+                dark
+                icon
+                flat
+                small
+                nuxt
+                :to="props.item.id | path($route.fullPath)"
+              >
                 <v-icon small>fa-ellipsis-v</v-icon>
               </v-btn>
-              <v-btn class="mx-1" color="accent" dark icon flat small
-                @click.stop="openEditPurchaseOrderDialog(props.item)">
+              <v-btn
+                class="mx-1"
+                color="accent"
+                dark
+                icon
+                flat
+                small
+                @click.stop="openEditPurchaseOrderDialog(props.item)"
+              >
                 <v-icon small>fa-pen</v-icon>
               </v-btn>
-              <v-btn class="mx-1" color="deep-purple darken-2" dark icon flat small
-                @click.stop="deletePurchaseOrder(props.item)">
+              <v-btn
+                class="mx-1"
+                color="deep-purple darken-2"
+                dark
+                icon
+                flat
+                small
+                @click.stop="deletePurchaseOrder(props.item)"
+              >
                 <v-icon small>fa-trash</v-icon>
               </v-btn>
             </td>
@@ -60,46 +72,46 @@
 </template>
 
 <script>
-import EmptyListTile from '@/components/common/EmptyListTile';
-import SavePurchaseOrderDialog from '@/components/purchaseOrders/SavePurchaseOrderDialog';
-import { mapState, mapActions } from 'vuex';
+import EmptyListTile from "@/components/common/EmptyListTile";
+import SavePurchaseOrderDialog from "@/components/purchaseOrders/SavePurchaseOrderDialog";
+import { mapState, mapActions } from "vuex";
+import moment from 'moment';
 export default {
   meta: {
     breadcrumbs: [
-      { name: 'Módulos', link: '/' },
-      { name: 'Órdenes de Compra', link: '/ordenesCompra' }
+      { name: "Módulos", link: "/" },
+      { name: "Órdenes de Compra", link: "/ordenesCompra" }
     ]
   },
   components: {
     EmptyListTile,
     SavePurchaseOrderDialog
   },
-  async fetch ({ store }) {
-    const params = { requestPage: 0, size: 20, sortBy: undefined};
-    await store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
+  async fetch({ store }) {
+    const params = { requestPage: 0, size: 20, sortBy: undefined };
+    await store.dispatch("purchaseOrders/fetchPurchaseOrders", params);
   },
   data() {
     return {
-      title: 'Órdenes de Compra',
+      title: "Órdenes de Compra",
       headers: [
         {
-          text: 'Id',
-          align: 'left',
+          text: "Id",
+          align: "left",
           sortable: false,
-          value: 'id'
+          value: "id"
         },
-        { text: 'Id Local', value: 'nativeId' },
-        { text: 'Fecha de Emisión', value: 'creationDate'},
-        { text: 'Fecha de Recepción', value: 'receptionDate'},
-        { text: 'Proveedor', value: 'supplier'},
-        { text: 'Estado', value: 'status' },
-        { text: 'Acciones', value: 'id', sortable: false,}
+        { text: "Id Local", value: "nativeId" },
+        { text: "Fecha de Emisión", value: "creationDate" },
+        { text: "Proveedor", value: "supplier" },
+        { text: "Estado", value: "status" },
+        { text: "Acciones", value: "id", sortable: false }
       ],
       pagination: {
         descending: false,
         page: 1,
-        rowsPerPage: 20,// -1 for All",
-        sortBy: 'id'
+        rowsPerPage: 20, // -1 for All",
+        sortBy: "id"
       },
       expand: false,
       pageSizes: [20, 30, 50, 100],
@@ -108,78 +120,91 @@ export default {
         supplier: { id: 0 }
       },
       openSaveDialog: false,
-      dialogMode: 'nuevo'
-    }
+      dialogMode: "nuevo"
+    };
   },
   watch: {
     pagination: {
       async handler() {
         const { sortBy, descending, page, rowsPerPage } = this.pagination;
-        
-        const params = { 
-          requestPage: page - 1, 
-          size: rowsPerPage, 
+        const params = {
+          requestPage: page - 1,
+          size: rowsPerPage,
           sortBy,
           descending
         };
-        await this.$store.dispatch('purchaseOrders/fetchPurchaseOrders', params);
+        await this.$store.dispatch(
+          "purchaseOrders/fetchPurchaseOrders",
+          params
+        );
       }
     }
   },
   computed: {
-    ...mapState('purchaseOrders', [
-      'purchaseOrders',
-      'page',
-    ])
+    ...mapState("purchaseOrders", ["purchaseOrders", "page"])
   },
   methods: {
-    ...mapActions('purchaseOrders', {
-      deletePurchaseOrderAction: 'deletePurchaseOrder'
+    ...mapActions("purchaseOrders", {
+      deletePurchaseOrderAction: "deletePurchaseOrder"
     }),
+    formatDate(date) {
+      if(date != undefined)
+        return this.dateMoment(date).format('DD/MM/YYYY');
+      return "";
+    },
+    dateMoment(date) {
+      if(date != undefined) {
+        const momentDate = moment(date);
+        return momentDate.isValid() ? momentDate : moment.now();
+      }
+      return "";
+    },
     openAddPurchaseOrderDialog() {
       this.openSaveDialog = true;
       this.purchaseOrderToSave = {
         status: { id: 0 },
-        supplier: { id:0 }
+        supplier: { id: 0 }
       };
-      this.dialogMode = 'nuevo';
+      this.dialogMode = "nuevo";
     },
     openEditPurchaseOrderDialog(purchaseOrder) {
       this.openSaveDialog = true;
       this.purchaseOrderToSave = purchaseOrder;
-      this.dialogMode = 'editar';
+      this.dialogMode = "editar";
     },
-    async deletePurchaseOrder(purchaseOrder){
+    async deletePurchaseOrder(purchaseOrder) {
       try {
         const { nativeId } = purchaseOrder;
-        const res = await this.$confirm(`¿Está seguro de borrar la orden de compra '${nativeId}'?`, { title: 'Advertencia' })
-        if(res) {
-          
-          await this.deletePurchaseOrderAction({ purchaseOrder })
-          
-          await this.$confirm('Borrado correcto!', {
-            title: 'Éxito',
-            color: 'success'
+        const res = await this.$confirm(
+          `¿Está seguro de borrar la orden de compra '${nativeId}'?`,
+          { title: "Advertencia" }
+        );
+        if (res) {
+          await this.deletePurchaseOrderAction({ purchaseOrder });
+
+          await this.$confirm("Borrado correcto!", {
+            title: "Éxito",
+            color: "success"
           });
         }
-      } catch(error) {
+      } catch (error) {
         this.showError(error);
       }
     },
     optional(object) {
       return object || {};
     },
-    showError(error){
+    showError(error) {
       const { message, errors } = error.response.data;
-      this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
-        title: message, 
-        color: 'error',
+      this.$confirm(errors.map(e => e.errorMessage).join("\n"), {
+        title: message,
+        color: "error",
         width: 500
       });
-    },
+    }
   },
   filters: {
     path: (param, path) => `${path}/${param}`
   }
-}
+};
 </script>

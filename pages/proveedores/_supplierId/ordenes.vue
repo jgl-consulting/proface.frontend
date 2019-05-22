@@ -20,16 +20,16 @@
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
             <td>{{ props.item.id }}</td>
-            <td class="text-xs-right">
+            <td class="text-xs-left">
               {{ props.item.nativeId }}
             </td>
-            <td class="text-xs-right">
+            <td class="text-xs-left">
               {{ props.item.creationDate }} 
             </td>
-            <td class="text-xs-right">
+            <td class="text-xs-left">
               {{ props.item.receptionDate }} 
             </td>
-            <td class="text-xs-right">
+            <td class="text-xs-left">
               {{ props.item.status.description }}
             </td>
           </tr>

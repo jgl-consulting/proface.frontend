@@ -1,63 +1,73 @@
 <template>
-    <simple-table-layout>
-      <template #title>
-        <v-subheader>
-          Listado de productos solicitados
-        </v-subheader>
-      </template>
-      <template #actions>
-        <v-btn color="accent"  @click="openAddPurchaseDetailDialog">
-          <v-icon small>fa-plus</v-icon>
-          <span class="mx-1"></span>
-          <span>Solicitar nuevo producto</span>
-        </v-btn>
-      </template>
-      <template #table>
-        <v-data-table
-          :headers="purchaseDetailHeaders"
-          :items="purchaseDetails"
-          class="elevation-1"
-        >
-          <template #items="{ item }">
-            <td class="text-xs-right">{{ item.product.name }}</td>
-            <td class="text-xs-right">{{ item.quantity }}</td>
-            <td class="text-xs-right">{{ item.unitPrice }}</td>
-            <td class="text-xs-right">{{ item.disscount }}</td>
-            <td class="text-xs-right">{{ item.finalPrice }}</td>
-            <td class="text-xs-right">{{ item.status.description }}</td>
-            <td class="text-xs-right">
-              <v-btn class="mx-1" color="accent" dark icon flat small
-                @click.stop="openEditPurchaseDetailDialog(item)">
-                <v-icon small>fa-pen</v-icon>
-              </v-btn>
-              <v-btn class="mx-1" color="deep-purple darken-2" dark icon flat small
-                @click.stop="deletePurchaseDetail(item)">
-                <v-icon small>fa-trash</v-icon>
-              </v-btn>
-            </td>
-          </template>
-        </v-data-table>
-      </template>
-      <template #dialog>
-        <save-purchase-detail-dialog
-          v-model="openSaveDetailDialog"
-          :purchase-detail="purchaseDetailToSave"
-          :mode="dialogMode"
-        ></save-purchase-detail-dialog>
-      </template>
-    </simple-table-layout>
+  <simple-table-layout>
+    <template #title>
+      <v-subheader>Listado de productos solicitados</v-subheader>
+    </template>
+    <template #actions>
+      <v-btn color="accent" @click="openAddPurchaseDetailDialog">
+        <v-icon small>fa-plus</v-icon>
+        <span class="mx-1"></span>
+        <span>Solicitar nuevo producto</span>
+      </v-btn>
+    </template>
+    <template #table>
+      <v-data-table :headers="purchaseDetailHeaders" :items="purchaseDetails" class="elevation-1">
+        <template #items="{ item }">
+          <td class="text-xs-left">{{ item.product.name }}</td>
+          <td class="text-xs-left">{{ item.quantity }}</td>
+          <td class="text-xs-left">{{ item.unitPrice }}</td>
+          <td class="text-xs-left">{{ item.disscount }}</td>
+          <td class="text-xs-left">{{ item.finalPrice }}</td>
+          <td class="text-xs-left">{{ item.status.description }}</td>
+          <td class="text-xs-left">
+            <v-btn
+              class="mx-1"
+              color="accent"
+              dark
+              icon
+              flat
+              small
+              @click.stop="openEditPurchaseDetailDialog(item)"
+            >
+              <v-icon small>fa-pen</v-icon>
+            </v-btn>
+            <v-btn
+              class="mx-1"
+              color="deep-purple darken-2"
+              dark
+              icon
+              flat
+              small
+              @click.stop="deletePurchaseDetail(item)"
+            >
+              <v-icon small>fa-trash</v-icon>
+            </v-btn>
+          </td>
+        </template>
+      </v-data-table>
+    </template>
+    <template #dialog>
+      <save-purchase-detail-dialog
+        v-model="openSaveDetailDialog"
+        :purchase-detail="purchaseDetailToSave"
+        :mode="dialogMode"
+      ></save-purchase-detail-dialog>
+    </template>
+  </simple-table-layout>
 </template>
 
 <script>
-import EmptyListTile from '@/components/common/EmptyListTile';
-import SavePurchaseDetailDialog from '@/components/purchaseOrders/SavePurchaseDetailDialog';
-import { mapState, mapActions } from 'vuex';
+import EmptyListTile from "@/components/common/EmptyListTile";
+import SavePurchaseDetailDialog from "@/components/purchaseOrders/SavePurchaseDetailDialog";
+import { mapState, mapActions } from "vuex";
 
 export default {
   async fetch({ params: { purchaseOrderId }, route, store }) {
-    await store.dispatch('purchaseOrders/details/fetchPurchaseOrder', { purchaseOrderId });
-    await store.dispatch('purchaseOrders/details/fetchProducts');
-    await store.dispatch('purchaseOrders/details/fetchReceptionStatuses');
+    await store.dispatch("purchaseOrders/details/fetchPurchaseOrder", {
+      purchaseOrderId
+    });
+    await store.dispatch("purchaseOrders/details/fetchProducts");
+    await store.dispatch("purchaseOrders/details/fetchReceptionStatuses");
   },
   components: {
     EmptyListTile,
@@ -65,79 +75,78 @@ export default {
   },
   data: () => ({
     purchaseDetailHeaders: [
-      { text: 'Producto', value: 'product' },
-      { text: 'Cantidad', value: 'quantity' },
-      { text: 'Precio Unitario', value: 'unitPrice' },
-      { text: 'Descuento', value: 'disscount' },
-      { text: 'Precio Final', value: 'finalPrice' },
-      { text: 'Estado', value: 'status' },
-      { text: 'Acciones', value: 'id', sortable: false }
+      { text: "Producto", value: "product" },
+      { text: "Cantidad", value: "quantity" },
+      { text: "Precio Unitario", value: "unitPrice" },
+      { text: "Descuento", value: "disscount" },
+      { text: "Precio Final", value: "finalPrice" },
+      { text: "Estado", value: "status" },
+      { text: "Acciones", value: "id", sortable: false }
     ],
     purchaseDetailToSave: {
       status: { id: 0 },
-      product: { id: 0}
+      product: { id: 0 }
     },
     openSaveDetailDialog: false,
-    dialogMode: 'nuevo'
+    dialogMode: "nuevo"
   }),
   computed: {
-    ...mapState('purchaseOrders/details',[
-      'purchaseOrder'
-    ]),
+    ...mapState("purchaseOrders/details", ["purchaseOrder"]),
     purchaseDetails() {
       return this.purchaseOrder.details || [];
     }
   },
   methods: {
-    ...mapActions('purchaseOrders/details', {
-      deletePurchaseDetailAction: 'deletePurchaseDetail'
+    ...mapActions("purchaseOrders/details", {
+      deletePurchaseDetailAction: "deletePurchaseDetail"
     }),
     openAddPurchaseDetailDialog() {
       this.openSaveDetailDialog = true;
       this.purchaseDetailToSave = {
         status: { id: 0 },
-        product: { id: 0}
+        product: { id: 0 }
       };
-      this.dialogMode = 'nuevo';
+      this.dialogMode = "nuevo";
     },
     openEditPurchaseDetailDialog(purchaseDetail) {
       this.openSaveDetailDialog = true;
       this.purchaseDetailToSave = purchaseDetail;
-      this.dialogMode = 'editar';
+      this.dialogMode = "editar";
     },
-    async deletePurchaseDetail(purchaseDetail){
+    async deletePurchaseDetail(purchaseDetail) {
       try {
         const { product } = purchaseDetail;
-        const res = await this.$confirm(`¿Está seguro de borrar el detalle del producto '${product.name}'?`, { title: 'Advertencia' })
-        if(res) {
-          
-          await this.deletePurchaseDetailAction({ purchaseDetail })
-          
-          await this.$confirm('Borrado correcto!', {
-            title: 'Éxito',
-            color: 'success'
+        const res = await this.$confirm(
+          `¿Está seguro de borrar el detalle del producto '${product.name}'?`,
+          { title: "Advertencia" }
+        );
+        if (res) {
+          await this.deletePurchaseDetailAction({ purchaseDetail });
+
+          await this.$confirm("Borrado correcto!", {
+            title: "Éxito",
+            color: "success"
           });
         }
-      } catch(error) {
+      } catch (error) {
         this.showError(error);
       }
     },
-    showError(error){
-      const { message, errors } = this.$_.get(error, 'response.data', {
-        message: 'Error inesperado',
-        errors: [ error.message ]
+    showError(error) {
+      const { message, errors } = this.$_.get(error, "response.data", {
+        message: "Error inesperado",
+        errors: [error.message]
       });
 
-      this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
-        title: message, 
-        color: 'error',
+      this.$confirm(errors.map(e => e.errorMessage).join("\n"), {
+        title: message,
+        color: "error",
         width: 500
       });
-    },
+    }
   }
-}
+};
 </script>
 
 <style>
-
 </style>

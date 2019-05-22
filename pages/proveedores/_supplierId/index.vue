@@ -1,7 +1,9 @@
 <template>
   <v-layout row wrap>
-    <v-flex md6 px-2>
+    <v-flex md4 px-2>
       <model-detail title="Información" :fields="supplierFields" :model="supplier"></model-detail>
+    </v-flex>
+    <v-flex md3 px-2>
       <model-detail title="Contacto" :fields="supplierContactFields" :model="supplierContact">
         <template v-slot:phone="{ field, model }">
           <v-list-tile-avatar>
@@ -24,9 +26,9 @@
         </template>
       </model-detail>
     </v-flex>
-    <v-flex md6 px-2>
+    <v-flex md5 px-2>
       <v-subheader>Último pedido</v-subheader>
-      <model-timeline :fields="purchaseOrderFields" :model="supplierPurchaseOrder"></model-timeline>
+      <model-timeline emptyTitle="El proveedor no cuenta con órdenes de compra." :fields="purchaseOrderFields" :model="supplierPurchaseOrder"></model-timeline>
     </v-flex>
   </v-layout>
 </template>

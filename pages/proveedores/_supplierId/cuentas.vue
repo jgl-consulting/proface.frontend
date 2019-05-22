@@ -14,12 +14,12 @@
       <v-data-table :headers="accountHeaders" :items="supplierAccounts" class="elevation-1">
         <template #items="{ item }">
           <td>{{ item.number }}</td>
-          <td class="text-xs-right">{{ item.cci }}</td>
-          <td class="text-xs-right">{{ item.description || "No cuenta con descripción" }}</td>
-          <td class="text-xs-right">{{ item.currency }}</td>
-          <td class="text-xs-right">{{ item.bank.name }}</td>
-          <td class="text-xs-right">{{ item.bank.country.name }}</td>
-          <td class="text-xs-right">
+          <td class="text-xs-left">{{ item.cci }}</td>
+          <td class="text-xs-left">{{ item.description || "No cuenta con descripción" }}</td>
+          <td class="text-xs-left">{{ item.currency }}</td>
+          <td class="text-xs-left">{{ item.bank.name }}</td>
+          <td class="text-xs-left">{{ item.bank.country.name }}</td>
+          <td class="text-xs-left">
             <v-btn
               class="mx-1"
               color="accent"

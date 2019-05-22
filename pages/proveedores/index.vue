@@ -25,15 +25,15 @@
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
             <td>{{ props.item.id }}</td>
-            <td class="text-xs-right">{{ props.item.nativeId }}</td>
-            <td class="text-xs-right">{{ props.item.name }}</td>
-            <td class="text-xs-right">{{ props.item.address }}</td>
-            <td class="text-xs-right">
+            <td class="text-xs-left">{{ props.item.nativeId }}</td>
+            <td class="text-xs-left">{{ props.item.name }}</td>
+            <td class="text-xs-left">{{ props.item.address }}</td>
+            <td class="text-xs-left">
               <span class="mr-2">{{ props.item.country.iso }}</span>
               <flag :iso="props.item.country.iso" :title="props.item.country.name" :squared="false"></flag>
             </td>
-            <td class="text-xs-right">{{ props.item.type.name }}</td>
-            <td class="text-xs-center" @click.stop="() => {}">
+            <td class="text-xs-left">{{ props.item.type.name }}</td>
+            <td class="text-xs-left" @click.stop="() => {}">
               <v-btn
                 class="mx-1"
                 color="primary"
