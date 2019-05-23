@@ -24,7 +24,7 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td>{{ props.item.id }}</td>
+            <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.address }}</td>
@@ -127,7 +127,6 @@ export default {
         {
           text: "Id",
           align: "left",
-          sortable: false,
           value: "id"
         },
         { text: "Id Local", value: "nativeId" },

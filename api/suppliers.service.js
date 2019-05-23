@@ -4,7 +4,7 @@ export default class SuppliersService {
     this.$axios = $axios;
   }
 
-  async listSuppliers(page, size, sortBy, direction) {
+  async pageSuppliers(page, size, sortBy, direction) {
     const suppliers = await this.$axios.$get(SUPPLIERS_ENDPOINT, {
       params: { page, size, sort: sortBy ? `${sortBy},${direction}`: sortBy}
     });

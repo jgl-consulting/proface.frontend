@@ -1,26 +1,42 @@
 export default [
   {
+    id: 'bancos',
+    title: 'Bancos',
+    icon: 'fa fa-piggy-bank',
+    to: '/bancos',
+    description: 'Gestión de bancos de la compañía',
+    allowedRoles: ['COMPRAS']
+  },
+  {
     id: 'proveedores',
-    title: 'Gestión de proveedores',
+    title: 'Proveedores',
     icon: 'fa fa-truck',
     to: '/proveedores',
-    description: 'Todo acerca de los proveedores de la compañía',
+    description: 'Gestión de proveedores de la compañía',
     allowedRoles: ['COMPRAS'],
   },
   {
+    id: 'lineasProducto',
+    title: 'Líneas de Producto',
+    icon: 'fa fa-tags',
+    to: '/lineasProducto',
+    description: 'Gestión de líneas de producto de la compañía',
+    allowedRoles: ['COMPRAS']
+  },
+  {
     id: 'productos',
-    title: 'Gestión de productos',
+    title: 'Productos',
     icon: 'fa fa-boxes',
     to: '/productos',
-    description: 'Todo acerca de los productos de la compañía',
+    description: 'Gestión de productos de la compañía',
     allowedRoles: ['COMPRAS'],
   },
   {
     id: 'ordenesCompra',
-    title: 'Gestión de Compras',
+    title: 'Órdenes de Compra',
     icon: 'fa fa-shopping-bag',
     to: '/ordenesCompra',
-    description: 'Todo acerca de las órdenes de compra de la compañía',
+    description: 'Gestión de órdenes de compra de la compañía',
     allowedRoles: ['COMPRAS']
-  }
+  },
 ]

@@ -13,7 +13,7 @@
     <template #table>
       <v-data-table :headers="accountHeaders" :items="supplierAccounts" class="elevation-1">
         <template #items="{ item }">
-          <td>{{ item.number }}</td>
+          <td class="text-xs-left">{{ item.number }}</td>
           <td class="text-xs-left">{{ item.cci }}</td>
           <td class="text-xs-left">{{ item.description || "No cuenta con descripción" }}</td>
           <td class="text-xs-left">{{ item.currency }}</td>

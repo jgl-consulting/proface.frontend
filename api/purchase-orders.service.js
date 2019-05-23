@@ -4,7 +4,7 @@ export default class PurchaseOrdersService {
     this.$axios = $axios;
   }
   
-  async listPurchaseOrders(page, size, sortBy, direction) {
+  async pagePurchaseOrders(page, size, sortBy, direction) {
     const purchaseOrders = await this.$axios.$get(PURCHASE_ORDERS_ENDPOINT, {
       params: { page, size, sort: sortBy ? `${sortBy},${direction}`: sortBy}
     });
@@ -21,7 +21,7 @@ export default class PurchaseOrdersService {
     }
   }
 
-  async listPurchaseOrdersBySupplier(supplierId, page, size, sortBy, direction) {
+  async pagePurchaseOrdersBySupplier(supplierId, page, size, sortBy, direction) {
     const purchaseOrders = await this.$axios.$get(`${PURCHASE_ORDERS_ENDPOINT}/supplier/${supplierId}`, {
       params: { page, size, sort: sortBy ? `${sortBy},${direction}`: sortBy}
     });

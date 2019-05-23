@@ -12,7 +12,6 @@ export default class PurchaseDetailsService {
     return this.$axios.$get(`${PURCHASE_DETAILS_ENDPOINT}/unpaged`);
   }
 
-
   async createPurchaseDetail(purchaseDetail) {
     await this.$axios.$post(PURCHASE_DETAILS_ENDPOINT, purchaseDetail);
   }

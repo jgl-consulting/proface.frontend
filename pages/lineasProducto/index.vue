@@ -1,18 +1,18 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <h1>Órdenes de Compra</h1>
+      <h1>Líneas de Producto</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" to="/ordenesCompra/nueva" nuxt>
+      <v-btn color="accent" @click="openAddProductLineDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="mx-1">Nueva orden de compra</span>
+        <span class="mx-1">Nueva Línea</span>
       </v-btn>
     </template>
     <template #table>
       <v-data-table
         :headers="headers"
-        :items="purchaseOrders"
+        :items="productLines"
         :expand="expand"
         item-key="id"
         class="elevation-1"
@@ -23,24 +23,9 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td>{{ props.item.id }}</td>
-            <td class="text-xs-left">{{ props.item.nativeId }}</td>
-            <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
-            <td class="text-xs-left">{{ props.item.supplier.name }}</td>
-            <td class="text-xs-left">{{ props.item.status.description }}</td>
-            <td class="text-xs-left" @click.stop="() => {}">
-              <v-btn
-                class="mx-1"
-                color="primary"
-                dark
-                icon
-                flat
-                small
-                nuxt
-                :to="props.item.id | path($route.fullPath)"
-              >
-                <v-icon small>fa-ellipsis-v</v-icon>
-              </v-btn>
+            <td class="text-xs-left">{{ props.item.id }}</td>
+            <td class="text-xs-left">{{ props.item.name }}</td>
+            <td class="text-xs-center" @click.stop="() => {}">
               <v-btn
                 class="mx-1"
                 color="accent"
@@ -48,7 +33,7 @@
                 icon
                 flat
                 small
-                @click.stop="openEditPurchaseOrderDialog(props.item)"
+                @click.stop="openEditProductLineDialog(props.item)"
               >
                 <v-icon small>fa-pen</v-icon>
               </v-btn>
@@ -59,7 +44,7 @@
                 icon
                 flat
                 small
-                @click.stop="deletePurchaseOrder(props.item)"
+                @click.stop="deleteProductLine(props.item)"
               >
                 <v-icon small>fa-trash</v-icon>
               </v-btn>
@@ -68,43 +53,42 @@
         </template>
       </v-data-table>
     </template>
+    <template #dialog>
+      <save-product-line-dialog
+        v-model="openSaveDialog"
+        :product-line="productLineToSave"
+        :mode="dialogMode"
+      ></save-product-line-dialog>
+    </template>
   </simple-table-layout>
 </template>
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
-import SavePurchaseOrderDialog from "@/components/purchaseOrders/SavePurchaseOrderDialog";
+import SaveProductLineDialog from "@/components/productLines/SaveProductLineDialog";
 import { mapState, mapActions } from "vuex";
-import moment from "moment";
 export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Órdenes de Compra", link: "/ordenesCompra" }
+      { name: "Líneas de Producto", link: "/lineasProducto" }
     ]
   },
   components: {
     EmptyListTile,
-    SavePurchaseOrderDialog
+    SaveProductLineDialog
   },
   async fetch({ store }) {
     const params = { requestPage: 0, size: 20, sortBy: undefined };
-    await store.dispatch("purchaseOrders/fetchPurchaseOrders", params);
+    await store.dispatch("productLines/fetchProductLines", params);
   },
   data() {
     return {
-      title: "Órdenes de Compra",
+      title: "Líneas de Producto",
       headers: [
-        {
-          text: "Id",
-          align: "left",
-          value: "id"
-        },
-        { text: "Id Local", value: "nativeId" },
-        { text: "Fecha de Emisión", value: "creationDate" },
-        { text: "Proveedor", value: "supplier" },
-        { text: "Estado", value: "status" },
-        { text: "Acciones", value: "id", sortable: false }
+        { text: "Id", align: "left", value: "id" },
+        { text: "Nombre", align: "left", value: "name" },
+        { text: "Acciones", align: "center", value: "id", sortable: false }
       ],
       pagination: {
         descending: false,
@@ -114,10 +98,7 @@ export default {
       },
       expand: false,
       pageSizes: [20, 30, 50, 100],
-      purchaseOrderToSave: {
-        status: { id: 0 },
-        supplier: { id: 0 }
-      },
+      productLineToSave: {},
       openSaveDialog: false,
       dialogMode: "nuevo"
     };
@@ -126,60 +107,43 @@ export default {
     pagination: {
       async handler() {
         const { sortBy, descending, page, rowsPerPage } = this.pagination;
+
         const params = {
           requestPage: page - 1,
           size: rowsPerPage,
           sortBy,
           descending
         };
-        await this.$store.dispatch(
-          "purchaseOrders/fetchPurchaseOrders",
-          params
-        );
+        await this.$store.dispatch("productLines/fetchProductLines", params);
       }
     }
   },
   computed: {
-    ...mapState("purchaseOrders", ["purchaseOrders", "page"])
+    ...mapState("productLines", ["productLines", "page"])
   },
   methods: {
-    ...mapActions("purchaseOrders", {
-      deletePurchaseOrderAction: "deletePurchaseOrder"
+    ...mapActions("productLines", {
+      deleteProductLineAction: "deleteProductLine"
     }),
-    formatDate(date) {
-      if (date != undefined) return this.dateMoment(date).format("DD/MM/YYYY");
-      return "";
-    },
-    dateMoment(date) {
-      if (date != undefined) {
-        const momentDate = moment(date);
-        return momentDate.isValid() ? momentDate : moment.now();
-      }
-      return "";
-    },
-    openAddPurchaseOrderDialog() {
+    openAddProductLineDialog() {
       this.openSaveDialog = true;
-      this.purchaseOrderToSave = {
-        status: { id: 0 },
-        supplier: { id: 0 }
-      };
+      this.productLineToSave = {};
       this.dialogMode = "nuevo";
     },
-    openEditPurchaseOrderDialog(purchaseOrder) {
+    openEditProductLineDialog(productLine) {
       this.openSaveDialog = true;
-      this.purchaseOrderToSave = purchaseOrder;
+      this.productLineToSave = productLine;
       this.dialogMode = "editar";
     },
-    async deletePurchaseOrder(purchaseOrder) {
+    async deleteProductLine(productLine) {
       try {
-        const { nativeId } = purchaseOrder;
+        const { name } = productLine;
         const res = await this.$confirm(
-          `¿Está seguro de borrar la orden de compra '${nativeId}'?`,
+          `¿Está seguro de borrar la línea '${name}'?`,
           { title: "Advertencia" }
         );
         if (res) {
-          await this.deletePurchaseOrderAction({ purchaseOrder });
-
+          await this.deleteProductLineAction({ productLine });
           await this.$confirm("Borrado correcto!", {
             title: "Éxito",
             color: "success"
@@ -200,9 +164,7 @@ export default {
         width: 500
       });
     }
-  },
-  filters: {
-    path: (param, path) => `${path}/${param}`
   }
 };
 </script>
+

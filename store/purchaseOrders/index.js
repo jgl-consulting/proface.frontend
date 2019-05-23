@@ -39,7 +39,7 @@ import {
     async fetchPurchaseOrders({ state, commit }, pagination) {
       const { requestPage, size, sortBy, descending } = pagination || state.pagination;
       const direction = descending ? 'desc' : 'asc';
-      const { purchaseOrders, page } = await this.$purchaseOrders.listPurchaseOrders(requestPage, size, sortBy, direction);
+      const { purchaseOrders, page } = await this.$purchaseOrders.pagePurchaseOrders(requestPage, size, sortBy, direction);
       commit(SET_PURCHASE_ORDERS, purchaseOrders);
       commit(SET_PAGE, page);
       commit(SET_PAGINATION, { requestPage, size, sortBy, descending })

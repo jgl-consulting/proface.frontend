@@ -23,7 +23,7 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td>{{ props.item.id }}</td>
+            <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.description }}</td>
@@ -76,47 +76,46 @@
 </template>
 
 <script>
-import EmptyListTile from '@/components/common/EmptyListTile';
-import SaveProductDialog from '@/components/products/SaveProductDialog';
-import { mapState, mapActions } from 'vuex';
+import EmptyListTile from "@/components/common/EmptyListTile";
+import SaveProductDialog from "@/components/products/SaveProductDialog";
+import { mapState, mapActions } from "vuex";
 export default {
   meta: {
     breadcrumbs: [
-      { name: 'Módulos', link: '/' },
-      { name: 'Productos', link: '/productos' },
+      { name: "Módulos", link: "/" },
+      { name: "Productos", link: "/productos" }
     ]
   },
   components: {
     EmptyListTile,
     SaveProductDialog
   },
-  async fetch ({ store }) {
+  async fetch({ store }) {
     const params = { requestPage: 0, size: 20, sortBy: undefined };
-    await store.dispatch('products/fetchProducts', params);
-    await store.dispatch('products/fetchProductLines');
+    await store.dispatch("products/fetchProducts", params);
+    await store.dispatch("products/fetchProductLines");
   },
   data() {
     return {
-      title: 'Productos',
+      title: "Productos",
       headers: [
         {
-          text: 'Id',
-          align: 'left',
-          sortable: false,
-          value: 'id'
+          text: "Id",
+          align: "left",
+          value: "id"
         },
-        { text: 'Id Local', value: 'nativeId' },
-        { text: 'Nombre', value: 'name' },
-        { text: 'Descripción', value: 'description' },
-        { text: 'Precio de Venta', value: 'salePrice'},
-        { text: 'Línea', value: 'line' },
-        { text: 'Acciones', value: 'id', sortable: false,}
+        { text: "Id Local", value: "nativeId" },
+        { text: "Nombre", value: "name" },
+        { text: "Descripción", value: "description" },
+        { text: "Precio de Venta", value: "salePrice" },
+        { text: "Línea", value: "line" },
+        { text: "Acciones", value: "id", sortable: false }
       ],
       pagination: {
         descending: false,
         page: 1,
-        rowsPerPage: 20,// -1 for All",
-        sortBy: 'id'
+        rowsPerPage: 20, // -1 for All",
+        sortBy: "id"
       },
       expand: false,
       pageSizes: [20, 30, 50, 100],
@@ -124,77 +123,76 @@ export default {
         line: { id: 0 }
       },
       openSaveDialog: false,
-      dialogMode: 'nuevo'
-    }
+      dialogMode: "nuevo"
+    };
   },
   watch: {
     pagination: {
       async handler() {
         const { sortBy, descending, page, rowsPerPage } = this.pagination;
-        
-        const params = { 
-          requestPage: page - 1, 
-          size: rowsPerPage, 
+
+        const params = {
+          requestPage: page - 1,
+          size: rowsPerPage,
           sortBy,
           descending
         };
-        await this.$store.dispatch('products/fetchProducts', params);
+        await this.$store.dispatch("products/fetchProducts", params);
       }
     }
   },
   computed: {
-    ...mapState('products', [
-      'products',
-      'page'
-    ])
+    ...mapState("products", ["products", "page"])
   },
   methods: {
-    ...mapActions('products', {
-      deleteProductAction: 'deleteProduct'
+    ...mapActions("products", {
+      deleteProductAction: "deleteProduct"
     }),
     openAddProductDialog() {
       this.openSaveDialog = true;
       this.productToSave = {
         line: { id: 0 }
       };
-      this.dialogMode = 'nuevo';
+      this.dialogMode = "nuevo";
     },
     openEditProductDialog(product) {
       this.openSaveDialog = true;
       this.productToSave = product;
-      this.dialogMode = 'editar';
+      this.dialogMode = "editar";
     },
-    async deleteProduct(product){
+    async deleteProduct(product) {
       try {
         const { name } = product;
-        const res = await this.$confirm(`¿Está seguro de borrar el producto '${name}'?`, { title: 'Advertencia' })
-        if(res) {
-          
-          await this.deleteProductAction({ product })
-          
-          await this.$confirm('Borrado correcto!', {
-            title: 'Éxito',
-            color: 'success'
+        const res = await this.$confirm(
+          `¿Está seguro de borrar el producto '${name}'?`,
+          { title: "Advertencia" }
+        );
+        if (res) {
+          await this.deleteProductAction({ product });
+
+          await this.$confirm("Borrado correcto!", {
+            title: "Éxito",
+            color: "success"
           });
         }
-      } catch(error) {
+      } catch (error) {
         this.showError(error);
       }
     },
     optional(object) {
       return object || {};
     },
-    showError(error){
+    showError(error) {
       const { message, errors } = error.response.data;
-      this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
-        title: message, 
-        color: 'error',
+      this.$confirm(errors.map(e => e.errorMessage).join("\n"), {
+        title: message,
+        color: "error",
         width: 500
       });
-    },
+    }
   },
   filters: {
     path: (param, path) => `${path}/${param}`
   }
-}
+};
 </script>

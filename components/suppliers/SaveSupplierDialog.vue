@@ -36,6 +36,7 @@
                 item-value="id"
                 item-text="name"
                 :hint="countryAutocompleteHint"
+                :rules="countryRules"
                 return-object
                 label="Pais"
               >
@@ -94,7 +95,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { required, email, phone, maxLength } from "@/util/validators";
+import { required, email, phone, maxLength, referenced } from "@/util/validators";
 export default {
   props: {
     supplier: Object,
@@ -140,6 +141,9 @@ export default {
           accounts: []
         })
       );
+    },
+    countryRules() {
+      return [value => referenced(value, "El país es requerido")];
     },
     nameRules() {
       return [

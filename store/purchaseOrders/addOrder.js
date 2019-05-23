@@ -46,12 +46,11 @@ export const actions = {
   async fetchProducts({ state, commit }, pagination) {
     const { requestPage, size, sortBy, descending } = pagination || state.pagination;
     const direction = descending ? 'desc' : 'asc';
-    const { products, page } = await this.$products.listProducts(requestPage, size, sortBy, direction);
+    const { products, page } = await this.$products.pageProducts(requestPage, size, sortBy, direction);
     commit(SET_PRODUCTS, products);
     commit(SET_PAGE, page);
     commit(SET_PAGINATION, { requestPage, size, sortBy, descending })
   },
-  
   async fetchPurchaseStatuses({ commit }) {
     const purchaseStatuses = await this.$purchaseStatuses.listPurchaseStatuses();
     commit(SET_PURCHASE_STATUSES, purchaseStatuses);

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasDates(model)">
+  <div v-if="hasDates()">
     <v-timeline align-top dense>
       <v-timeline-item
         v-for="field in notNullDates"
@@ -54,14 +54,8 @@ export default {
       }
       return "";
     },
-    hasDates(model) {
-      var hasDates = false;
-      this.fields.forEach(f => {
-        if (this.model[f.value] != null) {
-          hasDates = true;
-        }
-      });
-      return hasDates;
+    hasDates() {
+      return this.fields.some(f => this.model[f.value] != null);
     }
   }
 };

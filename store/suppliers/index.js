@@ -46,7 +46,7 @@ export const actions = {
   async fetchSuppliers({ state, commit }, pagination) {
     const { requestPage, size, sortBy, descending } = pagination || state.pagination;
     const direction = descending ? 'desc' : 'asc';
-    const { suppliers, page } = await this.$suppliers.listSuppliers(requestPage, size, sortBy, direction);
+    const { suppliers, page } = await this.$suppliers.pageSuppliers(requestPage, size, sortBy, direction);
     commit(SET_SUPPLIERS, suppliers);
     commit(SET_PAGE, page);
     commit(SET_PAGINATION, { requestPage, size, sortBy, descending })

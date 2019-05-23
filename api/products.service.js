@@ -4,7 +4,7 @@ export default class ProductsService {
     this.$axios = $axios;
   }
 
-  async listProducts(page, size, sortBy, direction) {
+  async pageProducts(page, size, sortBy, direction) {
     const products = await this.$axios.$get(PRODUCTS_ENDPOINT, {
       params: { page, size, sort: sortBy ? `${sortBy},${direction}` : sortBy }
     });
