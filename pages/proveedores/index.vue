@@ -116,8 +116,8 @@ export default {
     SaveSupplierDialog
   },
   async fetch({ store }) {
-    const params = { requestPage: 0, size: 20, sortBy: undefined };
-    await store.dispatch("suppliers/fetchSuppliers", params);
+    //const params = { requestPage: 0, size: 20, sortBy: undefined};
+    //await store.dispatch("suppliers/fetchSuppliers", params); 
     await store.dispatch("suppliers/fetchCountries");
   },
   data() {

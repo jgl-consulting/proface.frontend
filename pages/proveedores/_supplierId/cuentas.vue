@@ -64,6 +64,7 @@ export default {
   async fetch({ params: { supplierId }, route, store }) {
     await store.dispatch("suppliers/details/fetchSupplier", { supplierId });
     await store.dispatch("suppliers/details/fetchBanks");
+    await store.dispatch("suppliers/details/fetchCurrencies");
   },
   components: {
     EmptyListTile,
@@ -84,7 +85,8 @@ export default {
       { text: "Acciones", value: "id", sortable: false }
     ],
     supplierAccountToSave: {
-      bank: { id: 0 }
+      bank: { id: 0 },
+      currency: { id: 0}
     },
     openSaveAccountDialog: false,
     dialogMode: "nuevo"
@@ -102,7 +104,8 @@ export default {
     openAddSupplierAccountDialog() {
       this.openSaveAccountDialog = true;
       this.supplierAccountToSave = {
-        bank: { id: 0 }
+        bank: { id: 0 },
+        currency: { id: 0}
       };
       this.dialogMode = "nuevo";
     },

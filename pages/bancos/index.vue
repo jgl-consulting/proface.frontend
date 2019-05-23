@@ -80,8 +80,8 @@ export default {
     SaveBankDialog
   },
   async fetch({ store }) {
-    const params = { requestPage: 0, size: 20, sortBy: undefined };
-    await store.dispatch("banks/fetchBanks", params);
+    //const params = { requestPage: 0, size: 20, sortBy: undefined };
+    //await store.dispatch("banks/fetchBanks", params);
     await store.dispatch("banks/fetchCountries");
   },
   data() {

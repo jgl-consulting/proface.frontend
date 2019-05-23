@@ -36,9 +36,9 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   async fetch({ params: { supplierId }, route, store }) {
-    const params = { requestPage: 0, size: 20, sortBy: undefined };
+    //const params = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch("suppliers/details/fetchSupplier", { supplierId });
-    await store.dispatch("suppliers/details/fetchPurchaseOrders", params);
+    //await store.dispatch("suppliers/details/fetchPurchaseOrders", params);
   },
   components: {
     EmptyListTile

@@ -83,11 +83,6 @@ export default {
     return {
       isOpen: false,
       supplierAccountModel: {},
-      currencies: [
-        { id: "PEN", name: "Nuevos Soles" },
-        { id: "USD", name: "Dólares Americanos" },
-        { id: "EUR", name: "Euros" }
-      ],
       valid: true
     };
   },
@@ -110,7 +105,7 @@ export default {
         return "Editar cuenta";
       }
     },
-    ...mapState("suppliers/details", ["banks"]),
+    ...mapState("suppliers/details", ["banks", "currencies"]),
     supplierAccountToSave() {
       return JSON.parse(
         JSON.stringify({

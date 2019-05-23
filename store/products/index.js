@@ -1,6 +1,7 @@
 import { 
     SET_PRODUCTS,
     SET_PRODUCT_LINES, 
+    SET_CURRENCIES,
     SET_PAGE,
     SET_PAGINATION
 } from '@/util/mutations-types';
@@ -8,6 +9,7 @@ import _ from 'lodash';
 export const state = () => ({
   products: [],
   productLines: [],
+  currencies: [],
   page: {
     size: 0,
     totalElements: 0,
@@ -30,6 +32,9 @@ export const mutations = {
   [SET_PRODUCT_LINES](state, productLines){
     state.productLines = productLines;
   },
+  [SET_CURRENCIES](state, currencies){
+    state.currencies = currencies;
+  },
   [SET_PAGE](state, page) {
     state.page = page;
   },
@@ -49,6 +54,10 @@ export const actions = {
   async fetchProductLines({ commit }) {
     const productLines = await this.$productLines.listProductLines();
     commit(SET_PRODUCT_LINES, productLines);
+  },
+  async fetchCurrencies({ commit }) {
+    const currencies = await this.$currencies.listCurrencies();
+    commit(SET_CURRENCIES, currencies);
   },
   async createProduct({ dispatch }, { product }) {
     await this.$products.createProduct(product);

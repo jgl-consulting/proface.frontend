@@ -1,18 +1,18 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <h1>Líneas de Producto</h1>
+      <h1>Estados de Compra</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddProductLineDialog">
+      <v-btn color="accent" @click="openAddPurchaseStatusDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="mx-1">Nueva Línea</span>
+        <span class="mx-1">Nuevo Estado</span>
       </v-btn>
     </template>
     <template #table>
       <v-data-table
         :headers="headers"
-        :items="productLines"
+        :items="purchaseStatuses"
         :expand="expand"
         item-key="id"
         class="elevation-1"
@@ -24,7 +24,9 @@
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
             <td class="text-xs-left">{{ props.item.id }}</td>
-            <td class="text-xs-left">{{ props.item.name }}</td>
+            <td class="text-xs-left">{{ props.item.nativeId }}</td>
+            <td class="text-xs-left">{{ props.item.description }}</td>
+            <td class="text-xs-left">{{ props.item.color }}</td>
             <td class="text-xs-center" @click.stop="() => {}">
               <v-btn
                 class="mx-1"
@@ -33,7 +35,7 @@
                 icon
                 flat
                 small
-                @click.stop="openEditProductLineDialog(props.item)"
+                @click.stop="openEditPurchaseStatusDialog(props.item)"
               >
                 <v-icon small>fa-pen</v-icon>
               </v-btn>
@@ -44,7 +46,7 @@
                 icon
                 flat
                 small
-                @click.stop="deleteProductLine(props.item)"
+                @click.stop="deletePurchaseStatus(props.item)"
               >
                 <v-icon small>fa-trash</v-icon>
               </v-btn>
@@ -54,40 +56,42 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-product-line-dialog
+      <save-purchase-status-dialog
         v-model="openSaveDialog"
-        :product-line="productLineToSave"
+        :purchase-status="purchaseStatusToSave"
         :mode="dialogMode"
-      ></save-product-line-dialog>
+      ></save-purchase-status-dialog>
     </template>
   </simple-table-layout>
 </template>
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
-import SaveProductLineDialog from "@/components/productLines/SaveProductLineDialog";
+import SavePurchaseStatusDialog from "@/components/purchaseStatuses/SavePurchaseStatusDialog";
 import { mapState, mapActions } from "vuex";
 export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Líneas de Producto", link: "/lineasProducto" }
+      { name: "Estados de Compra", link: "/estadosCompra" }
     ]
   },
   components: {
     EmptyListTile,
-    SaveProductLineDialog
+    SavePurchaseStatusDialog
   },
   async fetch({ store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined };
-    //await store.dispatch("productLines/fetchProductLines", params);
+    //await store.dispatch("purchaseStatuses/fetchPurchaseStatuses", params);
   },
   data() {
     return {
-      title: "Líneas de Producto",
+      title: "Estados de Compra",
       headers: [
         { text: "Id", align: "left", value: "id" },
-        { text: "Nombre", align: "left", value: "name" },
+        { text: "Id Local", align: "left", value: "nativeId" },
+        { text: "Descripción", align: "left", value: "description" },
+        { text: "Color", align: "left", value: "color" },
         { text: "Acciones", align: "center", value: "id", sortable: false }
       ],
       pagination: {
@@ -98,7 +102,7 @@ export default {
       },
       expand: false,
       pageSizes: [20, 30, 50, 100],
-      productLineToSave: {},
+      purchaseStatusToSave: {},
       openSaveDialog: false,
       dialogMode: "nuevo"
     };
@@ -114,36 +118,36 @@ export default {
           sortBy,
           descending
         };
-        await this.$store.dispatch("productLines/fetchProductLines", params);
+        await this.$store.dispatch("purchaseStatuses/fetchPurchaseStatuses", params);
       }
     }
   },
   computed: {
-    ...mapState("productLines", ["productLines", "page"])
+    ...mapState("purchaseStatuses", ["purchaseStatuses", "page"])
   },
   methods: {
-    ...mapActions("productLines", {
-      deleteProductLineAction: "deleteProductLine"
+    ...mapActions("purchaseStatuses", {
+      deletePurchaseStatusAction: "deletePurchaseStatus"
     }),
-    openAddProductLineDialog() {
+    openAddPurchaseStatusDialog() {
       this.openSaveDialog = true;
-      this.productLineToSave = {};
+      this.purchaseStatusToSave = {};
       this.dialogMode = "nuevo";
     },
-    openEditProductLineDialog(productLine) {
+    openEditPurchaseStatusDialog(purchaseStatus) {
       this.openSaveDialog = true;
-      this.productLineToSave = productLine;
+      this.purchaseStatusToSave = purchaseStatus;
       this.dialogMode = "editar";
     },
-    async deleteProductLine(productLine) {
+    async deletePurchaseStatus(purchaseStatus) {
       try {
-        const { name } = productLine;
+        const { description } = purchaseStatus;
         const res = await this.$confirm(
-          `¿Está seguro de borrar la línea '${name}'?`,
+          `¿Está seguro de borrar el estado '${description}'?`,
           { title: "Advertencia" }
         );
         if (res) {
-          await this.deleteProductLineAction({ productLine });
+          await this.deletePurchaseStatusAction({ purchaseStatus });
           await this.$confirm("Borrado correcto!", {
             title: "Éxito",
             color: "success"
@@ -167,4 +171,3 @@ export default {
   }
 };
 </script>
-

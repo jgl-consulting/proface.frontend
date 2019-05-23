@@ -88,8 +88,8 @@ export default {
     SavePurchaseOrderDialog
   },
   async fetch({ store }) {
-    const params = { requestPage: 0, size: 20, sortBy: undefined };
-    await store.dispatch("purchaseOrders/fetchPurchaseOrders", params);
+    //const params = { requestPage: 0, size: 20, sortBy: undefined };
+    //await store.dispatch("purchaseOrders/fetchPurchaseOrders", params);
   },
   data() {
     return {

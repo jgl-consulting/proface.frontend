@@ -8,12 +8,12 @@ export default [
     allowedRoles: ['COMPRAS']
   },
   {
-    id: 'proveedores',
-    title: 'Proveedores',
-    icon: 'fa fa-truck',
-    to: '/proveedores',
-    description: 'Gestión de proveedores de la compañía',
-    allowedRoles: ['COMPRAS'],
+    id: 'estadosCompra',
+    title: 'Estados de Compra',
+    icon: 'fa fa-project-diagram',
+    to: '/estadosCompra',
+    description: 'Gestión de los estados de compra de la compañía',
+    allowedRoles: ['COMPRAS']
   },
   {
     id: 'lineasProducto',
@@ -21,6 +21,14 @@ export default [
     icon: 'fa fa-tags',
     to: '/lineasProducto',
     description: 'Gestión de líneas de producto de la compañía',
+    allowedRoles: ['COMPRAS']
+  },
+  {
+    id: 'ordenesCompra',
+    title: 'Órdenes de Compra',
+    icon: 'fa fa-shopping-cart',
+    to: '/ordenesCompra',
+    description: 'Gestión de órdenes de compra de la compañía',
     allowedRoles: ['COMPRAS']
   },
   {
@@ -32,11 +40,11 @@ export default [
     allowedRoles: ['COMPRAS'],
   },
   {
-    id: 'ordenesCompra',
-    title: 'Órdenes de Compra',
-    icon: 'fa fa-shopping-bag',
-    to: '/ordenesCompra',
-    description: 'Gestión de órdenes de compra de la compañía',
-    allowedRoles: ['COMPRAS']
+    id: 'proveedores',
+    title: 'Proveedores',
+    icon: 'fa fa-truck',
+    to: '/proveedores',
+    description: 'Gestión de proveedores de la compañía',
+    allowedRoles: ['COMPRAS'],
   },
 ]

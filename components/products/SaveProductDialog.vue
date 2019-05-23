@@ -35,6 +35,7 @@
                 :items="currencies"
                 item-value="id"
                 item-text="name"
+                return-object
                 label="Moneda"
                 :rules="currencyRules"
               ></v-select>
@@ -80,11 +81,7 @@ export default {
     return {
       isOpen: false,
       productModel: {},
-      currencies: [
-        { id: "PEN", name: "Nuevos Soles" },
-        { id: "USD", name: "Dólares Americanos" },
-        { id: "EUR", name: "Euros" }
-      ]
+      valid: false
     };
   },
   watch: {
@@ -102,7 +99,7 @@ export default {
         return "Editar producto";
       }
     },
-    ...mapState("products", ["productLines"]),
+    ...mapState("products", ["productLines", "currencies"]),
     productToSave() {
       return JSON.parse(
         JSON.stringify({

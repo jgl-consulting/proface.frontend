@@ -30,7 +30,7 @@
             <td class="text-xs-left">{{ props.item.salePrice + ' ' + props.item.currency }}</td>
             <td class="text-xs-left">{{ props.item.line.name }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
-              <v-btn
+              <!--v-btn
                 class="mx-1"
                 color="primary"
                 dark
@@ -41,7 +41,7 @@
                 :to="props.item.id | path($route.fullPath)"
               >
                 <v-icon small>fa-ellipsis-v</v-icon>
-              </v-btn>
+              </v-btn-->
               <v-btn
                 class="mx-1"
                 color="accent"
@@ -91,9 +91,10 @@ export default {
     SaveProductDialog
   },
   async fetch({ store }) {
-    const params = { requestPage: 0, size: 20, sortBy: undefined };
-    await store.dispatch("products/fetchProducts", params);
+    //const params = { requestPage: 0, size: 20, sortBy: undefined };
+    //await store.dispatch("products/fetchProducts", params);
     await store.dispatch("products/fetchProductLines");
+    await store.dispatch("products/fetchCurrencies");
   },
   data() {
     return {
@@ -120,7 +121,8 @@ export default {
       expand: false,
       pageSizes: [20, 30, 50, 100],
       productToSave: {
-        line: { id: 0 }
+        line: { id: 0 },
+        currency: { id: 0}
       },
       openSaveDialog: false,
       dialogMode: "nuevo"
@@ -151,7 +153,8 @@ export default {
     openAddProductDialog() {
       this.openSaveDialog = true;
       this.productToSave = {
-        line: { id: 0 }
+        line: { id: 0 },
+        currency: { id: 0 }
       };
       this.dialogMode = "nuevo";
     },

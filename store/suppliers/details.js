@@ -1,6 +1,7 @@
 import {
   SET_SUPPLIER,
   SET_BANKS,
+  SET_CURRENCIES,
   SET_PURCHASE_ORDERS,
   SET_PAGE,
   SET_PAGINATION
@@ -9,6 +10,7 @@ export const state = () => ({
   supplier: {},
   banks: [],
   purchaseOrders: [],
+  currencies: [],
   page: {
     size: 0,
     totalElements: 0,
@@ -29,6 +31,9 @@ export const mutations = {
   },
   [SET_BANKS](state, banks) {
     state.banks = banks;
+  },
+  [SET_CURRENCIES](state, currencies) {
+    state.currencies = currencies;
   },
   [SET_PURCHASE_ORDERS](state, purchaseOrders) {
     state.purchaseOrders = purchaseOrders;
@@ -67,6 +72,10 @@ export const actions = {
   async fetchBanks({ commit }) {
     const banks = await this.$banks.listBanks();
     commit(SET_BANKS, banks);
+  },
+  async fetchCurrencies({ commit }){
+    const currencies = await this.$currencies.listCurrencies();
+    commit(SET_CURRENCIES, currencies);
   },
   async fetchPurchaseOrders({ state, commit }, pagination) {
     const { requestPage, size, sortBy, descending } = pagination || state.pagination;

@@ -11,3 +11,4 @@ export const PURCHASE_COSTS_ENDPOINT = 'api/purchaseCosts';
 export const PURCHASE_INVOICES_ENDPOINT = 'api/purchaseInvoices';
 export const RECEPTION_STATUSES_ENDPOINT = 'api/receptionStatuses';
 export const BANKS_ENDPOINT = 'api/banks';
+export const CURRENCIES_ENDPOINT = 'api/currencies';
