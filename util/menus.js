@@ -12,7 +12,15 @@ export default [
     title: 'Estados de Compra',
     icon: 'fa fa-project-diagram',
     to: '/estadosCompra',
-    description: 'Gestión de los estados de compra de la compañía',
+    description: 'Gestión de estados de compra de la compañía',
+    allowedRoles: ['COMPRAS']
+  },
+  {
+    id: 'estadosRecepcion',
+    title: 'Estados de Recepción',
+    icon: 'fa fa-exclamation-circle',
+    to: '/estadosRecepcion',
+    description: 'Gestión de estados de recepción de la compañía',
     allowedRoles: ['COMPRAS']
   },
   {

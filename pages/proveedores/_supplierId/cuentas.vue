@@ -16,9 +16,12 @@
           <td class="text-xs-left">{{ item.number }}</td>
           <td class="text-xs-left">{{ item.cci }}</td>
           <td class="text-xs-left">{{ item.description || "No cuenta con descripción" }}</td>
-          <td class="text-xs-left">{{ item.currency }}</td>
+          <td class="text-xs-left">{{ item.currency.name}}</td>
           <td class="text-xs-left">{{ item.bank.name }}</td>
-          <td class="text-xs-left">{{ item.bank.country.name }}</td>
+          <td class="text-xs-left">
+              <span class="mr-2">{{ item.bank.country.iso }}</span>
+              <flag :iso="item.bank.country.iso" :title="item.bank.country.name" :squared="false"></flag>
+          </td>
           <td class="text-xs-left">
             <v-btn
               class="mx-1"
@@ -86,7 +89,7 @@ export default {
     ],
     supplierAccountToSave: {
       bank: { id: 0 },
-      currency: { id: 0}
+      currency: { id: 0 }
     },
     openSaveAccountDialog: false,
     dialogMode: "nuevo"
@@ -105,7 +108,7 @@ export default {
       this.openSaveAccountDialog = true;
       this.supplierAccountToSave = {
         bank: { id: 0 },
-        currency: { id: 0}
+        currency: { id: 0 }
       };
       this.dialogMode = "nuevo";
     },

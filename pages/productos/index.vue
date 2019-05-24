@@ -27,7 +27,7 @@
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.description }}</td>
-            <td class="text-xs-left">{{ props.item.salePrice + ' ' + props.item.currency }}</td>
+            <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.salePrice }}</td>
             <td class="text-xs-left">{{ props.item.line.name }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
               <!--v-btn
@@ -122,7 +122,7 @@ export default {
       pageSizes: [20, 30, 50, 100],
       productToSave: {
         line: { id: 0 },
-        currency: { id: 0}
+        currency: { id: 0 }
       },
       openSaveDialog: false,
       dialogMode: "nuevo"

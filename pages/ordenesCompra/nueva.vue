@@ -32,10 +32,10 @@
             return-object
             label="Cuenta">
             <template #item="{ item }">
-              {{ item.description }} - {{ item.currency }}
+              ({{ item.currency.symbol }}) {{ item.cci }} 
             </template>
             <template #selection="{ item }">
-              {{ item.description }} - {{ item.currency }}
+              {{ item.cci }} 
             </template>
           </v-select>
         </v-flex>
@@ -106,12 +106,12 @@
               <td class="text-xs-left">
                 {{ props.item.name }}
               </td>
-              <td class="text-xs-right">
+              <td class="text-xs-left">
                 {{ props.item.salePrice }}
               </td>
               <td>
                 <v-edit-dialog
-                  class="text-xs-right"
+                  class="text-xs-left"
                   :return-value.sync="props.item.qty"
                   lazy
                 > 
@@ -126,12 +126,12 @@
                   </template>
                 </v-edit-dialog>
               </td>
-              <td class="text-xs-right">
+              <td class="text-xs-left">
                 {{ props.item.salePrice * props.item.qty }}
               </td>
               <td>
                 <v-edit-dialog
-                  class="text-xs-right"
+                  class="text-xs-left"
                   :return-value.sync="props.item.discount"
                   lazy
                 > 
@@ -146,7 +146,7 @@
                   </template>
                 </v-edit-dialog>
               </td>
-              <td class="text-xs-right">
+              <td class="text-xs-left">
                 {{ props.item.salePrice * props.item.qty * (100 - props.item.discount)/100 }}
               </td>
               <td class="text-xs-center">
@@ -201,7 +201,7 @@ export default {
     ProductListDialog
   },
   async fetch({ store }) {
-    await store.dispatch('purchaseOrders/addOrder/fetchProducts');
+    //await store.dispatch('purchaseOrders/addOrder/fetchProducts');
     await store.dispatch('purchaseOrders/addOrder/fetchPurchaseStatuses');
     await store.dispatch('purchaseOrders/addOrder/fetchSuppliers');
   },

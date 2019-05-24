@@ -21,8 +21,10 @@
             <td>{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ props.item.creationDate }}</td>
-            <td class="text-xs-left">{{ props.item.receptionDate }}</td>
-            <td class="text-xs-left">{{ props.item.status.description }}</td>
+            <td class="text-xs-left">
+              <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
+              - {{props.item.status.description}}
+            </td>
           </tr>
         </template>
       </v-data-table>
@@ -54,7 +56,6 @@ export default {
         },
         { text: "Id Local", value: "nativeId" },
         { text: "Fecha de Emisión", value: "creationDate" },
-        { text: "Fecha de Recepción", value: "receptionDate" },
         { text: "Estado", value: "status" }
       ],
       pagination: {
@@ -90,8 +91,16 @@ export default {
       return this.purchaseOrders || [];
     }
   },
-  optional(object) {
-    return object || {};
+  methods: {
+    getColor(status) {
+      return status.color || "primary";
+    },
+    getIcon(status) {
+      return status.icon || "fa fa-calendar";
+    },
+    optional(object) {
+      return object || {};
+    }
   }
 };
 </script>

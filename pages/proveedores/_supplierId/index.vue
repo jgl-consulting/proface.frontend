@@ -28,7 +28,7 @@
     </v-flex>
     <v-flex md5 px-2>
       <v-subheader>Último pedido</v-subheader>
-      <model-timeline emptyTitle="El proveedor no cuenta con órdenes de compra." :fields="purchaseOrderFields" :model="supplierPurchaseOrder"></model-timeline>
+      <model-timeline emptyTitle="El proveedor no cuenta con órdenes de compra." :model="purchaseTraces"></model-timeline>
     </v-flex>
   </v-layout>
 </template>
@@ -69,38 +69,6 @@ export default {
         { key: "phone", title: "Teléfono", icon: "fa-phone" },
         { key: "email", title: "Correo electrónico", icon: "fa-envelope" }
       ],
-      purchaseOrderFields: [
-        {
-          key: 1,
-          value: "creationDate",
-          title: "Fecha de Emisión",
-          icon: "fa-calendar-plus"
-        },
-        {
-          key: 2,
-          value: "quotationDate",
-          title: "Fecha de Presupuesto",
-          icon: "fa-calendar-alt"
-        },
-        {
-          key: 3,
-          value: "billingDate",
-          title: "Fecha de Facturación",
-          icon: "fa-calendar-day"
-        },
-        {
-          key: 4,
-          value: "receptionDate",
-          title: "Fecha de Recepción",
-          icon: "fa-calendar-check"
-        },
-        {
-          key: 5,
-          value: "cancellationDate",
-          title: "Fecha de Cancelación",
-          icon: "fa-calendar-times"
-        }
-      ]
     };
   },
   computed: {
@@ -115,12 +83,12 @@ export default {
       }
       return {};
     },
-    supplierPurchaseOrder() {
+    purchaseTraces() {
       if (this.supplier.purchases.length > 0) {
-        const [purchaseOrder] = this.supplier.purchases;
-        return purchaseOrder;
+        const purchaseOrder = this.supplier.purchases[0];
+        return purchaseOrder.traces;
       } else {
-        return {};
+        return [];
       }
     }
   }

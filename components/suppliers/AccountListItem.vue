@@ -8,7 +8,7 @@
     <v-list-tile-content>
       <v-list-tile-title>
         {{ description }}
-        <span>(Moneda: {{ currency }})</span>
+        <span>(Moneda: {{ currency.symbol }})</span>
       </v-list-tile-title>
       <v-list-tile-sub-title>
         {{ number }}(CCI: {{ cci }}) - {{ bank.name }}({{bank.country.name}})

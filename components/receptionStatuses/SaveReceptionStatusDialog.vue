@@ -8,28 +8,28 @@
         <v-toolbar-title class="font-weight-bold">{{ title }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn dark icon @click="savePurchaseStatus">
+          <v-btn dark icon @click="saveReceptionStatus">
             <v-icon>fa-save</v-icon>
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-container>
-        <v-form ref="purchaseStatusForm" v-model="valid" lazy-validation>
+        <v-form ref="receptionStatusForm" v-model="valid" lazy-validation>
           <v-layout row wrap>
             <v-flex xs12 pa-2>
               <h3 class="text--blue-grey">Datos del estado</h3>
             </v-flex>
             <v-flex sm4 pa-2>
-              <v-text-field v-model="purchaseStatusModel.nativeId" label="Id Local" :rules="nativeIdRules"></v-text-field>
+              <v-text-field v-model="receptionStatusModel.nativeId" label="Id Local" :rules="nativeIdRules"></v-text-field>
             </v-flex>
             <v-flex sm4 pa-2>
-              <v-text-field v-model="purchaseStatusModel.color" label="Color"></v-text-field>
+              <v-text-field v-model="receptionStatusModel.color" label="Color"></v-text-field>
             </v-flex>
             <v-flex sm4 pa-2>
-              <v-text-field v-model="purchaseStatusModel.icon" label="Ícono"></v-text-field>
+              <v-text-field v-model="receptionStatusModel.icon" label="Ícono"></v-text-field>
             </v-flex>
             <v-flex sm12 pa-2>
-              <v-text-field v-model="purchaseStatusModel.description" label="Descripción" :rules="descriptionRules"></v-text-field>
+              <v-text-field v-model="receptionStatusModel.description" label="Descripción" :rules="descriptionRules"></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -44,21 +44,21 @@ import { required } from "@/util/validators";
 
 export default {
   props: {
-    purchaseStatus: Object,
+    receptionStatus: Object,
     mode: String,
     value: Boolean
   },
   data() {
     return {
       isOpen: false,
-      purchaseStatusModel: {},
+      receptionStatusModel: {},
       valid: true
     };
   },
   watch: {
-    purchaseStatus: {
+    receptionStatus: {
       handler() {
-        this.purchaseStatusModel = JSON.parse(JSON.stringify(this.purchaseStatus));
+        this.receptionStatusModel = JSON.parse(JSON.stringify(this.receptionStatus));
       }
     }
   },
@@ -70,10 +70,10 @@ export default {
         return "Editar estado";
       }
     },
-    purchaseStatusToSave() {
+    receptionStatusToSave() {
       return JSON.parse(
         JSON.stringify({
-          ...this.purchaseStatusModel
+          ...this.receptionStatusModel
         })
       );
     },
@@ -85,12 +85,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions("purchaseStatuses", ["createPurchaseStatus", "updatePurchaseStatus"]),
-    async savePurchaseStatus() {
-      if (this.$refs.purchaseStatusForm.validate()) {
-        const purchaseStatus = this.purchaseStatusToSave;
+    ...mapActions("receptionStatuses", ["createReceptionStatus", "updateReceptionStatus"]),
+    async saveReceptionStatus() {
+      if (this.$refs.receptionStatusForm.validate()) {
+        const receptionStatus = this.receptionStatusToSave;
         try {
-          const { description } = purchaseStatus;
+          const { description } = receptionStatus;
           const res = await this.$confirm(
             `¿Está seguro de guardar el estado '${description}'?`,
             {
@@ -99,9 +99,9 @@ export default {
           );
           if (res) {
             if (this.mode === "nuevo") {
-              await this.createPurchaseStatus({ purchaseStatus });
+              await this.createReceptionStatus({ receptionStatus });
             } else if (this.mode === "editar") {
-              await this.updatePurchaseStatus({ purchaseStatus });
+              await this.updateReceptionStatus({ receptionStatus });
             }
 
             await this.$confirm("Guardado correcto!", {
@@ -143,7 +143,7 @@ export default {
   },
   created() {
     this.isOpen = this.value;
-    this.purchaseStatusModel = { ...this.purchaseStatus };
+    this.receptionStatusModel = { ...this.receptionStatus };
   }
 };
 </script>

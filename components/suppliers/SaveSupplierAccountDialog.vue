@@ -37,6 +37,7 @@
                 item-value="id"
                 item-text="name"
                 label="Moneda"
+                return-object
                 :rules="currencyRules"
               ></v-select>
             </v-flex>

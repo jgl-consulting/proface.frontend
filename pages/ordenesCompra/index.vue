@@ -27,7 +27,10 @@
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
             <td class="text-xs-left">{{ props.item.supplier.name }}</td>
-            <td class="text-xs-left">{{ props.item.status.description }}</td>
+            <td class="text-xs-left">
+              <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
+              - {{props.item.status.description}}
+            </td>
             <td class="text-xs-left" @click.stop="() => {}">
               <v-btn
                 class="mx-1"
@@ -199,6 +202,12 @@ export default {
         color: "error",
         width: 500
       });
+    },
+    getColor(status) {
+      return status.color || "primary";
+    },
+    getIcon(status) {
+      return status.icon || "fa fa-calendar";
     }
   },
   filters: {

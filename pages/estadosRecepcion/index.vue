@@ -1,10 +1,10 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <h1>Estados de Compra</h1>
+      <h1>Estados de Recepción</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddPurchaseStatusDialog">
+      <v-btn color="accent" @click="openAddReceptionStatusDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nuevo Estado</span>
       </v-btn>
@@ -12,7 +12,7 @@
     <template #table>
       <v-data-table
         :headers="headers"
-        :items="purchaseStatuses"
+        :items="receptionStatuses"
         :expand="expand"
         item-key="id"
         class="elevation-1"
@@ -36,7 +36,7 @@
                 icon
                 flat
                 small
-                @click.stop="openEditPurchaseStatusDialog(props.item)"
+                @click.stop="openEditReceptionStatusDialog(props.item)"
               >
                 <v-icon small>fa-pen</v-icon>
               </v-btn>
@@ -47,7 +47,7 @@
                 icon
                 flat
                 small
-                @click.stop="deletePurchaseStatus(props.item)"
+                @click.stop="deleteReceptionStatus(props.item)"
               >
                 <v-icon small>fa-trash</v-icon>
               </v-btn>
@@ -57,37 +57,37 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-purchase-status-dialog
+      <save-reception-status-dialog
         v-model="openSaveDialog"
-        :purchase-status="purchaseStatusToSave"
+        :reception-status="receptionStatusToSave"
         :mode="dialogMode"
-      ></save-purchase-status-dialog>
+      ></save-reception-status-dialog>
     </template>
   </simple-table-layout>
 </template>
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
-import SavePurchaseStatusDialog from "@/components/purchaseStatuses/SavePurchaseStatusDialog";
+import SaveReceptionStatusDialog from "@/components/receptionStatuses/SaveReceptionStatusDialog";
 import { mapState, mapActions } from "vuex";
 export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Estados de Compra", link: "/estadosCompra" }
+      { name: "Estados de Recepción", link: "/estadosRecepcion" }
     ]
   },
   components: {
     EmptyListTile,
-    SavePurchaseStatusDialog
+    SaveReceptionStatusDialog
   },
   async fetch({ store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined };
-    //await store.dispatch("purchaseStatuses/fetchPurchaseStatuses", params);
+    //await store.dispatch("receptionStatuses/fetchReceptionStatuses", params);
   },
   data() {
     return {
-      title: "Estados de Compra",
+      title: "Estados de Recepción",
       headers: [
         { text: "Id", align: "left", value: "id" },
         { text: "Id Local", align: "left", value: "nativeId" },
@@ -104,7 +104,7 @@ export default {
       },
       expand: false,
       pageSizes: [20, 30, 50, 100],
-      purchaseStatusToSave: {},
+      receptionStatusToSave: {},
       openSaveDialog: false,
       dialogMode: "nuevo"
     };
@@ -120,36 +120,36 @@ export default {
           sortBy,
           descending
         };
-        await this.$store.dispatch("purchaseStatuses/fetchPurchaseStatuses", params);
+        await this.$store.dispatch("receptionStatuses/fetchReceptionStatuses", params);
       }
     }
   },
   computed: {
-    ...mapState("purchaseStatuses", ["purchaseStatuses", "page"])
+    ...mapState("receptionStatuses", ["receptionStatuses", "page"])
   },
   methods: {
-    ...mapActions("purchaseStatuses", {
-      deletePurchaseStatusAction: "deletePurchaseStatus"
+    ...mapActions("receptionStatuses", {
+      deleteReceptionStatusAction: "deleteReceptionStatus"
     }),
-    openAddPurchaseStatusDialog() {
+    openAddReceptionStatusDialog() {
       this.openSaveDialog = true;
-      this.purchaseStatusToSave = {};
+      this.receptionStatusToSave = {};
       this.dialogMode = "nuevo";
     },
-    openEditPurchaseStatusDialog(purchaseStatus) {
+    openEditReceptionStatusDialog(receptionStatus) {
       this.openSaveDialog = true;
-      this.purchaseStatusToSave = purchaseStatus;
+      this.receptionStatusToSave = receptionStatus;
       this.dialogMode = "editar";
     },
-    async deletePurchaseStatus(purchaseStatus) {
+    async deleteReceptionStatus(receptionStatus) {
       try {
-        const { description } = purchaseStatus;
+        const { description } = receptionStatus;
         const res = await this.$confirm(
           `¿Está seguro de borrar el estado '${description}'?`,
           { title: "Advertencia" }
         );
         if (res) {
-          await this.deletePurchaseStatusAction({ purchaseStatus });
+          await this.deleteReceptionStatusAction({ receptionStatus });
           await this.$confirm("Borrado correcto!", {
             title: "Éxito",
             color: "success"

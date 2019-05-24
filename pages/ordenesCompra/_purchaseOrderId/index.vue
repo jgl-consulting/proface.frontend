@@ -5,7 +5,7 @@
     </v-flex>
     <v-flex md6 px-2>
       <v-subheader>Estado</v-subheader>
-      <model-timeline emptyTitle="La orden de compra no tiene seguimiento" :fields="stateFields" :model="purchaseOrder"></model-timeline>
+      <model-timeline emptyTitle="La orden de compra no tiene seguimiento" :model="purchaseTraces"></model-timeline>
     </v-flex>
   </v-layout>
 </template>
@@ -35,42 +35,13 @@ export default {
           render: supplier => supplier.name
         }
       ],
-      stateFields: [
-        {
-          key: 1,
-          value: "creationDate",
-          title: "Fecha de Emisión",
-          icon: "fa-calendar-plus"
-        },
-        {
-          key: 2,
-          value: "quotationDate",
-          title: "Fecha de Presupuesto",
-          icon: "fa-calendar-alt"
-        },
-        {
-          key: 3,
-          value: "billingDate",
-          title: "Fecha de Facturación",
-          icon: "fa-calendar-day"
-        },
-        {
-          key: 4,
-          value: "receptionDate",
-          title: "Fecha de Recepción",
-          icon: "fa-calendar-check"
-        },
-        {
-          key: 5,
-          value: "cancellationDate",
-          title: "Fecha de Cancelación",
-          icon: "fa-calendar-times"
-        }
-      ]
     };
   },
   computed: {
-    ...mapState("purchaseOrders/details", ["purchaseOrder"])
+    ...mapState("purchaseOrders/details", ["purchaseOrder"]),
+    purchaseTraces() {
+      return this.purchaseOrder.traces;
+    }
   }
 };
 </script>

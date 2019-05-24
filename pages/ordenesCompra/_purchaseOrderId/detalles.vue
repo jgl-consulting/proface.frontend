@@ -16,9 +16,13 @@
           <td class="text-xs-left">{{ item.product.name }}</td>
           <td class="text-xs-left">{{ item.quantity }}</td>
           <td class="text-xs-left">{{ item.unitPrice }}</td>
+          <td class="text-xs-left">{{ item.purchasePrice }}</td>
           <td class="text-xs-left">{{ item.disscount }}</td>
           <td class="text-xs-left">{{ item.finalPrice }}</td>
-          <td class="text-xs-left">{{ item.status.description }}</td>
+          <td class="text-xs-left">
+            <v-icon :color="getColor(item.status)" small>{{getIcon(item.status)}}</v-icon>
+            {{item.status.description}}
+          </td>
           <td class="text-xs-left">
             <v-btn
               class="mx-1"
@@ -78,6 +82,7 @@ export default {
       { text: "Producto", value: "product" },
       { text: "Cantidad", value: "quantity" },
       { text: "Precio Unitario", value: "unitPrice" },
+      { text: "Precio Neto", value: "purchasePrice" },
       { text: "Descuento", value: "disscount" },
       { text: "Precio Final", value: "finalPrice" },
       { text: "Estado", value: "status" },
@@ -143,6 +148,12 @@ export default {
         color: "error",
         width: 500
       });
+    },
+    getColor(status) {
+      return status.color || "primary";
+    },
+    getIcon(status) {
+      return status.icon || "fa fa-calendar";
     }
   }
 };
