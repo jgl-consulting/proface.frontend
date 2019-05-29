@@ -33,7 +33,8 @@ export default {
           title: "Proveedor",
           icon: "fa-truck",
           render: supplier => supplier.name
-        }
+        },
+        { key: "total", title: "Total", icon: "fa-coins"}
       ],
     };
   },

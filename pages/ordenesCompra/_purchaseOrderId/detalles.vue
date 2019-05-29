@@ -15,10 +15,10 @@
         <template #items="{ item }">
           <td class="text-xs-left">{{ item.product.name }}</td>
           <td class="text-xs-left">{{ item.quantity }}</td>
-          <td class="text-xs-left">{{ item.unitPrice }}</td>
-          <td class="text-xs-left">{{ item.purchasePrice }}</td>
-          <td class="text-xs-left">{{ item.disscount }}</td>
-          <td class="text-xs-left">{{ item.finalPrice }}</td>
+          <td class="text-xs-left">{{ formatPrice(item.unitPrice) }}</td>
+          <td class="text-xs-left">{{ formatPrice(item.purchasePrice) }}</td>
+          <td class="text-xs-left">{{ formatPrice(item.disscount) }}</td>
+          <td class="text-xs-left">{{ formatPrice(item.finalPrice) }}</td>
           <td class="text-xs-left">
             <v-icon :color="getColor(item.status)" small>{{getIcon(item.status)}}</v-icon>
             {{item.status.description}}
@@ -46,6 +46,11 @@
             >
               <v-icon small>fa-trash</v-icon>
             </v-btn>
+          </td>
+        </template>
+        <template #footer>
+          <td class="text-sm-left" :colspan="purchaseDetailHeaders.length">
+            <h3>Total: {{ formatPrice(purchaseDetailAmount) }}</h3>
           </td>
         </template>
       </v-data-table>
@@ -99,12 +104,22 @@ export default {
     ...mapState("purchaseOrders/details", ["purchaseOrder"]),
     purchaseDetails() {
       return this.purchaseOrder.details || [];
+    },
+    purchaseDetailAmount() {
+      return this.purchaseDetails.reduce(
+        (totalAmount, { quantity, unitPrice, disscount }) =>
+          totalAmount + unitPrice * quantity - disscount,
+        0
+      );
     }
   },
   methods: {
     ...mapActions("purchaseOrders/details", {
       deletePurchaseDetailAction: "deletePurchaseDetail"
     }),
+    formatPrice(price) {
+      return this.purchaseOrder.currency.symbol + ' ' + price;
+    },
     openAddPurchaseDetailDialog() {
       this.openSaveDetailDialog = true;
       this.purchaseDetailToSave = {

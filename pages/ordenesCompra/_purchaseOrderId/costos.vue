@@ -15,7 +15,7 @@
         <template #items="{ item }">
           <td class="text-xs-left">{{ item.id }}</td>
           <td class="text-xs-left">{{ item.description }}</td>
-          <td class="text-xs-left">{{ item.totalCost }}</td>
+          <td class="text-xs-left">{{ formatPrice(item.totalCost) }}</td>
           <td class="text-xs-center">
             <v-btn
               class="mx-1"
@@ -41,6 +41,11 @@
             </v-btn>
           </td>
         </template>
+        <template #footer>
+          <td class="text-sm-left" :colspan="purchaseCostHeaders.length">
+            <h3>Total: {{ formatPrice(purchaseCostAmount) }}</h3>
+          </td>
+        </template>
       </v-data-table>
     </template>
     <template #dialog>
@@ -63,6 +68,7 @@ export default {
     await store.dispatch("purchaseOrders/details/fetchPurchaseOrder", {
       purchaseOrderId
     });
+    await store.dispatch("purchaseOrders/details/fetchCurrencies");
   },
   components: {
     EmptyListTile,
@@ -75,7 +81,9 @@ export default {
       { text: "Monto", value: "totalCost" },
       { text: "Acciones", value: "id", align: "center", sortable: false }
     ],
-    purchaseCostToSave: {},
+    purchaseCostToSave: {
+      currency: { id: 0}
+    },
     openSaveCostDialog: false,
     dialogMode: "nuevo"
   }),
@@ -83,15 +91,27 @@ export default {
     ...mapState("purchaseOrders/details", ["purchaseOrder"]),
     purchaseCosts() {
       return this.purchaseOrder.costs || [];
+    },
+    purchaseCostAmount() {
+      return this.purchaseCosts.reduce(
+        (totalAmount, { totalCost }) =>
+          totalAmount + totalCost,
+        0
+      );
     }
   },
   methods: {
     ...mapActions("purchaseOrders/details", {
       deletePurchaseCostAction: "deletePurchaseCost"
     }),
+    formatPrice(price) {
+      return this.purchaseOrder.currency.symbol + ' ' + price;
+    },
     openAddPurchaseCostDialog() {
       this.openSaveCostDialog = true;
-      this.purchaseCostToSave = {};
+      this.purchaseCostToSave = {
+        currency: { id: 0}
+      };
       this.dialogMode = "nuevo";
     },
     openEditPurchaseCostDialog(purchaseCost) {

@@ -1,11 +1,13 @@
 import { 
     SET_PURCHASE_ORDER,
     SET_PRODUCTS,
+    SET_CURRENCIES,
     SET_RECEPTION_STATUSES
   } from '@/util/mutations-types'
   export const state = () => ({
     purchaseOrder: {},
     products: [],
+    currencies: [],
     receptionStatuses: []
   });
   
@@ -15,6 +17,9 @@ import {
     },
     [SET_RECEPTION_STATUSES](state, receptionStatuses){
       state.receptionStatuses = receptionStatuses;
+    },
+    [SET_CURRENCIES](state, currencies){
+      state.currencies = currencies;
     },
     [SET_PRODUCTS](state, products){
       state.products = products;
@@ -30,6 +35,10 @@ import {
     async fetchProducts({commit}) {
       const products = await this.$products.listProducts();
       commit(SET_PRODUCTS, products);
+    },
+    async fetchCurrencies({commit}) {
+      const currencies = await this.$currencies.listCurrencies();
+      commit(SET_CURRENCIES, currencies);
     },
     async createPurchaseDetail({ state, dispatch }, { purchaseDetail }) {
     

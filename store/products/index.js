@@ -51,6 +51,14 @@ export const actions = {
     commit(SET_PAGE, page);
     commit(SET_PAGINATION, { requestPage, size, sortBy, descending })
   },
+  async searchProducts({ state, commit }, search, pagination) {
+    const { requestPage, size, sortBy, descending } = pagination || state.pagination;
+    const direction = descending ? 'desc' : 'asc';
+    const { products, page } = await this.$products.pageProducts(search, requestPage, size, sortBy, direction);
+    commit(SET_PRODUCTS, products);
+    commit(SET_PAGE, page);
+    commit(SET_PAGINATION, { requestPage, size, sortBy, descending })
+  },
   async fetchProductLines({ commit }) {
     const productLines = await this.$productLines.listProductLines();
     commit(SET_PRODUCT_LINES, productLines);

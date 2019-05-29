@@ -4,12 +4,14 @@ import {
   SET_PAGINATION,
   SET_PURCHASE_STATUSES, 
   SET_SUPPLIERS,
+  SET_CURRENCIES
 } from '@/util/mutations-types';
 import _ from 'lodash';
 export const state = () => ({
   products: [],
   purchaseStatuses: [],
   suppliers: [],
+  currencies: [],
   page: {
     size: 0,
     totalElements: 0,
@@ -40,6 +42,9 @@ export const mutations = {
   },
   [SET_SUPPLIERS](state, suppliers){
     state.suppliers = suppliers;
+  },
+  [SET_CURRENCIES](state, currencies){
+    state.currencies = currencies;
   }
 }
 export const actions = {
@@ -54,6 +59,10 @@ export const actions = {
   async fetchPurchaseStatuses({ commit }) {
     const purchaseStatuses = await this.$purchaseStatuses.listPurchaseStatuses();
     commit(SET_PURCHASE_STATUSES, purchaseStatuses);
+  },
+  async fetchCurrencies({commit}){
+    const currencies = await this.$currencies.listCurrencies();
+    commit(SET_CURRENCIES, currencies);
   },
   async fetchSuppliers({commit}) {
     const suppliers = await this.$suppliers.listSuppliers();

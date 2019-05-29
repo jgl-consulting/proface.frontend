@@ -20,7 +20,8 @@
           <tr @click.stop="props.expanded = !props.expanded">
             <td>{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
-            <td class="text-xs-left">{{ props.item.creationDate }}</td>
+            <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
+            <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.total }}</td> 
             <td class="text-xs-left">
               <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
               - {{props.item.status.description}}
@@ -35,7 +36,7 @@
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
 import { mapState, mapActions } from "vuex";
-
+import moment from "moment";
 export default {
   async fetch({ params: { supplierId }, route, store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined };
@@ -56,6 +57,7 @@ export default {
         },
         { text: "Id Local", value: "nativeId" },
         { text: "Fecha de Emisión", value: "creationDate" },
+        { text: "Total", value: "total"},
         { text: "Estado", value: "status" }
       ],
       pagination: {
@@ -92,6 +94,17 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      if (date != undefined) return this.dateMoment(date).format("DD/MM/YYYY");
+      return "";
+    },
+    dateMoment(date) {
+      if (date != undefined) {
+        const momentDate = moment(date);
+        return momentDate.isValid() ? momentDate : moment.now();
+      }
+      return "";
+    },
     getColor(status) {
       return status.color || "primary";
     },

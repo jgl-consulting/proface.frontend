@@ -34,9 +34,6 @@
                       {{ props.item.description }}
                   </td>
                   <td class="text-xs-right">
-                      {{ props.item.salePrice }}
-                  </td>
-                  <td class="text-xs-right">
                     {{ props.item.line.name }}
                   </td>
                   <td class="text-xs-center">
@@ -73,7 +70,6 @@ export default {
       { text: 'Id Local', value: 'nativeId' },
       { text: 'Nombre', value: 'name' },
       { text: 'Descripción', value: 'description' },
-      { text: 'Precio de Venta', value: 'salePrice' },
       { text: 'Línea', value: 'line' },
       { text: 'Acciones', value: 'id', sortable: false,}
     ],

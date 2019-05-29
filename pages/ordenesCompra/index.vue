@@ -27,6 +27,7 @@
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
             <td class="text-xs-left">{{ props.item.supplier.name }}</td>
+            <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.total }}</td> 
             <td class="text-xs-left">
               <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
               - {{props.item.status.description}}
@@ -106,6 +107,7 @@ export default {
         { text: "Id Local", value: "nativeId" },
         { text: "Fecha de Emisión", value: "creationDate" },
         { text: "Proveedor", value: "supplier" },
+        { text: "Total", value: "total"},
         { text: "Estado", value: "status" },
         { text: "Acciones", value: "id", sortable: false }
       ],

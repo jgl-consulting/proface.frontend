@@ -19,12 +19,22 @@
             <v-flex xs12 pa-2>
               <h3 class="text--blue-grey">Datos del costo</h3>
             </v-flex>
-            <v-flex sm6 pa-2>
+            <v-flex sm12 pa-2>
               <v-text-field
                 v-model="purchaseCostModel.description"
                 label="Descripción"
                 :rules="descriptionRules"
               ></v-text-field>
+            </v-flex>
+            <v-flex sm6 pa-2>
+              <v-select
+                v-model="purchaseCostModel.currency"
+                :items="currencies"
+                item-value="id"
+                item-text="name"
+                label="Moneda"
+                return-object
+              ></v-select>
             </v-flex>
             <v-flex sm6 pa-2>
               <v-text-field v-model="purchaseCostModel.totalCost" label="Monto"></v-text-field>
@@ -68,6 +78,7 @@ export default {
         return "Editar costo";
       }
     },
+    ...mapState("purchaseOrders/details", ["currencies"]),
     purchaseCostToSave() {
       return JSON.parse(
         JSON.stringify({

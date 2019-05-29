@@ -25,6 +25,27 @@ export default class ProductsService {
     }
   }
 
+  async searchProducts(search, page, size, sortBy, direction) {
+    const products = await this.$axios.$get(PRODUCTS_ENDPOINT, {
+      params: { text, page, size, sort: sortBy ? `${sortBy},${direction}` : sortBy }
+    });
+
+    const extract = (product) => ({
+      ...product
+    });
+
+    return {
+      products: products.content.map(extract),
+      page: {
+        totalElements: products.totalElements,
+        totalPages: products.totalPages,
+        page: products.page,
+        size: products.size,
+        isSorted: products.isSorted
+      }
+    }
+  }
+
   async listProducts() {
     return await this.$axios.$get(`${PRODUCTS_ENDPOINT}/unpaged`);
   }

@@ -23,7 +23,17 @@
             label="Proveedor">
           </v-autocomplete>
         </v-flex>
-        <v-flex md3 pa-2>               
+        <v-flex md3 pa-2>
+          <v-select
+            v-model="purchaseOrder.currency"
+            :items="currencies"
+            item-value="id"
+            item-text="name"
+            label="Moneda"
+            return-object
+          ></v-select>
+        </v-flex>
+        <!--v-flex md3 pa-2>               
           <v-select
             v-model="purchaseOrder.account"
             :items="$_.get(purchaseOrder, 'supplier.accounts',[])"
@@ -38,7 +48,7 @@
               {{ item.cci }} 
             </template>
           </v-select>
-        </v-flex>
+        </v-flex-->
         <v-flex md3 pa-2>
           <v-checkbox
             v-model="isAnOldPurchaseOrder"
@@ -204,6 +214,7 @@ export default {
     //await store.dispatch('purchaseOrders/addOrder/fetchProducts');
     await store.dispatch('purchaseOrders/addOrder/fetchPurchaseStatuses');
     await store.dispatch('purchaseOrders/addOrder/fetchSuppliers');
+    await store.dispatch('purchaseOrders/addOrder/fetchCurrencies');
   },
   data() {
     return {
@@ -235,7 +246,8 @@ export default {
       'products',
       'page',
       'purchaseStatuses',
-      'suppliers'
+      'suppliers',
+      'currencies'
     ]),
     purchaseOrderAmount() {
       return this.purchaseOrderItems.reduce(
