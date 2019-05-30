@@ -9,7 +9,10 @@ export default class PurchaseDetailsService {
   }
 
   listPurchaseDetails() {
-    return this.$axios.$get(`${PURCHASE_DETAILS_ENDPOINT}/unpaged`);
+    return this.$axios.$get(PURCHASE_DETAILS_ENDPOINT,
+      {
+        params: { unpaged: true }
+      });
   }
 
   async createPurchaseDetail(purchaseDetail) {

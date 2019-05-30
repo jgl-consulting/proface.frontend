@@ -4,6 +4,6 @@ export default class CurrenciesService {
         this.$axios = $axios;
     }
     async listCurrencies() {
-        return await this.$axios.$get(`${CURRENCIES_ENDPOINT}/unpaged`);
+        return await this.$axios.$get(CURRENCIES_ENDPOINT);
     }
 }

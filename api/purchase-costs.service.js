@@ -9,7 +9,10 @@ export default class PurchaseCostsService {
     }
 
     listPurchaseCosts() {
-        return this.$axios.$get(`${PURCHASE_COSTS_ENDPOINT}/unpaged`);
+        return this.$axios.$get(PURCHASE_COSTS_ENDPOINT,
+            {
+                params: { unpaged: true }
+            });
     }
 
     async createPurchaseCost(purchaseCost) {

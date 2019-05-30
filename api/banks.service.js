@@ -24,7 +24,10 @@ export default class BanksService {
     }
   }
   async listBanks() {
-    return await this.$axios.$get(`${BANKS_ENDPOINT}/unpaged`);
+    return await this.$axios.$get(BANKS_ENDPOINT,
+      {
+        params: { unpaged: true }
+      });
   }
   async createBank(bank) {
     await this.$axios.$post(BANKS_ENDPOINT, bank);

@@ -23,7 +23,9 @@ export default class ReceptionStatusesService {
     }
   }
   async listReceptionStatuses() {
-    return await this.$axios.$get(`${RECEPTION_STATUSES_ENDPOINT}/unpaged`);
+    return await this.$axios.$get(RECEPTION_STATUSES_ENDPOINT, {
+      params: { unpaged: true }
+    });
   }
   async createReceptionStatus(receptionStatus) {
     await this.$axios.$post(RECEPTION_STATUSES_ENDPOINT, receptionStatus);

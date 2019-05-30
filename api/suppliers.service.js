@@ -6,18 +6,18 @@ export default class SuppliersService {
 
   async pageSuppliers(page, size, sortBy, direction) {
     const suppliers = await this.$axios.$get(SUPPLIERS_ENDPOINT, {
-      params: { page, size, sort: sortBy ? `${sortBy},${direction}`: sortBy}
+      params: { page, size, sort: sortBy ? `${sortBy},${direction}` : sortBy }
     });
-    
+
     const extractOneContact = (supplier) => ({
       ...supplier,
       contacts: undefined,
       contact: supplier.contacts[0] || {}
     });
 
-    return { 
+    return {
       suppliers: suppliers.content.map(extractOneContact),
-      page:  { 
+      page: {
         totalElements: suppliers.totalElements,
         totalPages: suppliers.totalPages,
         page: suppliers.page,
@@ -28,12 +28,15 @@ export default class SuppliersService {
   }
 
   async listSuppliers() {
-    return  await this.$axios.$get(`${SUPPLIERS_ENDPOINT}/unpaged`);
+    return await this.$axios.$get(SUPPLIERS_ENDPOINT,
+      {
+        params: { unpaged: true }
+      });
   }
 
   getSupplierById(supplierId) {
     return this.$axios.$get(`${SUPPLIERS_ENDPOINT}/${supplierId}`);
-  } 
+  }
 
   async createSupplier(supplier) {
     await this.$axios.$post(SUPPLIERS_ENDPOINT, supplier);

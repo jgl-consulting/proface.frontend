@@ -6,11 +6,14 @@ export default class SupplierAccountsService {
   }
 
   listSupplierAccounts() {
-    return this.$axios.$get(`${SUPPLIER_ACCOUNTS_ENDPOINT}/unpaged`);
+    return this.$axios.$get(SUPPLIER_ACCOUNTS_ENDPOINT,
+      {
+        params: { unpaged: true }
+      });
   }
 
   async createSupplierAccount(supplierAccount) {
-    await this.$axios.$post(SUPPLIER_ACCOUNTS_ENDPOINT,  supplierAccount);
+    await this.$axios.$post(SUPPLIER_ACCOUNTS_ENDPOINT, supplierAccount);
   }
 
   async updateSupplierAccount(supplierAccountId, supplierAccount) {

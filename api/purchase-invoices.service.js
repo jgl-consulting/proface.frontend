@@ -9,7 +9,10 @@ export default class PurchaseInvoicesService {
     }
 
     listPurchaseInvoices() {
-        return this.$axios.$get(`${PURCHASE_INVOICES_ENDPOINT}/unpaged`);
+        return this.$axios.$get(PURCHASE_INVOICES_ENDPOINT,
+            {
+                params: { unpaged: true }
+            });
     }
 
     async createPurchaseInvoice(purchaseInvoice) {

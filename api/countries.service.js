@@ -5,7 +5,7 @@ export default class CountriesService {
   }
 
   async listCountries() {
-    return await this.$axios.$get(`${COUNTRIES_ENDPOINT}/unpaged`);
+    return await this.$axios.$get(COUNTRIES_ENDPOINT);
   }
 
 }

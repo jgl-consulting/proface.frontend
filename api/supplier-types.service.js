@@ -5,6 +5,9 @@ export default class SupplierTypesService {
     }
 
     listSupplierTypes() {
-        return this.$axios.$get(`${SUPPLIER_TYPES_ENDPOINT}/unpaged`);
+        return this.$axios.$get(SUPPLIER_TYPES_ENDPOINT,
+            {
+                params: { unpaged: true }
+            });
     }
 }

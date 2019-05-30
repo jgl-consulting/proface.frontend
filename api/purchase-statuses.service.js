@@ -23,17 +23,20 @@ export default class PurchaseStatusesService {
         }
     }
     async listPurchaseStatuses() {
-        return await this.$axios.$get(`${PURCHASE_STATUSES_ENDPOINT}/unpaged`);
-    }
-    async createPurchaseStatus(purchaseStatus) {
-        await this.$axios.$post(PURCHASE_STATUSES_ENDPOINT, purchaseStatus);
-    }
-    async updatePurchaseStatus(purchaseStatus) {
-        const { id } = purchaseStatus;
-        await this.$axios.$put(`${PURCHASE_STATUSES_ENDPOINT}/${id}`, purchaseStatus);
-    }
-    async deletePurchaseStatus({ id }) {
-        await this.$axios.$delete(`${PURCHASE_STATUSES_ENDPOINT}/${id}`);
-    }
+        return await this.$axios.$get(PURCHASE_STATUSES_ENDPOINT,
+            {
+                params: { unpaged: true }
+            });
+}
+async createPurchaseStatus(purchaseStatus) {
+    await this.$axios.$post(PURCHASE_STATUSES_ENDPOINT, purchaseStatus);
+}
+async updatePurchaseStatus(purchaseStatus) {
+    const { id } = purchaseStatus;
+    await this.$axios.$put(`${PURCHASE_STATUSES_ENDPOINT}/${id}`, purchaseStatus);
+}
+async deletePurchaseStatus({ id }) {
+    await this.$axios.$delete(`${PURCHASE_STATUSES_ENDPOINT}/${id}`);
+}
 
 }

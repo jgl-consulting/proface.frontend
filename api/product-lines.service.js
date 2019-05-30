@@ -25,7 +25,10 @@ export default class ProductLinesService {
         }
     }
     async listProductLines() {
-        return await this.$axios.$get(`${PRODUCT_LINES_ENDPOINT}/unpaged`);
+        return await this.$axios.$get(PRODUCT_LINES_ENDPOINT,
+            {
+                params: { unpaged: true }
+            });
     }
     async createProductLine(productLine) {
         await this.$axios.$post(PRODUCT_LINES_ENDPOINT, productLine);
