@@ -23,7 +23,6 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-center" @click.stop="() => {}">
               <v-btn
@@ -86,7 +85,6 @@ export default {
     return {
       title: "Líneas de Producto",
       headers: [
-        { text: "Id", align: "left", value: "id" },
         { text: "Nombre", align: "left", value: "name" },
         { text: "Acciones", align: "center", value: "id", sortable: false }
       ],

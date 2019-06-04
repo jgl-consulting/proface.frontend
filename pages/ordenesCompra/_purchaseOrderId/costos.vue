@@ -13,9 +13,9 @@
     <template #table>
       <v-data-table :headers="purchaseCostHeaders" :items="purchaseCosts" class="elevation-1">
         <template #items="{ item }">
-          <td class="text-xs-left">{{ item.id }}</td>
           <td class="text-xs-left">{{ item.description }}</td>
-          <td class="text-xs-left">{{ formatPrice(item.totalCost) }}</td>
+          <td class="text-xs-left">{{ item.currency.symbol + ' ' + item.totalCost }}</td>
+          <td class="text-xs-left">{{ 'S/. ' + item.localCost }}</td>
           <td class="text-xs-center">
             <v-btn
               class="mx-1"
@@ -43,7 +43,7 @@
         </template>
         <template #footer>
           <td class="text-sm-left" :colspan="purchaseCostHeaders.length">
-            <h3>Total: {{ formatPrice(purchaseCostAmount) }}</h3>
+            <h3>Total: S/. {{ purchaseCostAmount.toFixed(2) }}</h3>
           </td>
         </template>
       </v-data-table>
@@ -76,13 +76,13 @@ export default {
   },
   data: () => ({
     purchaseCostHeaders: [
-      { text: "Id", value: "id" },
       { text: "Descripción", value: "description" },
       { text: "Monto", value: "totalCost" },
+      { text: "Monto en Soles", value: "localCost" },
       { text: "Acciones", value: "id", align: "center", sortable: false }
     ],
     purchaseCostToSave: {
-      currency: { id: 0}
+      currency: { id: 0 }
     },
     openSaveCostDialog: false,
     dialogMode: "nuevo"
@@ -94,8 +94,7 @@ export default {
     },
     purchaseCostAmount() {
       return this.purchaseCosts.reduce(
-        (totalAmount, { totalCost }) =>
-          totalAmount + totalCost,
+        (totalAmount, { localCost }) => totalAmount + localCost,
         0
       );
     }
@@ -104,13 +103,10 @@ export default {
     ...mapActions("purchaseOrders/details", {
       deletePurchaseCostAction: "deletePurchaseCost"
     }),
-    formatPrice(price) {
-      return this.purchaseOrder.currency.symbol + ' ' + price;
-    },
     openAddPurchaseCostDialog() {
       this.openSaveCostDialog = true;
       this.purchaseCostToSave = {
-        currency: { id: 0}
+        currency: { id: 0 }
       };
       this.dialogMode = "nuevo";
     },

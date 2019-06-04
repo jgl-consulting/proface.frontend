@@ -24,7 +24,6 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.address }}</td>
@@ -124,11 +123,6 @@ export default {
     return {
       title: "Proveedores",
       headers: [
-        {
-          text: "Id",
-          align: "left",
-          value: "id"
-        },
         { text: "Id Local", value: "nativeId" },
         { text: "Nombre", value: "name" },
         { text: "Direccion", value: "address" },

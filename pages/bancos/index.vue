@@ -23,7 +23,6 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.accountNumberMask }}</td>
             <td class="text-xs-left">
@@ -88,7 +87,6 @@ export default {
     return {
       title: "Bancos",
       headers: [
-        { text: "Id", align: "left", value: "id" },
         { text: "Nombre", align: "left", value: "name" },
         { text: "Máscara", align: "left", value: "accountNumberMask" },
         { text: "País", align: "left", value: "country" },

@@ -13,7 +13,6 @@
     <template #table>
       <v-data-table :headers="purchaseInvoiceHeaders" :items="purchaseInvoices" class="elevation-1">
         <template #items="{ item }">
-          <td class="text-xs-left">{{ item.id }}</td>
           <td class="text-xs-left">{{ item.nativeId }}</td>
           <td class="text-xs-left">{{ item.description }}</td>
           <td class="text-xs-left">{{ formatDate(item.emissionDate) }}</td>
@@ -72,7 +71,6 @@ export default {
   },
   data: () => ({
     purchaseInvoiceHeaders: [
-      { text: "Id", value: "id" },
       { text: "Id Local", value: "nativeId" },
       { text: "Descripción", value: "description" },
       { text: "Fecha de Emisión", value: "emissionDate" },

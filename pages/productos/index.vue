@@ -23,11 +23,11 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.description }}</td>
             <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.salePrice }}</td>
+            <td class="text-xs-left">{{ 'S/. ' + props.item.localPrice }}</td>
             <td class="text-xs-left">{{ props.item.line.name }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
               <!--v-btn
@@ -100,15 +100,11 @@ export default {
     return {
       title: "Productos",
       headers: [
-        {
-          text: "Id",
-          align: "left",
-          value: "id"
-        },
         { text: "Id Local", value: "nativeId" },
         { text: "Nombre", value: "name" },
         { text: "Descripción", value: "description" },
         { text: "Precio de Venta", value: "salePrice" },
+        { text: "Precio en Soles", value: "localPrice"},
         { text: "Línea", value: "line" },
         { text: "Acciones", value: "id", sortable: false }
       ],

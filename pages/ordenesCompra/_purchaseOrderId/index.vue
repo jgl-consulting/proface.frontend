@@ -34,7 +34,8 @@ export default {
           icon: "fa-truck",
           render: supplier => supplier.name
         },
-        { key: "total", title: "Total", icon: "fa-coins"}
+        { key: "total", title: "Total", icon: "fa-coins"},
+        { key: "localTotal", title: "Total en Soles", icon: "fa-coins"}
       ],
     };
   },

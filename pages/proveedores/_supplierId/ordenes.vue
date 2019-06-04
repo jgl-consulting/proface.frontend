@@ -18,10 +18,10 @@
         >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td>{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
             <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.total }}</td> 
+            <td class="text-xs-left">{{ 'S/. ' + props.item.total }}</td> 
             <td class="text-xs-left">
               <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
               - {{props.item.status.description}}
@@ -50,14 +50,10 @@ export default {
     return {
       title: "Órdenes de Compra",
       purchaseHeaders: [
-        {
-          text: "Id",
-          align: "left",
-          value: "id"
-        },
         { text: "Id Local", value: "nativeId" },
         { text: "Fecha de Emisión", value: "creationDate" },
         { text: "Total", value: "total"},
+        { text: "Total en Soles", value: "localTotal"},
         { text: "Estado", value: "status" }
       ],
       pagination: {

@@ -55,7 +55,7 @@ export default {
         {
           name: "Ordenes de compra",
           route: `${mainRoute}/ordenes`,
-          icon: "fa-clipboard"
+          icon: "fa-shopping-cart"
         }
       ]
     };

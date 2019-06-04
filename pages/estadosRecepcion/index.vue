@@ -23,7 +23,6 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.id }}</td>
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ props.item.description }}</td>
             <td class="text-xs-center"><v-icon :color="props.item.color">fa-circle</v-icon></td>
@@ -89,7 +88,6 @@ export default {
     return {
       title: "Estados de Recepción",
       headers: [
-        { text: "Id", align: "left", value: "id" },
         { text: "Id Local", align: "left", value: "nativeId" },
         { text: "Descripción", align: "left", value: "description" },
         { text: "Color", align: "center", value: "color" },

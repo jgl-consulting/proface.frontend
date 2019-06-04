@@ -19,6 +19,7 @@
           <td class="text-xs-left">{{ formatPrice(item.purchasePrice) }}</td>
           <td class="text-xs-left">{{ formatPrice(item.disscount) }}</td>
           <td class="text-xs-left">{{ formatPrice(item.finalPrice) }}</td>
+          <td class="text-xs-left">{{ 'S/. ' + item.localPrice }}</td>
           <td class="text-xs-left">
             <v-icon :color="getColor(item.status)" small>{{getIcon(item.status)}}</v-icon>
             {{item.status.description}}
@@ -50,7 +51,7 @@
         </template>
         <template #footer>
           <td class="text-sm-left" :colspan="purchaseDetailHeaders.length">
-            <h3>Total: {{ formatPrice(purchaseDetailAmount) }}</h3>
+            <h3>Total: S/. {{ purchaseDetailAmount.toFixed(2) }}</h3>
           </td>
         </template>
       </v-data-table>
@@ -90,6 +91,7 @@ export default {
       { text: "Precio Neto", value: "purchasePrice" },
       { text: "Descuento", value: "disscount" },
       { text: "Precio Final", value: "finalPrice" },
+      { text: "Precio en Soles", value: "totalPrice" },
       { text: "Estado", value: "status" },
       { text: "Acciones", value: "id", sortable: false }
     ],
@@ -107,8 +109,8 @@ export default {
     },
     purchaseDetailAmount() {
       return this.purchaseDetails.reduce(
-        (totalAmount, { quantity, unitPrice, disscount }) =>
-          totalAmount + unitPrice * quantity - disscount,
+        (totalAmount, { localPrice }) =>
+          totalAmount + localPrice,
         0
       );
     }

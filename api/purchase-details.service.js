@@ -21,12 +21,12 @@ export default class PurchaseDetailsService {
 
   async updatePurchaseDetail(purchaseDetail) {
     const { product, purchase } = purchaseDetail;
-    await this.$axios.$put(`${PURCHASE_DETAILS_ENDPOINT}/product/${product.id}/purchase/${purchase.id}`, purchaseDetail);
+    await this.$axios.$put(`${PURCHASE_DETAILS_ENDPOINT}?productId=${product.id}&purchaseId=${purchase.id}`, purchaseDetail);
   }
 
   async deletePurchaseDetail(purchaseDetail) {
     const { product, purchase } = purchaseDetail;
-    await this.$axios.$delete(`${PURCHASE_DETAILS_ENDPOINT}/product/${product.id}/purchase/${purchase.id}`);
+    await this.$axios.$delete(`${PURCHASE_DETAILS_ENDPOINT}?productId=${product.id}&purchaseId=${purchase.id}`);
   }
 
 }
