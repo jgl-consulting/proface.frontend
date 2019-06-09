@@ -250,9 +250,10 @@ export default {
       'currencies'
     ]),
     purchaseOrderAmount() {
-      return this.purchaseOrderItems.reduce(
-        (totalAmount, { qty, salePrice, discount }) => totalAmount + salePrice * qty * (100 - discount) / 100, 
-      0);
+      let addItemToTotalAmount = (totalAmount, { qty, salePrice, discount }) => {
+        return totalAmount + salePrice * qty * (100 - discount) / 100;
+      }
+      return this.purchaseOrderItems.reduce(addItemToTotalAmount, 0);
     }
   },
   methods: {
