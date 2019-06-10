@@ -38,7 +38,7 @@ export default {
   },
   asyncData({ route, params }) {
     const { path } = route;
-    const mainRoute = `/proveedores/${params.supplierId}`;
+    const mainRoute = `/compras/proveedores/${params.supplierId}`;
     return {
       activeTab: path,
       tabs: [

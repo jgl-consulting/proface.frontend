@@ -1,11 +1,20 @@
-import { BANKS_ENDPOINT } from '@/util/endpoints';
+import {
+  BANKS_ENDPOINT
+} from '@/util/endpoints';
 export default class BanksService {
-  constructor({ $axios }) {
+  constructor({
+    $axios
+  }) {
     this.$axios = $axios;
   }
-  async pageBanks(page, size, sortBy, direction) {
+  async pageBanks(page, size, sortBy, direction, filter) {
     const banks = await this.$axios.$get(BANKS_ENDPOINT, {
-      params: { page, size, sort: sortBy ? `${sortBy},${direction}` : sortBy }
+      params: {
+        page,
+        size,
+        sort: sortBy ? `${sortBy},${direction}` : sortBy,
+        filter
+      }
     });
 
     const extract = (bank) => ({
@@ -24,19 +33,24 @@ export default class BanksService {
     }
   }
   async listBanks() {
-    return await this.$axios.$get(BANKS_ENDPOINT,
-      {
-        params: { unpaged: true }
-      });
+    return await this.$axios.$get(BANKS_ENDPOINT, {
+      params: {
+        unpaged: true
+      }
+    });
   }
   async createBank(bank) {
     await this.$axios.$post(BANKS_ENDPOINT, bank);
   }
   async updateBank(bank) {
-    const { id } = bank;
+    const {
+      id
+    } = bank;
     await this.$axios.$put(`${BANKS_ENDPOINT}/${id}`, bank);
   }
-  async deleteBank({ id }) {
+  async deleteBank({
+    id
+  }) {
     await this.$axios.$delete(`${BANKS_ENDPOINT}/${id}`);
   }
 }

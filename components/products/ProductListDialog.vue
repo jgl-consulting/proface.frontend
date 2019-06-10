@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="value" persistent width="900">
+  <v-dialog v-model="value" persistent width="1000">
     <v-card>
       <v-toolbar dark color="primary">
         <v-btn icon dark @click="closeDialog">
@@ -23,18 +23,26 @@
               rows-per-page-text="Tamaño de página">
               <template v-slot:items="props">
                 <tr @click.stop="props.expanded = !props.expanded">
-                  <td>{{ props.item.id }}</td>
-                  <td class="text-xs-right">
+                  <td class="text-xs-left">
                     {{ props.item.nativeId }}
                   </td>
-                  <td class="text-xs-right">
+                  <td class="text-xs-left">
                     {{ props.item.name }} 
                   </td>
-                  <td class="text-xs-right">
+                  <td class="text-xs-left">
                       {{ props.item.description }}
                   </td>
-                  <td class="text-xs-right">
+                  <td class="text-xs-left">
                     {{ props.item.line.name }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.totalStock }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.totalStock - props.item.avaliableStock }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.avaliableStock }}
                   </td>
                   <td class="text-xs-center">
                     <v-btn flat icon color="accent" @click.stop="emitProduct(props.item)">
@@ -61,16 +69,13 @@ export default {
   data: () => ({
     isOpen: false,
     headers: [
-      {
-        text: 'Id',
-        align: 'left',
-        sortable: false,
-        value: 'id'
-      },
       { text: 'Id Local', value: 'nativeId' },
       { text: 'Nombre', value: 'name' },
       { text: 'Descripción', value: 'description' },
       { text: 'Línea', value: 'line' },
+      { text: 'Total', value: 'totalStock'},
+      { text: 'Separado', value: 'totalStock'},
+      { text: 'Disponible', value: 'avaliableStock'},
       { text: 'Acciones', value: 'id', sortable: false,}
     ],
     pagination: {

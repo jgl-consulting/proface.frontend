@@ -38,7 +38,7 @@ export default {
   },
   asyncData({ route, params }){
     const { path } = route;
-    const mainRoute = `/ordenesCompra/${params.purchaseOrderId}`
+    const mainRoute = `/compras/ordenesCompra/${params.purchaseOrderId}`
     return {
       activeTab: path,
       tabs: [
@@ -57,11 +57,6 @@ export default {
           route: `${mainRoute}/costos`, 
           icon: 'fa-coins' 
         },
-        {
-          name: 'Facturas',
-          route: `${mainRoute}/facturas`, 
-          icon: 'fa-file-invoice-dollar' 
-        }
       ]
     }
   },

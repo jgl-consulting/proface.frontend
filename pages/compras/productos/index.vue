@@ -28,6 +28,9 @@
             <td class="text-xs-left">{{ props.item.description }}</td>
             <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.salePrice }}</td>
             <td class="text-xs-left">{{ 'S/. ' + props.item.localPrice }}</td>
+            <td class="text-xs-left">{{ props.item.totalStock }}</td>
+            <td class="text-xs-left">{{ props.item.totalStock - props.item.avaliableStock }}</td>
+            <td class="text-xs-left">{{ props.item.avaliableStock }}</td>
             <td class="text-xs-left">{{ props.item.line.name }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
               <!--v-btn
@@ -104,7 +107,10 @@ export default {
         { text: "Nombre", value: "name" },
         { text: "Descripción", value: "description" },
         { text: "Precio de Venta", value: "salePrice" },
-        { text: "Precio en Soles", value: "localPrice"},
+        { text: "Precio en Soles", value: "localPrice" },
+        { text: "Total", value: "totalStock" },
+        { text: "Separado", value: "totalStock" },
+        { text: "Disponible", value: "avaliableStock" },
         { text: "Línea", value: "line" },
         { text: "Acciones", value: "id", sortable: false }
       ],

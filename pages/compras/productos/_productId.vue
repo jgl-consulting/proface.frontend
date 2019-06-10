@@ -36,7 +36,7 @@ export default {
   },
   asyncData({ route, params }){
     const { path } = route;
-    const mainRoute = `/productos/${params.productId}`
+    const mainRoute = `/compras/productos/${params.productId}`
     return {
       activeTab: path,
       tabs: [

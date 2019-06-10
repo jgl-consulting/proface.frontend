@@ -1,18 +1,21 @@
 import {
   PURCHASE_DETAILS_ENDPOINT
 }
-  from '@/util/endpoints';
+from '@/util/endpoints';
 
 export default class PurchaseDetailsService {
-  constructor({ $axios }) {
+  constructor({
+    $axios
+  }) {
     this.$axios = $axios;
   }
 
   listPurchaseDetails() {
-    return this.$axios.$get(PURCHASE_DETAILS_ENDPOINT,
-      {
-        params: { unpaged: true }
-      });
+    return this.$axios.$get(PURCHASE_DETAILS_ENDPOINT, {
+      params: {
+        unpaged: true
+      }
+    });
   }
 
   async createPurchaseDetail(purchaseDetail) {
@@ -20,12 +23,18 @@ export default class PurchaseDetailsService {
   }
 
   async updatePurchaseDetail(purchaseDetail) {
-    const { product, purchase } = purchaseDetail;
+    const {
+      product,
+      purchase
+    } = purchaseDetail;
     await this.$axios.$put(`${PURCHASE_DETAILS_ENDPOINT}?productId=${product.id}&purchaseId=${purchase.id}`, purchaseDetail);
   }
 
   async deletePurchaseDetail(purchaseDetail) {
-    const { product, purchase } = purchaseDetail;
+    const {
+      product,
+      purchase
+    } = purchaseDetail;
     await this.$axios.$delete(`${PURCHASE_DETAILS_ENDPOINT}?productId=${product.id}&purchaseId=${purchase.id}`);
   }
 

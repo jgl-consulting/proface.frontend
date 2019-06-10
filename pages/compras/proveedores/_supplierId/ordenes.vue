@@ -21,7 +21,8 @@
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
             <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.total }}</td> 
-            <td class="text-xs-left">{{ 'S/. ' + props.item.total }}</td> 
+            <td class="text-xs-left">{{ 'S/. ' + props.item.localTotal }}</td>             
+            <td class="text-xs-left">{{ 'S/. ' + props.item.localCost }}</td>
             <td class="text-xs-left">
               <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
               - {{props.item.status.description}}
@@ -54,6 +55,7 @@ export default {
         { text: "Fecha de Emisión", value: "creationDate" },
         { text: "Total", value: "total"},
         { text: "Total en Soles", value: "localTotal"},
+        { text: "Costos en Soles", value: "localCost"},
         { text: "Estado", value: "status" }
       ],
       pagination: {

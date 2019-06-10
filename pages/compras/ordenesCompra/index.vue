@@ -28,6 +28,7 @@
             <td class="text-xs-left">{{ props.item.supplier.name }}</td>
             <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.total }}</td>
             <td class="text-xs-left">{{ 'S/. ' + props.item.localTotal }}</td>
+            <td class="text-xs-left">{{ 'S/. ' + props.item.localCost }}</td>
             <td class="text-xs-left">
               <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
               - {{props.item.status.description}}
@@ -93,7 +94,9 @@ export default {
   },
   async fetch({ store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined };
-    //await store.dispatch("purchaseOrders/fetchPurchaseOrders", params);
+    await store.dispatch("purchaseOrders/fetchCurrencies");
+    await store.dispatch("purchaseOrders/fetchPurchaseStatuses");
+    await store.dispatch("purchaseOrders/fetchSuppliers");
   },
   data() {
     return {
@@ -104,6 +107,7 @@ export default {
         { text: "Proveedor", value: "supplier" },
         { text: "Total", value: "total" },
         { text: "Total en Soles", value: "localTotal" },
+        { text: "Costos en Soles", value: "localCost" },
         { text: "Estado", value: "status" },
         { text: "Acciones", value: "id", sortable: false }
       ],
@@ -162,7 +166,8 @@ export default {
       this.openSaveDialog = true;
       this.purchaseOrderToSave = {
         status: { id: 0 },
-        supplier: { id: 0 }
+        supplier: { id: 0 },
+        currency: { id: 0}
       };
       this.dialogMode = "nuevo";
     },

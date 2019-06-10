@@ -1,12 +1,21 @@
-import { PRODUCTS_ENDPOINT } from '@/util/endpoints';
+import {
+  PRODUCTS_ENDPOINT
+} from '@/util/endpoints';
 export default class ProductsService {
-  constructor({ $axios }) {
+  constructor({
+    $axios
+  }) {
     this.$axios = $axios;
   }
 
-  async pageProducts(page, size, sortBy, direction) {
+  async pageProducts(page, size, sortBy, direction, filter) {
     const products = await this.$axios.$get(PRODUCTS_ENDPOINT, {
-      params: { page, size, sort: sortBy ? `${sortBy},${direction}` : sortBy }
+      params: {
+        page,
+        size,
+        sort: sortBy ? `${sortBy},${direction}` : sortBy,
+        filter
+      }
     });
 
     const extract = (product) => ({
@@ -26,10 +35,11 @@ export default class ProductsService {
   }
 
   async listProducts() {
-    return await this.$axios.$get(PRODUCTS_ENDPOINT,
-      {
-        params: { unpaged: true }
-      });
+    return await this.$axios.$get(PRODUCTS_ENDPOINT, {
+      params: {
+        unpaged: true
+      }
+    });
   }
 
   getProductById(productId) {
@@ -41,11 +51,15 @@ export default class ProductsService {
   }
 
   async updateProduct(product) {
-    const { id } = product;
+    const {
+      id
+    } = product;
     await this.$axios.$put(`${PRODUCTS_ENDPOINT}/${id}`, product);
   }
 
-  async deleteProduct({ id }) {
+  async deleteProduct({
+    id
+  }) {
     await this.$axios.$delete(`${PRODUCTS_ENDPOINT}/${id}`);
   }
 

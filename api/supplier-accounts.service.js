@@ -1,15 +1,21 @@
-import { SUPPLIER_ACCOUNTS_ENDPOINT, BANKS_ENDPOINT } from '@/util/endpoints';
+import {
+  SUPPLIER_ACCOUNTS_ENDPOINT,
+  BANKS_ENDPOINT
+} from '@/util/endpoints';
 
 export default class SupplierAccountsService {
-  constructor({ $axios }) {
+  constructor({
+    $axios
+  }) {
     this.$axios = $axios;
   }
 
   listSupplierAccounts() {
-    return this.$axios.$get(SUPPLIER_ACCOUNTS_ENDPOINT,
-      {
-        params: { unpaged: true }
-      });
+    return this.$axios.$get(SUPPLIER_ACCOUNTS_ENDPOINT, {
+      params: {
+        unpaged: true
+      }
+    });
   }
 
   async createSupplierAccount(supplierAccount) {
@@ -20,7 +26,9 @@ export default class SupplierAccountsService {
     await this.$axios.$put(`${SUPPLIER_ACCOUNTS_ENDPOINT}/${supplierAccountId}`, supplierAccount);
   }
 
-  async deleteSupplierAccount({ id }) {
+  async deleteSupplierAccount({
+    id
+  }) {
     await this.$axios.$delete(`${SUPPLIER_ACCOUNTS_ENDPOINT}/${id}`);
   }
 
