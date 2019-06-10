@@ -4,7 +4,7 @@
       <h1>Órdenes de Compra</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" to="/ordenesCompra/nueva" nuxt>
+      <v-btn color="accent" to="/compras/ordenesCompra/nueva" nuxt>
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva orden de compra</span>
       </v-btn>
