@@ -30,7 +30,7 @@ export default {
   meta: {
       breadcrumbs: [
         { name: 'Módulos', link: '/' },
-        { name: 'Productos', link: '/productos' },
+        { name: 'Productos', link: '/compras/productos' },
         ({ productId }) => ({ name: productId  })
       ]
   },

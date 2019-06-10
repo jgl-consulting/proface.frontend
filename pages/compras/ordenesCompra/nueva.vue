@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <h1>Registrar Orden de Compra</h1>
       <v-spacer></v-spacer>
-      <v-btn color="indigo darken-3" dark>
+      <v-btn color="indigo darken-3" dark @click="savePurchaseOrder">
         <v-icon small>fa-save</v-icon>
         <span class="mx-1"></span>
         <span>Guardar Orden</span>
@@ -278,16 +278,18 @@ export default {
       this.productDialog = true;
     },
     async savePurchaseOrder() {
-      const purchaseOrder = this.purchaseOrder; 
+      const { purchaseOrder, purchaseOrderItems } = this.$data; 
       try {
         const { nativeId } = purchaseOrder;
         const res = await this.$confirm(`¿Está seguro de guardar la orden de compra '${nativeId}'?`, { title: 'Advertencia' })
         if(res) {
-          if(this.mode === 'nuevo') {
-            await this.createPurchaseOrder({ purchaseOrder });
-          } else if(this.mode === 'editar') {
-            await this.updatePurchaseOrder({ purchaseOrder });
-          }
+          // if(this.mode === 'nuevo') {
+          //   await this.createPurchaseOrder({ purchaseOrder });
+          // } else if(this.mode === 'editar') {
+          //   await this.updatePurchaseOrder({ purchaseOrder });
+          // }
+
+          console.log({ purchaseOrder, purchaseOrderItems });
 
           await this.$confirm('Guardado correcto!', {
             title: 'Éxito',

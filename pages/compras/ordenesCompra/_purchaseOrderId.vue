@@ -30,7 +30,7 @@ export default {
   meta: {
       breadcrumbs: [
         { name: 'Módulos', link: '/' },
-        { name: 'Órdenes de compra', link: '/ordenesCompra' },
+        { name: 'Órdenes de compra', link: '/compras/ordenesCompra' },
         function({ params }){
           return { name: params.purchaseOrderId };
         }

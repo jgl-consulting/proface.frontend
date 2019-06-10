@@ -30,7 +30,7 @@ export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Proveedores", link: "/proveedores" },
+      { name: "Proveedores", link: "/compras/proveedores" },
       function({ params }) {
         return { name: params.supplierId };
       }
