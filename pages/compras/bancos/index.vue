@@ -71,7 +71,7 @@ export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Bancos", link: "/bancos" }
+      { name: "Bancos", link: "/compras/bancos" }
     ]
   },
   components: {

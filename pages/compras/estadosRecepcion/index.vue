@@ -73,7 +73,7 @@ export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Estados de Recepción", link: "/estadosRecepcion" }
+      { name: "Estados de Recepción", link: "/compras/estadosRecepcion" }
     ]
   },
   components: {

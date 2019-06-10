@@ -1,113 +1,73 @@
 <template>
-  <v-form>
+  <v-form ref="purchaseOrderForm" v-model="valid" lazy-validation>
     <v-layout row wrap>
       <h1>Registrar Orden de Compra</h1>
       <v-spacer></v-spacer>
-      <v-btn color="indigo darken-3" dark>
+      <v-btn color="indigo darken-3" dark @click="savePurchaseOrder">
         <v-icon small>fa-save</v-icon>
         <span class="mx-1"></span>
         <span>Guardar Orden</span>
       </v-btn>
     </v-layout>
     <form-group>
-      <template #title>
-        Datos de la Orden de Compra
-
-      </template>
+      <template #title>Datos de la Orden de Compra</template>
       <template #controls>
-        <v-flex md2 pa-2>
-          <v-text-field 
-            v-model="purchaseOrder.nativeId" 
-            label="Identificador Local">
-          </v-text-field>
+        <v-flex md4 pa-2>
+          <v-text-field
+            v-model="purchaseOrder.nativeId"
+            label="Identificador"
+            :rules="nativeIdRules"
+          ></v-text-field>
         </v-flex>
-        <v-flex md4 pa-2>               
-          <v-autocomplete
-            v-model="purchaseOrder.supplier"
-            :items="suppliers"
-            item-value="id"
-            item-text="name"
-            :hint="supplierAutocompleteHint"
-            return-object
-            label="Proveedor">
-          </v-autocomplete>
+        <v-flex md4 pa-2>
+          <datepicker v-model="purchaseOrder.creationDate" label="Fecha de Creación"></datepicker>
         </v-flex>
-        <v-flex md3 pa-2>
-          <v-select
-            v-model="purchaseOrder.currency"
-            :items="currencies"
-            item-value="id"
-            item-text="name"
-            label="Moneda"
-            return-object
-          ></v-select>
-        </v-flex>
-        <!--v-flex md3 pa-2>               
-          <v-select
-            v-model="purchaseOrder.account"
-            :items="$_.get(purchaseOrder, 'supplier.accounts',[])"
-            item-value="id"
-            item-text="number"
-            return-object
-            label="Cuenta">
-            <template #item="{ item }">
-              ({{ item.currency.symbol }}) {{ item.cci }} 
-            </template>
-            <template #selection="{ item }">
-              {{ item.cci }} 
-            </template>
-          </v-select>
-        </v-flex-->
-        <v-flex md3 pa-2>
-          <v-checkbox
-            v-model="isAnOldPurchaseOrder"
-            label="¿La orden compra es antigua?"
-          ></v-checkbox>
+        <v-flex md4 pa-2>
+          <v-checkbox v-model="isAnOldPurchaseOrder" label="¿La orden compra es antigua?"></v-checkbox>
         </v-flex>
         <template v-if="isAnOldPurchaseOrder">
-          <v-flex md4 pa-2> 
+          <v-flex md4 pa-2>
+            <v-autocomplete
+              v-model="purchaseOrder.supplier"
+              :items="suppliers"
+              item-value="id"
+              item-text="name"
+              :hint="supplierAutocompleteHint"
+              return-object
+              label="Proveedor"
+            ></v-autocomplete>
+          </v-flex>
+          <v-flex md4 pa-2>
             <v-select
-              v-model="productoToAdd"
+              v-model="purchaseOrder.currency"
+              :items="currencies"
+              item-value="id"
+              item-text="name"
+              label="Moneda"
+              return-object
+            ></v-select>
+          </v-flex>
+          <v-flex md4 pa-2>
+            <v-select
+              v-model="purchaseOrder.status"
               :items="purchaseStatuses"
               item-value="id"
               item-text="description"
               return-object
-              label="Estado">
-            </v-select>
-          </v-flex>
-          <v-flex md2 pa-2>
-            <datepicker
-              v-model="purchaseOrder.creationDate"
-              label="Fecha de Creación"
-            ></datepicker>
-          </v-flex>
-          <v-flex md2 pa-2>
-            <datepicker
-              v-model="purchaseOrder.quotationDate"
-              label="Fecha de Cotización"
-            ></datepicker>
-          </v-flex>
-          <v-flex md2 pa-2>
-            <datepicker
-              v-model="purchaseOrder.billingDate"
-              label="Fecha de Facturación"
-            ></datepicker>
-          </v-flex>
-          <v-flex md2 pa-2>
-            <datepicker
-              v-model="purchaseOrder.receptionDate"
-              label="Fecha de Recepción"
-            ></datepicker>
+              label="Estado"
+            ></v-select>
           </v-flex>
         </template>
       </template>
     </form-group>
     <form-group>
-      <template #title>
-        Productos
-      </template>
+      <template #title>Productos</template>
       <template #actions>
-        <v-btn color="accent" @click.stop="openProductList" :disabled="nonSeletedProducts.length === 0">
+        <v-btn
+          color="accent"
+          @click.stop="openProductList"
+          :disabled="nonSeletedProducts.length === 0"
+        >
           <v-icon small>fa-plus</v-icon>
           <span class="mx-1"></span>
           <span>Nuevo Producto</span>
@@ -122,52 +82,61 @@
             class="elevation-1"
           >
             <template v-slot:items="props">
-              <td class="text-xs-left">
-                {{ props.item.name }}
-              </td>
-              <td class="text-xs-left">
-                {{ props.item.salePrice }}
-              </td>
+              <td class="text-xs-left">{{ props.item.name }}</td>
               <td>
-                <v-edit-dialog
-                  class="text-xs-left"
-                  :return-value.sync="props.item.qty"
-                  lazy
-                > 
-                <span>{{ props.item.qty }} unidades</span>
+                <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.unitPrice">
+                  <span>
+                    <v-icon small color="accent">fa-pen</v-icon>
+                    {{ props.item.unitPrice }}
+                  </span>
                   <template v-slot:input>
                     <v-text-field
                       type="number"
-                      v-model="props.item.qty"
+                      v-model="props.item.unitPrice"
+                      label="Precio Unitario"
+                      single-line
+                    ></v-text-field>
+                  </template>
+                </v-edit-dialog>
+              </td>
+              <td>
+                <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.quantity" lazy>
+                  <span>
+                    <v-icon small color="accent">fa-pen</v-icon>
+                    {{ props.item.quantity }} unidades
+                  </span>
+                  <template v-slot:input>
+                    <v-text-field
+                      type="number"
+                      v-model="props.item.quantity"
                       label="Cantidad"
                       single-line
                     ></v-text-field>
                   </template>
                 </v-edit-dialog>
               </td>
-              <td class="text-xs-left">
-                {{ (props.item.salePrice * props.item.qty) | twoDecimals}}
-              </td>
+              <td
+                class="text-xs-left"
+              >{{ (props.item.unitPrice * props.item.quantity) | twoDecimals}}</td>
               <td>
-                <v-edit-dialog
-                  class="text-xs-left"
-                  :return-value.sync="props.item.discount"
-                  lazy
-                > 
-                <span>{{ props.item.discount }} %</span>
+                <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.disscount" lazy>
+                  <span>
+                    <v-icon small color="accent">fa-pen</v-icon>
+                    {{ props.item.disscount }}
+                  </span>
                   <template v-slot:input>
                     <v-text-field
                       type="number"
-                      v-model="props.item.discount"
+                      v-model="props.item.disscount"
                       label="Descuento"
                       single-line
                     ></v-text-field>
                   </template>
                 </v-edit-dialog>
               </td>
-              <td class="text-xs-left">
-                {{ (props.item.salePrice * props.item.qty * (100 - props.item.discount)/100) | twoDecimals }}
-              </td>
+              <td
+                class="text-xs-left"
+              >{{ (props.item.unitPrice * props.item.quantity - props.item.disscount) | twoDecimals }}</td>
               <td class="text-xs-center">
                 <v-btn flat icon color="accent" @click="deleteOrderProduct(props.item)">
                   <v-icon small>fa-trash</v-icon>
@@ -192,27 +161,29 @@
       paginación fuera del componente, ya que puede ser de que el listado de los productos
       lo almacenes en otro lugar del store
     -->
-    <product-list-dialog 
+    <product-list-dialog
       v-model="productDialog"
       :products="nonSeletedProducts"
       :page="page"
       @selectedProduct="addProductToDetail"
-      @changePagination="productListPaginationHandler">
-    </product-list-dialog>
+      @changePagination="productListPaginationHandler"
+    ></product-list-dialog>
   </v-form>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-
-import FormGroup from '@/components/common/FormGroup';
-import Datepicker from '@/components/common/Datepicker';
+import { mapState, mapActions } from "vuex";
+import FormGroup from "@/components/common/FormGroup";
+import Datepicker from "@/components/common/Datepicker";
+import { required, maxLength } from "@/util/validators";
 // Componente que maneja la tabla
-import ProductListDialog from '@/components/products/ProductListDialog';
-
+import ProductListDialog from "@/components/products/ProductListDialog";
 export default {
   meta: {
-    breadcrumbs: false,
+    breadcrumbs: [
+      { name: "Módulos", link: "/" },
+      { name: "Órdenes de Compra", link: "/compras/ordenesCompra" }
+    ]
   },
   components: {
     FormGroup,
@@ -221,122 +192,173 @@ export default {
   },
   async fetch({ store }) {
     //await store.dispatch('purchaseOrders/addOrder/fetchProducts');
-    await store.dispatch('purchaseOrders/addOrder/fetchPurchaseStatuses');
-    await store.dispatch('purchaseOrders/addOrder/fetchSuppliers');
-    await store.dispatch('purchaseOrders/addOrder/fetchCurrencies');
+    await store.dispatch("purchaseOrders/addOrder/fetchPurchaseStatuses");
+    await store.dispatch("purchaseOrders/addOrder/fetchSuppliers");
+    await store.dispatch("purchaseOrders/addOrder/fetchCurrencies");
   },
   data() {
     return {
       productDialog: false,
       isAnOldPurchaseOrder: false,
       purchaseOrder: {},
-      productoToAdd: {},
       purchaseOrderItems: [],
       detailHeaders: [
-        { sortable: false, key: 'name', text: 'Producto' },
-        { sortable: false, key: 'salePrice', text: 'Precio unitario' },
-        { sortable: false, key: 'qty', text: 'Cantidad' },
-        { sortable: false, key: 'qty', text: 'Precio de venta' },
-        { sortable: false, key: 'discount', text: 'Descuento (%)' },
-        { sortable: false, key: 'discount', text: 'Precio final' },
-        { sortable: false, key: 'product', text: '¿Eliminar?' }
-      ]
-    }
+        { sortable: false, key: "name", text: "Producto" },
+        { sortable: false, key: "unitPrice", text: "Precio unitario" },
+        { sortable: false, key: "quantity", text: "Cantidad" },
+        { sortable: false, key: "purchasePrice", text: "Precio de compra" },
+        { sortable: false, key: "disscount", text: "Descuento" },
+        { sortable: false, key: "finalPrice", text: "Precio final" },
+        { sortable: false, key: "product", text: "¿Eliminar?" }
+      ],
+      valid: true
+    };
   },
   computed: {
     nonSeletedProducts() {
       let sameProduct = (product, orderItem) => product.id === orderItem.id;
-      return this.$_.differenceWith(this.products, this.purchaseOrderItems, sameProduct);
+      return this.$_.differenceWith(
+        this.products,
+        this.purchaseOrderItems,
+        sameProduct
+      );
+    },
+    nativeIdRules() {
+      return [value => required(value, "El identificador es requerido")];
     },
     title() {
       return "Nueva orden de compra";
     },
     supplierAutocompleteHint() {
       const { name } = this.purchaseOrder.supplier || {};
-      return name  ? name : '';
+      return name ? name : "";
     },
-    ...mapState('purchaseOrders/addOrder', [
-      'products',
-      'page',
-      'purchaseStatuses',
-      'suppliers',
-      'currencies'
+    ...mapState("purchaseOrders/addOrder", [
+      "products",
+      "page",
+      "purchaseStatuses",
+      "suppliers",
+      "currencies"
     ]),
     purchaseOrderAmount() {
-      let addItemToTotalAmount = (totalAmount, { qty, salePrice, discount }) => {
-        return totalAmount + salePrice * qty * (100 - discount) / 100;
-      }
+      let addItemToTotalAmount = (
+        totalAmount,
+        { quantity, unitPrice, disscount }
+      ) => {
+        return totalAmount + unitPrice * quantity - disscount;
+      };
       return this.purchaseOrderItems.reduce(addItemToTotalAmount, 0);
     }
   },
   methods: {
-    ...mapActions('purchaseOrders', [
-      'createPurchaseOrder'
+    ...mapActions("purchaseOrders", [
+      "createPurchaseOrder",
+      "updatePurchaseOrder"
     ]),
-    
     openProductList() {
       this.productDialog = true;
     },
     async savePurchaseOrder() {
-      const purchaseOrder = this.purchaseOrder; 
-      try {
-        const { nativeId } = purchaseOrder;
-        const res = await this.$confirm(`¿Está seguro de guardar la orden de compra '${nativeId}'?`, { title: 'Advertencia' })
-        if(res) {
-          if(this.mode === 'nuevo') {
-            await this.createPurchaseOrder({ purchaseOrder });
-          } else if(this.mode === 'editar') {
-            await this.updatePurchaseOrder({ purchaseOrder });
-          }
-
-          await this.$confirm('Guardado correcto!', {
-            title: 'Éxito',
-            color: 'success'
+      if (this.$refs.purchaseOrderForm.validate()) {
+        const purchaseOrder = this.purchaseOrder;
+        try {
+          const { nativeId } = purchaseOrder;
+          const extractDetail = p => ({
+            product: {
+              id: p.id
+            },
+            quantity: p.quantity,
+            unitPrice: p.unitPrice,
+            disscount: p.disscount
           });
+          if (this.purchaseOrderItems) {
+            purchaseOrder.details = this.purchaseOrderItems.map(extractDetail);
+          }
+          const res = await this.$confirm(
+            `¿Está seguro de guardar la orden de compra '${nativeId}'?`,
+            { title: "Advertencia" }
+          );
+          if (res) {
+            if (this.mode === "nuevo") {
+              await this.createPurchaseOrder({ purchaseOrder });
+            } else if (this.mode === "editar") {
+              await this.updatePurchaseOrder({ purchaseOrder });
+            }
+            await this.$confirm("Guardado correcto!", {
+              title: "Éxito",
+              color: "success"
+            });
+          }
+        } catch (error) {
+          this.showError(error);
         }
-      } catch(error) {
-        this.showError(error);
+      } else {
+        this.showError({
+          response: {
+            data: {
+              message: "Error de Validación",
+              errors: [{ errorMessage: "Existen campos que no son válidos." }]
+            }
+          }
+        });
       }
     },
-    /** 
-     * Métodos del componente ProductListDialog 
+    /**
+     * Métodos del componente ProductListDialog
      */
 
     // Maneja la paginación de forma externa para que el componente se pueda rehusar
-    async productListPaginationHandler({ sortBy, descending, page, rowsPerPage }) {
-        const params = { 
-          requestPage: page - 1, 
-          size: rowsPerPage, 
-          sortBy,
-          descending
-        };
-        await this.$store.dispatch('purchaseOrders/addOrder/fetchProducts', params);
+    async productListPaginationHandler({
+      sortBy,
+      descending,
+      page,
+      rowsPerPage
+    }) {
+      const params = {
+        requestPage: page - 1,
+        size: rowsPerPage,
+        sortBy,
+        descending
+      };
+      await this.$store.dispatch(
+        "purchaseOrders/addOrder/fetchProducts",
+        params
+      );
     },
     // Añade un producto al detalle
     addProductToDetail(selectProduct) {
       this.purchaseOrderItems.push({
         ...selectProduct,
-        qty: 1,
-        discount: 0
+        quantity: 1,
+        unitPrice: 0,
+        purchasePrice: 0,
+        disscount: 0,
+        finalPrice: 0
       });
     },
-    showError(error){
+    showError(error) {
       const { message, errors } = error.response.data;
-      this.$confirm(errors.map(e => e.errorMessage).join('\n'), { 
-        title: message, 
-        color: 'error',
+      this.$confirm(errors.map(e => e.errorMessage).join("\n"), {
+        title: message,
+        color: "error",
         width: 500
       });
     },
     deleteOrderProduct(product) {
-      const productIdx = this.$_.findIndex(this.purchaseOrderItems, (item) => item.id === product.id);
+      const productIdx = this.$_.findIndex(
+        this.purchaseOrderItems,
+        item => item.id === product.id
+      );
       this.$delete(this.purchaseOrderItems, productIdx);
     }
   },
   filters: {
     twoDecimals(number) {
+      if (isNaN(number)) {
+        return 0.0;
+      }
       return parseFloat(number).toFixed(2);
     }
   }
-}
+};
 </script>

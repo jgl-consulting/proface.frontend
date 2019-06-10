@@ -30,7 +30,7 @@ export default {
   meta: {
       breadcrumbs: [
         { name: 'Módulos', link: '/' },
-        { name: 'Órdenes de compra', link: '/ordenesCompra' },
+        { name: 'Órdenes de compra', link: '/compras/ordenesCompra' },
         function({ params }){
           return { name: params.purchaseOrderId };
         }
@@ -38,7 +38,7 @@ export default {
   },
   asyncData({ route, params }){
     const { path } = route;
-    const mainRoute = `/ordenesCompra/${params.purchaseOrderId}`
+    const mainRoute = `/compras/ordenesCompra/${params.purchaseOrderId}`
     return {
       activeTab: path,
       tabs: [
@@ -57,11 +57,6 @@ export default {
           route: `${mainRoute}/costos`, 
           icon: 'fa-coins' 
         },
-        {
-          name: 'Facturas',
-          route: `${mainRoute}/facturas`, 
-          icon: 'fa-file-invoice-dollar' 
-        }
       ]
     }
   },

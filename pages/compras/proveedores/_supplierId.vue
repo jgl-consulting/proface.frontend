@@ -30,7 +30,7 @@ export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Proveedores", link: "/proveedores" },
+      { name: "Proveedores", link: "/compras/proveedores" },
       function({ params }) {
         return { name: params.supplierId };
       }
@@ -38,7 +38,7 @@ export default {
   },
   asyncData({ route, params }) {
     const { path } = route;
-    const mainRoute = `/proveedores/${params.supplierId}`;
+    const mainRoute = `/compras/proveedores/${params.supplierId}`;
     return {
       activeTab: path,
       tabs: [

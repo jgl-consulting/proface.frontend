@@ -30,13 +30,13 @@ export default {
   meta: {
       breadcrumbs: [
         { name: 'Módulos', link: '/' },
-        { name: 'Productos', link: '/productos' },
+        { name: 'Productos', link: '/compras/productos' },
         ({ productId }) => ({ name: productId  })
       ]
   },
   asyncData({ route, params }){
     const { path } = route;
-    const mainRoute = `/productos/${params.productId}`
+    const mainRoute = `/compras/productos/${params.productId}`
     return {
       activeTab: path,
       tabs: [

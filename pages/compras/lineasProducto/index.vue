@@ -70,7 +70,7 @@ export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Líneas de Producto", link: "/lineasProducto" }
+      { name: "Líneas de Producto", link: "/compras/lineasProducto" }
     ]
   },
   components: {

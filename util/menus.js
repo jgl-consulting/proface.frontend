@@ -2,7 +2,7 @@ export default [
  {
     id: 'compras',
     title: 'Compras',
-    icon: 'fa fa-piggy-bank',
+    icon: 'fa fa-shopping-bag',
     description: 'Módulo de compras',
     allowedRoles: ['COMPRAS'],
     children: [
