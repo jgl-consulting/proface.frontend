@@ -5,7 +5,7 @@ export default function ({ store, params, route }) {
   const { name, meta } = route;
   const breadcrumbs = getBreadcrumbs(meta,{ params, route, store });
 
-  if(breadcrumbs) {
+  if(name && meta && breadcrumbs) {
     store.dispatch('loadPageInfo', {
       title: getTitle(name),
       breadcrumbs 

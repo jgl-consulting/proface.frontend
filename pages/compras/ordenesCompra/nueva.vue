@@ -1,9 +1,18 @@
 <template>
   <v-form>
-    <h1>Registrar Orden de Compra</h1>
+    <v-layout row wrap>
+      <h1>Registrar Orden de Compra</h1>
+      <v-spacer></v-spacer>
+      <v-btn color="indigo darken-3" dark>
+        <v-icon small>fa-save</v-icon>
+        <span class="mx-1"></span>
+        <span>Guardar Orden</span>
+      </v-btn>
+    </v-layout>
     <form-group>
       <template #title>
         Datos de la Orden de Compra
+
       </template>
       <template #controls>
         <v-flex md2 pa-2>
@@ -98,7 +107,7 @@
         Productos
       </template>
       <template #actions>
-        <v-btn color="accent" @click.stop="openProductList">
+        <v-btn color="accent" @click.stop="openProductList" :disabled="nonSeletedProducts.length === 0">
           <v-icon small>fa-plus</v-icon>
           <span class="mx-1"></span>
           <span>Nuevo Producto</span>
@@ -137,7 +146,7 @@
                 </v-edit-dialog>
               </td>
               <td class="text-xs-left">
-                {{ props.item.salePrice * props.item.qty }}
+                {{ (props.item.salePrice * props.item.qty) | twoDecimals}}
               </td>
               <td>
                 <v-edit-dialog
@@ -157,17 +166,17 @@
                 </v-edit-dialog>
               </td>
               <td class="text-xs-left">
-                {{ props.item.salePrice * props.item.qty * (100 - props.item.discount)/100 }}
+                {{ (props.item.salePrice * props.item.qty * (100 - props.item.discount)/100) | twoDecimals }}
               </td>
               <td class="text-xs-center">
-                <v-btn flat icon color="accent">
+                <v-btn flat icon color="accent" @click="deleteOrderProduct(props.item)">
                   <v-icon small>fa-trash</v-icon>
                 </v-btn>
               </td>
             </template>
             <template #footer>
               <td class="text-sm-right" :colspan="detailHeaders.length">
-                <h3>Total: {{ purchaseOrderAmount }}</h3>
+                <h3>Total: {{ purchaseOrderAmount | twoDecimals }}</h3>
               </td>
             </template>
           </v-data-table>
@@ -185,7 +194,7 @@
     -->
     <product-list-dialog 
       v-model="productDialog"
-      :products="products"
+      :products="nonSeletedProducts"
       :page="page"
       @selectedProduct="addProductToDetail"
       @changePagination="productListPaginationHandler">
@@ -234,7 +243,11 @@ export default {
       ]
     }
   },
-  computed: { 
+  computed: {
+    nonSeletedProducts() {
+      let sameProduct = (product, orderItem) => product.id === orderItem.id;
+      return this.$_.differenceWith(this.products, this.purchaseOrderItems, sameProduct);
+    },
     title() {
       return "Nueva orden de compra";
     },
@@ -250,9 +263,10 @@ export default {
       'currencies'
     ]),
     purchaseOrderAmount() {
-      return this.purchaseOrderItems.reduce(
-        (totalAmount, { qty, salePrice, discount }) => totalAmount + salePrice * qty * (100 - discount) / 100, 
-      0);
+      let addItemToTotalAmount = (totalAmount, { qty, salePrice, discount }) => {
+        return totalAmount + salePrice * qty * (100 - discount) / 100;
+      }
+      return this.purchaseOrderItems.reduce(addItemToTotalAmount, 0);
     }
   },
   methods: {
@@ -300,7 +314,6 @@ export default {
     },
     // Añade un producto al detalle
     addProductToDetail(selectProduct) {
-      console.log({selectProduct})
       this.purchaseOrderItems.push({
         ...selectProduct,
         qty: 1,
@@ -314,6 +327,15 @@ export default {
         color: 'error',
         width: 500
       });
+    },
+    deleteOrderProduct(product) {
+      const productIdx = this.$_.findIndex(this.purchaseOrderItems, (item) => item.id === product.id);
+      this.$delete(this.purchaseOrderItems, productIdx);
+    }
+  },
+  filters: {
+    twoDecimals(number) {
+      return parseFloat(number).toFixed(2);
     }
   }
 }

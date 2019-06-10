@@ -21,15 +21,13 @@
           </v-list-tile-content>
         </v-list-tile>
         <span class="my-3"></span>
-        <v-divider></v-divider>
-        <v-list-tile
+        <!-- <v-list-tile
           class="my-2"
           v-for="(menu, i) in menus"
           :key="i" 
           :to="menu.to"
           router 
-          exact
-        >
+          exact>
           <v-list-tile-action>
             <v-icon small>{{ menu.icon }}</v-icon>
           </v-list-tile-action>
@@ -38,8 +36,8 @@
               {{ menu.title }}
             </v-list-tile-title>
           </v-list-tile-content>
-        </v-list-tile>
-        <v-divider></v-divider>
+        </v-list-tile> -->
+        <MenuTree :menus="menus"></MenuTree>
         <v-spacer></v-spacer>
         <v-list-tile class="my-2" @click.stop="miniVariant = !miniVariant">
           <v-list-tile-action>
@@ -72,7 +70,7 @@
       <user-details-menu :user="user"></user-details-menu>
     </v-toolbar>
     <v-content>
-      <v-container>
+      <v-container fluid py-4 px-5>
         <page-breadcrumbs></page-breadcrumbs>
         <nuxt/>
       </v-container>
@@ -81,6 +79,7 @@
 </template>
 
 <script>
+import MenuTree from '@/components/common/MenuTree'
 import UserDetailsMenu from '@/components/common/UserDetailsMenu'
 import ProfaceLogo from '@/components/common/ProfaceLogo'
 import strings from '@/util/strings';
@@ -90,7 +89,8 @@ import { mapState } from 'vuex';
 export default {
   components: {
     UserDetailsMenu,
-    ProfaceLogo
+    ProfaceLogo,
+    MenuTree
   },
   data() {
     return {
