@@ -1,6 +1,10 @@
-import { COUNTRIES_ENDPOINT } from '@/util/endpoints';
+import {
+  COUNTRIES_ENDPOINT
+} from '@/util/endpoints';
 export default class CountriesService {
-  constructor({ $axios }) {
+  constructor({
+    $axios
+  }) {
     this.$axios = $axios;
   }
 

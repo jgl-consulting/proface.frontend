@@ -1,12 +1,21 @@
-import { SUPPLIERS_ENDPOINT } from '@/util/endpoints';
+import {
+  SUPPLIERS_ENDPOINT
+} from '@/util/endpoints';
 export default class SuppliersService {
-  constructor({ $axios }) {
+  constructor({
+    $axios
+  }) {
     this.$axios = $axios;
   }
 
-  async pageSuppliers(page, size, sortBy, direction) {
+  async pageSuppliers(page, size, sortBy, direction, filter) {
     const suppliers = await this.$axios.$get(SUPPLIERS_ENDPOINT, {
-      params: { page, size, sort: sortBy ? `${sortBy},${direction}` : sortBy }
+      params: {
+        page,
+        size,
+        sort: sortBy ? `${sortBy},${direction}` : sortBy,
+        filter
+      }
     });
 
     const extractOneContact = (supplier) => ({
@@ -28,10 +37,11 @@ export default class SuppliersService {
   }
 
   async listSuppliers() {
-    return await this.$axios.$get(SUPPLIERS_ENDPOINT,
-      {
-        params: { unpaged: true }
-      });
+    return await this.$axios.$get(SUPPLIERS_ENDPOINT, {
+      params: {
+        unpaged: true
+      }
+    });
   }
 
   getSupplierById(supplierId) {
@@ -43,11 +53,15 @@ export default class SuppliersService {
   }
 
   async updateSupplier(supplier) {
-    const { id } = supplier;
+    const {
+      id
+    } = supplier;
     await this.$axios.$put(`${SUPPLIERS_ENDPOINT}/${id}`, supplier);
   }
 
-  async deleteSupplier({ id }) {
+  async deleteSupplier({
+    id
+  }) {
     await this.$axios.$delete(`${SUPPLIERS_ENDPOINT}/${id}`);
   }
 
