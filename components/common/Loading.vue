@@ -22,10 +22,12 @@ export default {
   }),
   methods: {
     start() {
+      console.log("Starting request");
       this.loading = true
     },
     finish() {
-      this.loading = false
+      console.log("Finishing request");
+      this.loading = false;
     }
   }
 }

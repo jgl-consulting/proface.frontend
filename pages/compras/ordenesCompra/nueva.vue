@@ -87,7 +87,7 @@
                 <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.unitPrice">
                   <span>
                     <v-icon small color="accent">fa-pen</v-icon>
-                    {{ props.item.unitPrice }}
+                    <span class="ml-2">{{ props.item.unitPrice }}</span>
                   </span>
                   <template v-slot:input>
                     <v-text-field
@@ -103,7 +103,7 @@
                 <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.quantity" lazy>
                   <span>
                     <v-icon small color="accent">fa-pen</v-icon>
-                    {{ props.item.quantity }} unidades
+                    <span class="ml-2">{{ props.item.quantity }} unidades</span>
                   </span>
                   <template v-slot:input>
                     <v-text-field
@@ -122,7 +122,7 @@
                 <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.disscount" lazy>
                   <span>
                     <v-icon small color="accent">fa-pen</v-icon>
-                    {{ props.item.disscount }}
+                    <span class="ml-2">{{ props.item.disscount }}</span>
                   </span>
                   <template v-slot:input>
                     <v-text-field

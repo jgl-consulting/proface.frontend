@@ -90,27 +90,7 @@ export const actions = {
     const purchaseStatuses = await this.$purchaseStatuses.listPurchaseStatuses();
     commit(SET_PURCHASE_STATUSES, purchaseStatuses);
   },
-  async createPurchaseOrder({
-    dispatch
-  }, {
-    purchaseOrder
-  }) {
-    await this.$purchaseOrders.createPurchaseOrder(purchaseOrder);
-    await dispatch('fetchPurchaseOrders');
-  },
-  async updatePurchaseOrder({
-    dispatch
-  }, {
-    purchaseOrder
-  }) {
-    await this.$purchaseOrders.updatePurchaseOrder(purchaseOrder);
-    await dispatch('fetchPurchaseOrders');
-  },
-  async deletePurchaseOrder({
-    dispatch
-  }, {
-    purchaseOrder
-  }) {
+  async deletePurchaseOrder({ dispatch }, { purchaseOrder }) {
     await this.$purchaseOrders.deletePurchaseOrder(purchaseOrder);
     await dispatch('fetchPurchaseOrders');
   }

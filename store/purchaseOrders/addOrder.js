@@ -78,16 +78,21 @@ export const actions = {
     const purchaseStatuses = await this.$purchaseStatuses.listPurchaseStatuses();
     commit(SET_PURCHASE_STATUSES, purchaseStatuses);
   },
-  async fetchCurrencies({
-    commit
-  }) {
+  async fetchCurrencies({ commit }) {
     const currencies = await this.$currencies.listCurrencies();
     commit(SET_CURRENCIES, currencies);
   },
-  async fetchSuppliers({
-    commit
-  }) {
+  async fetchSuppliers({ commit }) {
     const suppliers = await this.$suppliers.listSuppliers();
     commit(SET_SUPPLIERS, suppliers);
   },
+  async createPurchaseOrder({ dispatch }, { purchaseOrder }) {
+    console.log(JSON.stringify(purchaseOrder));
+    await this.$purchaseOrders.createPurchaseOrder(purchaseOrder);
+    // await dispatch('fetchPurchaseOrders');
+  },
+  async updatePurchaseOrder({ dispatch }, { purchaseOrder }) {
+    await this.$purchaseOrders.updatePurchaseOrder(purchaseOrder);
+    // await dispatch('fetchPurchaseOrders');
+  }
 }
