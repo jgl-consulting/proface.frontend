@@ -1,12 +1,10 @@
-export default [
- {
+export default [{
     id: 'compras',
     title: 'Compras',
     icon: 'fa fa-shopping-bag',
     description: 'Módulo de Gestión de Compras',
     allowedRoles: ['COMPRAS'],
-    children: [
-      {
+    children: [{
         id: 'bancos',
         title: 'Bancos',
         icon: 'fa fa-piggy-bank',
@@ -70,8 +68,7 @@ export default [
     icon: 'fa fa-store',
     description: 'Módulo de Gestión de Almacén',
     allowedRoles: ['ALMACEN'],
-    children: [
-      {
+    children: [{
         id: 'ubicaciones',
         title: 'Ubicaciones',
         icon: 'fa fa-map-marker-alt',
@@ -82,7 +79,7 @@ export default [
       {
         id: 'tiposEmpaque',
         title: 'Tipos de Empaque',
-        icon: 'fa fa-archive',
+        icon: 'fa fa-paperclip',
         to: '/almacen/tiposEmpaque',
         description: 'Gestión de tipos de empaque de la compañía',
         allowedRoles: ['ALMACEN']
@@ -93,6 +90,22 @@ export default [
         icon: 'fa fa-play-circle',
         to: '/almacen/estadosUnidad',
         description: 'Gestión de estados de unidad de la compañía',
+        allowedRoles: ['ALMACEN']
+      },
+      {
+        id: 'empaques',
+        title: 'Empaques',
+        icon: 'fa fa-archive',
+        to: '/almacen/empaques',
+        description: 'Gestión de empaques de la compañía',
+        allowedRoles: ['ALMACEN']
+      },
+      {
+        id: 'unidades',
+        title: 'Unidades',
+        icon: 'fa fa-parking',
+        to: '/almacen/unidades',
+        description: 'Gestión de unidades de la compañía',
         allowedRoles: ['ALMACEN']
       },
     ]

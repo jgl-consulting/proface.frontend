@@ -15,12 +15,14 @@ import CurrenciesService from '@/api/currencies.service';
 import LocationsService from '@/api/locations.service';
 import BatchTypesService from '@/api/batch-types.service';
 import UnitStatusesService from '@/api/unit-statuses.service';
+import BatchesService from '@/api/batches.service';
+import UnitsService from '@/api/units.service';
 
-export default function(ctx, inject) {
+export default function (ctx, inject) {
   if (!ctx.$axios) {
-    console.error( 'Please make sure $axios module is added');
+    console.error('Please make sure $axios module is added');
   } else {
-    inject('suppliers',  new SuppliersService(ctx));
+    inject('suppliers', new SuppliersService(ctx));
     inject('supplierTypes', new SupplierTypesService(ctx));
     inject('countries', new CountriesService(ctx));
     inject('products', new ProductsService(ctx));
@@ -37,5 +39,7 @@ export default function(ctx, inject) {
     inject('locations', new LocationsService(ctx));
     inject('batchTypes', new BatchTypesService(ctx));
     inject('unitStatuses', new UnitStatusesService(ctx));
+    inject('batches', new BatchesService(ctx));
+    inject('units', new UnitsService(ctx));
   }
 }
