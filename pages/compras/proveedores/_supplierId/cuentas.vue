@@ -16,11 +16,15 @@
           <td class="text-xs-left">{{ item.number }}</td>
           <td class="text-xs-left">{{ item.cci }}</td>
           <td class="text-xs-left">{{ item.description || "No cuenta con descripción" }}</td>
-          <td class="text-xs-left">{{ item.currency.name}}</td>
-          <td class="text-xs-left">{{ item.bank.name }}</td>
+          <td class="text-xs-left">{{ getCurrencyName(item.currency) }}</td>
+          <td class="text-xs-left">{{ getBankName(item.bank) }}</td>
           <td class="text-xs-left">
-              <span class="mr-2">{{ item.bank.country.iso }}</span>
-              <flag :iso="item.bank.country.iso" :title="item.bank.country.name" :squared="false"></flag>
+            <span class="mr-2">{{ getBankCountryIso(item.bank) }}</span>
+            <flag
+              :iso="getBankCountryIso(item.bank)"
+              :title="getBankCountryName(item.bank)"
+              :squared="false"
+            ></flag>
           </td>
           <td class="text-xs-left">
             <v-btn
@@ -104,6 +108,24 @@ export default {
     ...mapActions("suppliers/details", {
       deleteSupplierAccountAction: "deleteSupplierAccount"
     }),
+    getCurrencyName(currency) {
+      return currency ? currency.name : "S/.";
+    },
+    getBankName(bank) {
+      return bank ? bank.name : "Sin banco";
+    },
+    getBankCountryIso(bank) {
+      if (bank) {
+        return bank.country ? bank.country.iso : "Sin país";
+      }
+      return "Sin país";
+    },
+    getBankCountryName(bank) {
+      if (bank) {
+        return bank.country ? bank.country.name : "Sin país";
+      }
+      return "Sin país";
+    },
     openAddSupplierAccountDialog() {
       this.openSaveAccountDialog = true;
       this.supplierAccountToSave = {

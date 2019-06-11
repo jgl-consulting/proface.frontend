@@ -26,12 +26,14 @@
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
             <td class="text-xs-left">{{ getSupplierName(props.item.supplier) }}</td>
-            <td class="text-xs-left">{{ getCurrencySymbol(props.item.currency) + ' ' + props.item.total }}</td>
+            <td
+              class="text-xs-left"
+            >{{ getCurrencySymbol(props.item.currency) + ' ' + props.item.total }}</td>
             <td class="text-xs-left">{{ 'S/. ' + props.item.localTotal }}</td>
             <td class="text-xs-left">{{ 'S/. ' + props.item.localCost }}</td>
             <td class="text-xs-left">
               <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
-              - {{props.item.status.description}}
+              - {{ getStatusDescription(props.item.status)}}
             </td>
             <td class="text-xs-left" @click.stop="() => {}">
               <v-btn
@@ -74,7 +76,11 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-purchase-order-dialog v-model="openSaveDialog" :purchaseOrder="purchaseOrderToSave" :mode="dialogMode"></save-purchase-order-dialog>
+      <save-purchase-order-dialog
+        v-model="openSaveDialog"
+        :purchaseOrder="purchaseOrderToSave"
+        :mode="dialogMode"
+      ></save-purchase-order-dialog>
     </template>
   </simple-table-layout>
 </template>
@@ -160,10 +166,10 @@ export default {
       return "";
     },
     getSupplierName(supplier) {
-      return supplier ? supplier.name : 'Sin proveedor asignado';
+      return supplier ? supplier.name : "Sin proveedor asignado";
     },
     getCurrencySymbol(currency) {
-      return currency ? currency.symbol : 'S/. ';
+      return currency ? currency.symbol : "S/. ";
     },
     dateMoment(date) {
       if (date != undefined) {
@@ -216,11 +222,14 @@ export default {
         width: 500
       });
     },
+    getStatusDescription(status) {
+      return status ? status.description : 'Sin estado';
+    },
     getColor(status) {
-      return status.color || "primary";
+      return status ? status.color : "primary";
     },
     getIcon(status) {
-      return status.icon || "fa fa-calendar";
+      return status ? status.icon : "fa fa-calendar";
     }
   },
   filters: {

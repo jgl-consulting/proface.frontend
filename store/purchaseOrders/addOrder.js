@@ -86,13 +86,4 @@ export const actions = {
     const suppliers = await this.$suppliers.listSuppliers();
     commit(SET_SUPPLIERS, suppliers);
   },
-  async createPurchaseOrder({ dispatch }, { purchaseOrder }) {
-    console.log(JSON.stringify(purchaseOrder));
-    await this.$purchaseOrders.createPurchaseOrder(purchaseOrder);
-    // await dispatch('fetchPurchaseOrders');
-  },
-  async updatePurchaseOrder({ dispatch }, { purchaseOrder }) {
-    await this.$purchaseOrders.updatePurchaseOrder(purchaseOrder);
-    // await dispatch('fetchPurchaseOrders');
-  }
 }

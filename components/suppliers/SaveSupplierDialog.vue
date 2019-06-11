@@ -42,8 +42,8 @@
               >
                 <template v-slot:append>
                   <flag
-                    :iso="supplierModel.country.iso"
-                    :title="supplierModel.country.name"
+                    :iso="getCountryIso(supplierModel.country)"
+                    :title="getCountryName(supplierModel.country)"
                     :squared="false"
                   ></flag>
                 </template>
@@ -112,9 +112,7 @@ export default {
   watch: {
     supplier: {
       handler() {
-        const [country = {}] = this.countries;
         this.supplierModel = JSON.parse(JSON.stringify(this.supplier));
-        this.supplierModel.country = this.supplier.country || country;
       }
     }
   },
@@ -190,7 +188,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions("suppliers", ["createSupplier", "updateSupplier"]),
+    ...mapActions("suppliers", ["createSupplier", "updateSupplier"]),    
+    getCountryIso(country) {
+      return country ? country.iso : "Sin país";
+    },
+    getCountryName(country) {
+      return country ? country.name : "Sin país";
+    },
     async saveSupplier() {
       if (this.$refs.supplierForm.validate()) {
         const supplier = this.supplierToSave;

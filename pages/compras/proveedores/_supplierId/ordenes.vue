@@ -20,12 +20,12 @@
           <tr @click.stop="props.expanded = !props.expanded">
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
-            <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.total }}</td> 
+            <td class="text-xs-left">{{ getCurrencySymbol(props.item.currency) + ' ' + props.item.total }}</td> 
             <td class="text-xs-left">{{ 'S/. ' + props.item.localTotal }}</td>             
             <td class="text-xs-left">{{ 'S/. ' + props.item.localCost }}</td>
             <td class="text-xs-left">
               <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
-              - {{props.item.status.description}}
+              - {{ getStatusDescription(props.item.status)}}
             </td>
           </tr>
         </template>
@@ -103,11 +103,17 @@ export default {
       }
       return "";
     },
+    getCurrencySymbol(currency) {
+      return currency ? currency.symbol : 'S/. ';
+    },
+    getStatusDescription(status) {
+      return status ? status.description : 'Sin estado';
+    },
     getColor(status) {
-      return status.color || "primary";
+      return status ? status.color : "primary";
     },
     getIcon(status) {
-      return status.icon || "fa fa-calendar";
+      return status ? status.icon : "fa fa-calendar";
     },
     optional(object) {
       return object || {};

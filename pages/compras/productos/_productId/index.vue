@@ -35,7 +35,7 @@ export default {
           key: "line",
           title: "Línea",
           icon: "fa-box",
-          render: line => line.name
+          render: line => line ? line.name : "Sin línea"
         }
       ]
     };

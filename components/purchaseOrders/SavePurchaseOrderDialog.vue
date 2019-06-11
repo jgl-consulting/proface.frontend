@@ -86,12 +86,9 @@ export default {
   watch: {
     purchaseOrder: {
       handler() {
-        const [supplier = {}] = this.suppliers;
         this.purchaseOrderModel = JSON.parse(
           JSON.stringify(this.purchaseOrder)
         );
-        this.purchaseOrderModel.supplier =
-          this.purchaseOrder.supplier || supplier;
       }
     }
   },

@@ -55,7 +55,7 @@ export default {
           key: "country",
           title: "Pais",
           icon: "fa-flag",
-          render: country => `${country.name}(${country.iso})`
+          render: country => country ? `${country.name}(${country.iso})` : "Sin país"
         },
         {
           key: "type",

@@ -28,8 +28,12 @@
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.address }}</td>
             <td class="text-xs-left">
-              <span class="mr-2">{{ props.item.country.iso }}</span>
-              <flag :iso="props.item.country.iso" :title="props.item.country.name" :squared="false"></flag>
+              <span class="mr-2">{{ getCountryIso(props.item.country) }}</span>
+              <flag
+                :iso="getCountryIso(props.item.country)"
+                :title="getCountryName(props.item.country)"
+                :squared="false"
+              ></flag>
             </td>
             <td class="text-xs-left">{{ props.item.type.name }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
@@ -116,7 +120,7 @@ export default {
   },
   async fetch({ store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined};
-    //await store.dispatch("suppliers/fetchSuppliers", params); 
+    //await store.dispatch("suppliers/fetchSuppliers", params);
     await store.dispatch("suppliers/fetchCountries");
   },
   data() {
@@ -167,6 +171,12 @@ export default {
     ...mapActions("suppliers", {
       deleteSupplierAction: "deleteSupplier"
     }),
+    getCountryIso(country) {
+      return country ? country.iso : "Sin país";
+    },
+    getCountryName(country) {
+      return country ? country.name : "Sin país";
+    },
     openAddSupplierDialog() {
       this.openSaveDialog = true;
       this.supplierToSave = {

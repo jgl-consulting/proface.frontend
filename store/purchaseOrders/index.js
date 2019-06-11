@@ -93,5 +93,13 @@ export const actions = {
   async deletePurchaseOrder({ dispatch }, { purchaseOrder }) {
     await this.$purchaseOrders.deletePurchaseOrder(purchaseOrder);
     await dispatch('fetchPurchaseOrders');
+  },
+  async createPurchaseOrder({ dispatch }, { purchaseOrder }) {
+    await this.$purchaseOrders.createPurchaseOrder(purchaseOrder);
+    await dispatch('fetchPurchaseOrders');
+  },
+  async updatePurchaseOrder({ dispatch }, { purchaseOrder }) {
+    await this.$purchaseOrders.updatePurchaseOrder(purchaseOrder);
+    await dispatch('fetchPurchaseOrders');
   }
 }

@@ -5,8 +5,8 @@
         {{ supplier.name }}
         <flag
           class="ml-2"
-          :iso="supplier.country.iso"
-          :title="supplier.country.name"
+          :iso="getCountryIso(supplier.country)"
+          :title="getCountryName(supplier.country)"
           :squared="false"
         ></flag>
       </h1>
@@ -62,6 +62,14 @@ export default {
   },
   computed: {
     ...mapState("suppliers/details", ["supplier"])
+  },
+  methods: {
+    getCountryIso(country) {
+      return country ? country.iso : "Sin país";
+    },
+    getCountryName(country) {
+      return country ? country.name : "Sin país";
+    }
   }
 };
 </script>

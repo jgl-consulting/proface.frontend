@@ -26,12 +26,12 @@
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.description }}</td>
-            <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.salePrice }}</td>
+            <td class="text-xs-left">{{ getCurrencySymbol(props.item.currency) + ' ' + props.item.salePrice }}</td>
             <td class="text-xs-left">{{ 'S/. ' + props.item.localPrice }}</td>
             <td class="text-xs-left">{{ props.item.totalStock }}</td>
             <td class="text-xs-left">{{ props.item.totalStock - props.item.avaliableStock }}</td>
             <td class="text-xs-left">{{ props.item.avaliableStock }}</td>
-            <td class="text-xs-left">{{ props.item.line.name }}</td>
+            <td class="text-xs-left">{{ getLineName(props.item.line) }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
               <!--v-btn
                 class="mx-1"
@@ -152,6 +152,12 @@ export default {
     ...mapActions("products", {
       deleteProductAction: "deleteProduct"
     }),
+    getLineName(line) {
+      return line ? line.name : 'Sin línea';
+    },
+    getCurrencySymbol(currency) {
+      return currency ? currency.symbol : 'S/. ';
+    },
     openAddProductDialog() {
       this.openSaveDialog = true;
       this.productToSave = {

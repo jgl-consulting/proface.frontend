@@ -26,8 +26,12 @@
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.accountNumberMask }}</td>
             <td class="text-xs-left">
-              <span class="mr-2">{{ props.item.country.iso }}</span>
-              <flag :iso="props.item.country.iso" :title="props.item.country.name" :squared="false"></flag>
+              <span class="mr-2">{{ getCountryIso(props.item.country) }}</span>
+              <flag
+                :iso="getCountryIso(props.item.country)"
+                :title="getCountryName(props.item.country)"
+                :squared="false"
+              ></flag>
             </td>
             <td class="text-xs-center" @click.stop="() => {}">
               <v-btn
@@ -129,6 +133,12 @@ export default {
     ...mapActions("banks", {
       deleteBankAction: "deleteBank"
     }),
+    getCountryIso(country) {
+      return country ? country.iso : "Sin país";
+    },
+    getCountryName(country) {
+      return country ? country.name : "Sin país";
+    },
     openAddBankDialog() {
       this.openSaveDialog = true;
       this.bankToSave = {

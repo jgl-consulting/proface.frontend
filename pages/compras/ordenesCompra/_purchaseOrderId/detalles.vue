@@ -13,7 +13,7 @@
     <template #table>
       <v-data-table :headers="purchaseDetailHeaders" :items="purchaseDetails" class="elevation-1">
         <template #items="{ item }">
-          <td class="text-xs-left">{{ item.product.name }}</td>
+          <td class="text-xs-left">{{ getProductName(item.product) }}</td>
           <td class="text-xs-left">{{ item.quantity }}</td>
           <td class="text-xs-left">{{ formatPrice(item.unitPrice) }}</td>
           <td class="text-xs-left">{{ formatPrice(item.purchasePrice) }}</td>
@@ -22,7 +22,7 @@
           <td class="text-xs-left">{{ 'S/. ' + item.localPrice }}</td>
           <td class="text-xs-left">
             <v-icon :color="getColor(item.status)" small>{{getIcon(item.status)}}</v-icon>
-            {{item.status.description}}
+            {{ getStatusDescription(item.status) }}
           </td>
           <td class="text-xs-left">
             <v-btn
@@ -120,7 +120,13 @@ export default {
       deletePurchaseDetailAction: "deletePurchaseDetail"
     }),
     formatPrice(price) {
-      return this.purchaseOrder.currency.symbol + ' ' + price;
+      return this.purchaseOrder.currency ? this.purchaseOrder.currency.symbol + ' ' + price : price;
+    },
+    getProductName(product) {
+      return product ? product.name : 'Sin producto'
+    },
+    getStatusDescription(status) {
+      return status ? status.description : 'Sin estado';
     },
     openAddPurchaseDetailDialog() {
       this.openSaveDetailDialog = true;
@@ -167,10 +173,10 @@ export default {
       });
     },
     getColor(status) {
-      return status.color || "primary";
+      return status ? status.color : "primary";
     },
     getIcon(status) {
-      return status.icon || "fa fa-calendar";
+      return status ? status.icon : "fa fa-calendar";
     }
   }
 };
