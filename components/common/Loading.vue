@@ -12,7 +12,7 @@
         indeterminate
       ></v-progress-circular>
     </v-layout>
-  </div>
+  </div> 
 </template>
 
 <script>
@@ -22,12 +22,17 @@ export default {
   }),
   methods: {
     start() {
-      console.log("Starting request");
-      this.loading = true
+      console.log(this.loading);
+      this.loading = true;
+      console.log(this.loading);
     },
     finish() {
-      console.log("Finishing request");
+      console.log(this.loading);
       this.loading = false;
+      console.log(this.loading);
+    },
+    fail() {
+      console.log("Fail")
     }
   }
 }
@@ -44,6 +49,6 @@ export default {
   text-align: center;
   font-size: 30px;
   font-family: sans-serif;
-  z-index: 100000;
+  z-index: 100000000;
 }
 </style>

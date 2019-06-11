@@ -354,14 +354,6 @@ export default {
       );
       this.$delete(this.purchaseOrderItems, productIdx);
     }
-  },
-  filters: {
-    twoDecimals(number) {
-      if (isNaN(number)) {
-        return 0.0;
-      }
-      return parseFloat(number).toFixed(2);
-    }
   }
 };
 </script>
