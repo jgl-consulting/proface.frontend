@@ -103,7 +103,6 @@ export default {
             } else if (this.mode === "editar") {
               await this.updatePurchaseStatus({ purchaseStatus });
             }
-
             await this.$confirm("Guardado correcto!", {
               title: "Éxito",
               color: "success"

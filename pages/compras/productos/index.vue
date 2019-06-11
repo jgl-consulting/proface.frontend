@@ -26,8 +26,8 @@
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.description }}</td>
-            <td class="text-xs-left">{{ getCurrencySymbol(props.item.currency) + ' ' + props.item.salePrice }}</td>
-            <td class="text-xs-left">{{ 'S/. ' + props.item.localPrice }}</td>
+            <td class="text-xs-left">{{ getCurrencySymbol(props.item.currency) }} {{ props.item.salePrice | twoDecimals }}</td>
+            <td class="text-xs-left">S/. {{ + props.item.localPrice | twoDecimals }}</td>
             <td class="text-xs-left">{{ props.item.totalStock }}</td>
             <td class="text-xs-left">{{ props.item.totalStock - props.item.avaliableStock }}</td>
             <td class="text-xs-left">{{ props.item.avaliableStock }}</td>
