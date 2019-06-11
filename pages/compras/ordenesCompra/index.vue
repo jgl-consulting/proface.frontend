@@ -25,8 +25,8 @@
           <tr @click.stop="props.expanded = !props.expanded">
             <td class="text-xs-left">{{ props.item.nativeId }}</td>
             <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
-            <td class="text-xs-left">{{ props.item.supplier.name }}</td>
-            <td class="text-xs-left">{{ props.item.currency.symbol + ' ' + props.item.total }}</td>
+            <td class="text-xs-left">{{ getSupplierName(props.item.supplier) }}</td>
+            <td class="text-xs-left">{{ getCurrencySymbol(props.item.currency) + ' ' + props.item.total }}</td>
             <td class="text-xs-left">{{ 'S/. ' + props.item.localTotal }}</td>
             <td class="text-xs-left">{{ 'S/. ' + props.item.localCost }}</td>
             <td class="text-xs-left">
@@ -72,6 +72,9 @@
           </tr>
         </template>
       </v-data-table>
+    </template>
+    <template #dialog>
+      <save-purchase-order-dialog v-model="openSaveDialog" :purchaseOrder="purchaseOrderToSave" :mode="dialogMode"></save-purchase-order-dialog>
     </template>
   </simple-table-layout>
 </template>
@@ -121,7 +124,8 @@ export default {
       pageSizes: [20, 30, 50, 100],
       purchaseOrderToSave: {
         status: { id: 0 },
-        supplier: { id: 0 }
+        supplier: { id: 0 },
+        currency: { id: 0 }
       },
       openSaveDialog: false,
       dialogMode: "nuevo"
@@ -155,6 +159,12 @@ export default {
       if (date != undefined) return this.dateMoment(date).format("DD/MM/YYYY");
       return "";
     },
+    getSupplierName(supplier) {
+      return supplier ? supplier.name : 'Sin proveedor asignado';
+    },
+    getCurrencySymbol(currency) {
+      return currency ? currency.symbol : 'S/. ';
+    },
     dateMoment(date) {
       if (date != undefined) {
         const momentDate = moment(date);
@@ -167,7 +177,7 @@ export default {
       this.purchaseOrderToSave = {
         status: { id: 0 },
         supplier: { id: 0 },
-        currency: { id: 0}
+        currency: { id: 0 }
       };
       this.dialogMode = "nuevo";
     },

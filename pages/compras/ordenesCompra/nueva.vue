@@ -252,8 +252,7 @@ export default {
   },
   methods: {
     ...mapActions("purchaseOrders", [
-      "createPurchaseOrder",
-      "updatePurchaseOrder"
+      "createPurchaseOrder"
     ]),
     openProductList() {
       this.productDialog = true;
@@ -279,11 +278,7 @@ export default {
             { title: "Advertencia" }
           );
           if (res) {
-            if (this.mode === "nuevo") {
-              await this.createPurchaseOrder({ purchaseOrder });
-            } else if (this.mode === "editar") {
-              await this.updatePurchaseOrder({ purchaseOrder });
-            }
+            await this.createPurchaseOrder({ purchaseOrder });
             await this.$confirm("Guardado correcto!", {
               title: "Éxito",
               color: "success"

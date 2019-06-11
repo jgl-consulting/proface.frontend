@@ -18,6 +18,22 @@
           <form-group>
             <template #title>Datos de la Orden de Compra</template>
             <template #controls>
+              <v-flex md4 pa-2>
+                <v-text-field v-model="purchaseOrderModel.nativeId" label="Identificador"></v-text-field>
+              </v-flex>
+              <v-flex md4 pa-2>
+                <datepicker v-model="purchaseOrderModel.creationDate" label="Fecha de Creación"></datepicker>
+              </v-flex>
+              <v-flex md4 pa-2>
+                <v-select
+                  v-model="purchaseOrderModel.currency"
+                  :items="currencies"
+                  item-value="id"
+                  item-text="name"
+                  label="Moneda"
+                  return-object
+                ></v-select>
+              </v-flex>
               <v-flex md6 pa-2>
                 <v-autocomplete
                   v-model="purchaseOrderModel.supplier"
@@ -39,23 +55,7 @@
                   label="Estado"
                 ></v-select>
               </v-flex>
-              <v-flex md4 pa-2>
-                <v-text-field v-model="purchaseOrderModel.nativeId" label="Identificador"></v-text-field>
-              </v-flex>
-              <v-flex md4 pa-2>
-                <datepicker v-model="purchaseOrderModel.creationDate" label="Fecha de Creación"></datepicker>
-              </v-flex>
             </template>
-            <v-flex md4 pa-2>
-              <v-select
-                v-model="purchaseOrderModel.currency"
-                :items="currencies"
-                item-value="id"
-                item-text="name"
-                label="Moneda"
-                return-object
-              ></v-select>
-            </v-flex>
           </form-group>
         </v-form>
       </v-container>
@@ -81,10 +81,6 @@ export default {
     return {
       isOpen: false,
       purchaseOrderModel: {},
-      menuCreation: false,
-      menuQuotation: false,
-      menuReception: false,
-      menuBilling: false
     };
   },
   watch: {
@@ -111,7 +107,7 @@ export default {
       const { name } = this.purchaseOrderModel.supplier || {};
       return name ? name : "";
     },
-    ...mapState("purchaseOrders", ["purchaseStatuses", "suppliers"]),
+    ...mapState("purchaseOrders", ["purchaseStatuses", "suppliers", "currencies"]),
     purchaseOrderToSave() {
       return JSON.parse(
         JSON.stringify({
