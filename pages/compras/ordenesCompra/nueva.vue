@@ -251,9 +251,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions("purchaseOrders/addOrder", [
-      "createPurchaseOrder",
-      "updatePurchaseOrder"
+    ...mapActions("purchaseOrders", [
+      "createPurchaseOrder"
     ]),
     openProductList() {
       this.productDialog = true;
@@ -280,13 +279,6 @@ export default {
           );
           if (res) {
             await this.createPurchaseOrder({ purchaseOrder });
-            // if (this.mode === "nuevo") {
-              
-            // } else if (this.mode === "editar") {
-            //   await this.updatePurchaseOrder({ purchaseOrder });
-            // } else {
-            //   throw "Acción no valida"
-            // }
             await this.$confirm("Guardado correcto!", {
               title: "Éxito",
               color: "success"
