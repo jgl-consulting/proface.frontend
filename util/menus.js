@@ -3,7 +3,7 @@ export default [
     id: 'compras',
     title: 'Compras',
     icon: 'fa fa-shopping-bag',
-    description: 'Módulo de compras',
+    description: 'Módulo de Gestión de Compras',
     allowedRoles: ['COMPRAS'],
     children: [
       {
@@ -25,7 +25,7 @@ export default [
       {
         id: 'estadosRecepcion',
         title: 'Estados de Recepción',
-        icon: 'fa fa-exclamation-circle',
+        icon: 'fa fa-question-circle',
         to: '/compras/estadosRecepcion',
         description: 'Gestión de estados de recepción de la compañía',
         allowedRoles: ['COMPRAS']
@@ -61,6 +61,39 @@ export default [
         to: '/compras/proveedores',
         description: 'Gestión de proveedores de la compañía',
         allowedRoles: ['COMPRAS'],
+      },
+    ]
+  },
+  {
+    id: 'almacen',
+    title: 'Almacén',
+    icon: 'fa fa-store',
+    description: 'Módulo de Gestión de Almacén',
+    allowedRoles: ['ALMACEN'],
+    children: [
+      {
+        id: 'ubicaciones',
+        title: 'Ubicaciones',
+        icon: 'fa fa-map-marker-alt',
+        to: '/almacen/ubicaciones',
+        description: 'Gestión de ubicaciones de la compañía',
+        allowedRoles: ['ALMACEN']
+      },
+      {
+        id: 'tiposEmpaque',
+        title: 'Tipos de Empaque',
+        icon: 'fa fa-archive',
+        to: '/almacen/tiposEmpaque',
+        description: 'Gestión de tipos de empaque de la compañía',
+        allowedRoles: ['ALMACEN']
+      },
+      {
+        id: 'estadosUnidad',
+        title: 'Estados de Unidad',
+        icon: 'fa fa-play-circle',
+        to: '/almacen/estadosUnidad',
+        description: 'Gestión de estados de unidad de la compañía',
+        allowedRoles: ['ALMACEN']
       },
     ]
   }

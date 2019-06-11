@@ -13,10 +13,10 @@
     <template #table>
       <v-data-table :headers="purchaseInvoiceHeaders" :items="purchaseInvoices" class="elevation-1">
         <template #items="{ item }">
-          <td class="text-xs-left">{{ item.nativeId }}</td>
-          <td class="text-xs-left">{{ item.description }}</td>
+          <td class="text-xs-left">{{ item.nativeId || "Sin identificador" }}</td>
+          <td class="text-xs-left">{{ item.description || "Sin descripción" }}</td>
           <td class="text-xs-left">{{ formatDate(item.emissionDate) }}</td>
-          <td class="text-xs-left">{{ item.totalPrice }}</td>
+          <td class="text-xs-left">S/. {{ item.totalPrice }}</td>
           <td class="text-xs-center">
             <v-btn
               class="mx-1"

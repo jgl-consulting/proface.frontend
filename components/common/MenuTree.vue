@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list dense >
     <div v-for="(menu, menuIdx) in menus" :key="menuIdx">
       <MenuTreeItem 
         :menu="menu" 

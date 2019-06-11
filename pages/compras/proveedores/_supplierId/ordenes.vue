@@ -18,14 +18,14 @@
         >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.nativeId }}</td>
+            <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
             <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
-            <td class="text-xs-left">{{ getCurrencySymbol(props.item.currency) + ' ' + props.item.total }}</td> 
+            <td class="text-xs-left">{{ $_.get(props.item.currency, "symbol", "S/.") + ' ' + props.item.total }}</td> 
             <td class="text-xs-left">{{ 'S/. ' + props.item.localTotal }}</td>             
             <td class="text-xs-left">{{ 'S/. ' + props.item.localCost }}</td>
             <td class="text-xs-left">
-              <v-icon :color="getColor(props.item.status)" small>{{getIcon(props.item.status)}}</v-icon>
-              - {{ getStatusDescription(props.item.status)}}
+              <v-icon :color='$_.get(props.item.status, "color", "primary")' small>{{$_.get(props.item.status, "icon", "fa fa-calendar")}}</v-icon>
+              - {{ $_.get(props.item.status, "description", "Sin estado")}}
             </td>
           </tr>
         </template>
@@ -102,18 +102,6 @@ export default {
         return momentDate.isValid() ? momentDate : moment.now();
       }
       return "";
-    },
-    getCurrencySymbol(currency) {
-      return currency ? currency.symbol : 'S/. ';
-    },
-    getStatusDescription(status) {
-      return status ? status.description : 'Sin estado';
-    },
-    getColor(status) {
-      return status ? status.color : "primary";
-    },
-    getIcon(status) {
-      return status ? status.icon : "fa fa-calendar";
     },
     optional(object) {
       return object || {};

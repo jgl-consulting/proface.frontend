@@ -1,5 +1,5 @@
 <template>
-   <v-menu
+  <v-menu
     ref="datePicker"
     :close-on-content-click="false"
     v-model="datePicker"
@@ -23,17 +23,12 @@
         readonly
       ></v-text-field>
     </template>
-    <v-date-picker 
-      v-model="dateModel"
-      locale="es-PE"
-      no-title
-      @input="datePicker = false">
-    </v-date-picker>
+    <v-date-picker v-model="dateModel" locale="es-PE" no-title @input="datePicker = false"></v-date-picker>
   </v-menu>
 </template>
 
 <script>
-import moment from 'moment' 
+import moment from "moment";
 export default {
   props: {
     value: String,
@@ -43,12 +38,12 @@ export default {
   },
   watch: {
     dateModel: {
-      handler(){
+      handler() {
         const date = this.dateModel;
-        if(date) {
-          this.$emit('input', date)
+        if (date) {
+          this.$emit("input", date);
         } else {
-          this.$emit('input', moment.now())
+          this.$emit("input", moment.now());
         }
       }
     }
@@ -56,22 +51,24 @@ export default {
   data() {
     return {
       datePicker: false,
-      dateModel: "",
-    }
+      dateModel: ""
+    };
   },
   methods: {
     formatDate(date) {
-      if(date != undefined)
-        return this.dateMoment(date).format('DD/MM/YYYY');
+      if (date != undefined) {
+        return this.dateMoment(date).format("DD/MM/YYYY");
+      }
       return "";
     },
     parseDate(date) {
-      if(date != undefined)
-        return this.dateMoment(date).format('YYYY-MM-DD');
+      if (date != undefined) {
+        return this.dateMoment(date).format("YYYY-MM-DD");
+      }
       return "";
     },
     dateMoment(date) {
-      if(date != undefined) {
+      if (date != undefined) {
         const momentDate = moment(date);
         return momentDate.isValid() ? momentDate : moment.now();
       }
@@ -79,7 +76,7 @@ export default {
     }
   },
   created() {
-    this.dateModel = this.parseDate(this.value)
+    this.dateModel = this.parseDate(this.value);
   }
-}
+};
 </script>

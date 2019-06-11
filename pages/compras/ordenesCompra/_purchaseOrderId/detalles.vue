@@ -13,7 +13,7 @@
     <template #table>
       <v-data-table :headers="purchaseDetailHeaders" :items="purchaseDetails" class="elevation-1">
         <template #items="{ item }">
-          <td class="text-xs-left">{{ getProductName(item.product) }}</td>
+          <td class="text-xs-left">{{ $_.get(item.product, "name", "Sin producto") }}</td>
           <td class="text-xs-left">{{ item.quantity }}</td>
           <td class="text-xs-left">{{ formatPrice(item.unitPrice) }}</td>
           <td class="text-xs-left">{{ formatPrice(item.purchasePrice) }}</td>
@@ -21,8 +21,11 @@
           <td class="text-xs-left">{{ formatPrice(item.finalPrice) }}</td>
           <td class="text-xs-left">{{ 'S/. ' + item.localPrice }}</td>
           <td class="text-xs-left">
-            <v-icon :color="getColor(item.status)" small>{{getIcon(item.status)}}</v-icon>
-            {{ getStatusDescription(item.status) }}
+            <v-icon
+              :color='$_.get(item.status, "color", "primary")'
+              small
+            >{{$_.get(item.status, "icon", "fa fa-calendar")}}</v-icon>
+            {{ $_.get(item.status, "description", "Sin estado") }}
           </td>
           <td class="text-xs-left">
             <v-btn
@@ -51,7 +54,7 @@
         </template>
         <template #footer>
           <td class="text-sm-left" :colspan="purchaseDetailHeaders.length">
-            <h3>Total: S/. {{ purchaseDetailAmount.toFixed(2) }}</h3>
+            <h3>Total: S/. {{ purchaseDetailAmount | twoDecimals }}</h3>
           </td>
         </template>
       </v-data-table>
@@ -109,8 +112,7 @@ export default {
     },
     purchaseDetailAmount() {
       return this.purchaseDetails.reduce(
-        (totalAmount, { localPrice }) =>
-          totalAmount + localPrice,
+        (totalAmount, { localPrice }) => totalAmount + localPrice,
         0
       );
     }
@@ -120,13 +122,9 @@ export default {
       deletePurchaseDetailAction: "deletePurchaseDetail"
     }),
     formatPrice(price) {
-      return this.purchaseOrder.currency ? this.purchaseOrder.currency.symbol + ' ' + price : price;
-    },
-    getProductName(product) {
-      return product ? product.name : 'Sin producto'
-    },
-    getStatusDescription(status) {
-      return status ? status.description : 'Sin estado';
+      return this.purchaseOrder.currency
+        ? this.purchaseOrder.currency.symbol + " " + price
+        : price;
     },
     openAddPurchaseDetailDialog() {
       this.openSaveDetailDialog = true;
@@ -171,12 +169,6 @@ export default {
         color: "error",
         width: 500
       });
-    },
-    getColor(status) {
-      return status ? status.color : "primary";
-    },
-    getIcon(status) {
-      return status ? status.icon : "fa fa-calendar";
     }
   }
 };

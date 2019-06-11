@@ -1,18 +1,18 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <h1>Líneas de Producto</h1>
+      <h1>Estados de Unidad</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddProductLineDialog">
+      <v-btn color="accent" @click="openAddUnitStatusDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="mx-1">Nueva Línea</span>
+        <span class="mx-1">Nuevo Estado</span>
       </v-btn>
     </template>
     <template #table>
       <v-data-table
         :headers="headers"
-        :items="productLines"
+        :items="unitStatuses"
         :expand="expand"
         item-key="id"
         class="elevation-1"
@@ -23,7 +23,14 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.name || "Sin nombre" }}</td>
+            <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
+            <td class="text-xs-left">{{ props.item.description || "Sin descripción" }}</td>
+            <td class="text-xs-center">
+              <v-icon :color="props.item.color || 'primary'">fa-circle</v-icon>
+            </td>
+            <td class="text-xs-center">
+              <v-icon>{{props.item.icon || 'fa fa-calendar'}}</v-icon>
+            </td>
             <td class="text-xs-center" @click.stop="() => {}">
               <v-btn
                 class="mx-1"
@@ -32,7 +39,7 @@
                 icon
                 flat
                 small
-                @click.stop="openEditProductLineDialog(props.item)"
+                @click.stop="openEditUnitStatusDialog(props.item)"
               >
                 <v-icon small>fa-pen</v-icon>
               </v-btn>
@@ -43,7 +50,7 @@
                 icon
                 flat
                 small
-                @click.stop="deleteProductLine(props.item)"
+                @click.stop="deleteUnitStatus(props.item)"
               >
                 <v-icon small>fa-trash</v-icon>
               </v-btn>
@@ -53,39 +60,39 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-product-line-dialog
+      <save-unit-status-dialog
         v-model="openSaveDialog"
-        :product-line="productLineToSave"
+        :unitStatus="unitStatusToSave"
         :mode="dialogMode"
-      ></save-product-line-dialog>
+      ></save-unit-status-dialog>
     </template>
   </simple-table-layout>
 </template>
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
-import SaveProductLineDialog from "@/components/productLines/SaveProductLineDialog";
+import SaveUnitStatusDialog from "@/components/unitStatuses/SaveUnitStatusDialog";
 import { mapState, mapActions } from "vuex";
 export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Líneas de Producto", link: "/compras/lineasProducto" }
+      { name: "Estados de Unidad", link: "/almacen/estadosUnidad" }
     ]
   },
   components: {
     EmptyListTile,
-    SaveProductLineDialog
+    SaveUnitStatusDialog
   },
-  async fetch({ store }) {
-    //const params = { requestPage: 0, size: 20, sortBy: undefined };
-    //await store.dispatch("productLines/fetchProductLines", params);
-  },
+  async fetch({ store }) {},
   data() {
     return {
-      title: "Líneas de Producto",
+      title: "Estados de Unidad",
       headers: [
-        { text: "Nombre", align: "left", value: "name" },
+        { text: "Id Local", align: "left", value: "nativeId" },
+        { text: "Descripción", align: "left", value: "description" },
+        { text: "Color", align: "center", value: "color" },
+        { text: "Ícono", align: "center", value: "icon" },
         { text: "Acciones", align: "center", value: "id", sortable: false }
       ],
       pagination: {
@@ -96,7 +103,7 @@ export default {
       },
       expand: false,
       pageSizes: [20, 30, 50, 100],
-      productLineToSave: {},
+      unitStatusToSave: {},
       openSaveDialog: false,
       dialogMode: "nuevo"
     };
@@ -112,36 +119,36 @@ export default {
           sortBy,
           descending
         };
-        await this.$store.dispatch("productLines/fetchProductLines", params);
+        await this.$store.dispatch("unitStatuses/fetchUnitStatuses", params);
       }
     }
   },
   computed: {
-    ...mapState("productLines", ["productLines", "page"])
+    ...mapState("unitStatuses", ["unitStatuses", "page"])
   },
   methods: {
-    ...mapActions("productLines", {
-      deleteProductLineAction: "deleteProductLine"
+    ...mapActions("unitStatuses", {
+      deleteUnitStatusAction: "deleteUnitStatus"
     }),
-    openAddProductLineDialog() {
+    openAddUnitStatusDialog() {
       this.openSaveDialog = true;
-      this.productLineToSave = {};
+      this.unitStatusToSave = {};
       this.dialogMode = "nuevo";
     },
-    openEditProductLineDialog(productLine) {
+    openEditUnitStatusDialog(unitStatus) {
       this.openSaveDialog = true;
-      this.productLineToSave = productLine;
+      this.unitStatusToSave = unitStatus;
       this.dialogMode = "editar";
     },
-    async deleteProductLine(productLine) {
+    async deleteUnitStatus(unitStatus) {
       try {
-        const { name } = productLine;
+        const { nativeId } = unitStatus;
         const res = await this.$confirm(
-          `¿Está seguro de borrar la línea '${name}'?`,
+          `¿Está seguro de borrar el estado '${nativeId}'?`,
           { title: "Advertencia" }
         );
         if (res) {
-          await this.deleteProductLineAction({ productLine });
+          await this.deleteUnitStatusAction({ unitStatus });
           await this.$confirm("Borrado correcto!", {
             title: "Éxito",
             color: "success"

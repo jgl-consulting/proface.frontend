@@ -78,8 +78,7 @@ export default {
         await this.$auth.loginWith('local', { data });
         this.$router.push('/');
       } catch(error) {
-        console.log({ error });
-        this.error = error.response.data.error;
+        this.error = error.response ? error.response.data.error : error;
       }  
     }
   }

@@ -1,18 +1,18 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <h1>Líneas de Producto</h1>
+      <h1>Tipos de Empaque</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddProductLineDialog">
+      <v-btn color="accent" @click="openAddBatchTypeDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="mx-1">Nueva Línea</span>
+        <span class="mx-1">Nuevo Tipo de Empaque</span>
       </v-btn>
     </template>
     <template #table>
       <v-data-table
         :headers="headers"
-        :items="productLines"
+        :items="batchTypes"
         :expand="expand"
         item-key="id"
         class="elevation-1"
@@ -23,7 +23,7 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.name || "Sin nombre" }}</td>
+            <td class="text-xs-left">{{ props.item.description || "Sin descripción" }}</td>
             <td class="text-xs-center" @click.stop="() => {}">
               <v-btn
                 class="mx-1"
@@ -32,7 +32,7 @@
                 icon
                 flat
                 small
-                @click.stop="openEditProductLineDialog(props.item)"
+                @click.stop="openEditBatchTypeDialog(props.item)"
               >
                 <v-icon small>fa-pen</v-icon>
               </v-btn>
@@ -43,7 +43,7 @@
                 icon
                 flat
                 small
-                @click.stop="deleteProductLine(props.item)"
+                @click.stop="deleteBatchType(props.item)"
               >
                 <v-icon small>fa-trash</v-icon>
               </v-btn>
@@ -53,39 +53,37 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-product-line-dialog
+      <save-batch-type-dialog
         v-model="openSaveDialog"
-        :product-line="productLineToSave"
+        :batchType="batchTypeToSave"
         :mode="dialogMode"
-      ></save-product-line-dialog>
+      ></save-batch-type-dialog>
     </template>
   </simple-table-layout>
 </template>
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
-import SaveProductLineDialog from "@/components/productLines/SaveProductLineDialog";
+import SaveBatchTypeDialog from "@/components/batchTypes/SaveBatchTypeDialog";
 import { mapState, mapActions } from "vuex";
 export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Líneas de Producto", link: "/compras/lineasProducto" }
+      { name: "Tipos de Empaque", link: "/almacen/tiposEmpaque" }
     ]
   },
   components: {
     EmptyListTile,
-    SaveProductLineDialog
+    SaveBatchTypeDialog
   },
   async fetch({ store }) {
-    //const params = { requestPage: 0, size: 20, sortBy: undefined };
-    //await store.dispatch("productLines/fetchProductLines", params);
   },
   data() {
     return {
-      title: "Líneas de Producto",
+      title: "Tipos de Empaque",
       headers: [
-        { text: "Nombre", align: "left", value: "name" },
+        { text: "Descripción", align: "left", value: "description" },
         { text: "Acciones", align: "center", value: "id", sortable: false }
       ],
       pagination: {
@@ -96,7 +94,7 @@ export default {
       },
       expand: false,
       pageSizes: [20, 30, 50, 100],
-      productLineToSave: {},
+      batchTypeToSave: {},
       openSaveDialog: false,
       dialogMode: "nuevo"
     };
@@ -112,36 +110,36 @@ export default {
           sortBy,
           descending
         };
-        await this.$store.dispatch("productLines/fetchProductLines", params);
+        await this.$store.dispatch("batchTypes/fetchBatchTypes", params);
       }
     }
   },
   computed: {
-    ...mapState("productLines", ["productLines", "page"])
+    ...mapState("batchTypes", ["batchTypes", "page"])
   },
   methods: {
-    ...mapActions("productLines", {
-      deleteProductLineAction: "deleteProductLine"
+    ...mapActions("batchTypes", {
+      deleteBatchTypeAction: "deleteBatchType"
     }),
-    openAddProductLineDialog() {
+    openAddBatchTypeDialog() {
       this.openSaveDialog = true;
-      this.productLineToSave = {};
+      this.batchTypeToSave = {};
       this.dialogMode = "nuevo";
     },
-    openEditProductLineDialog(productLine) {
+    openEditBatchTypeDialog(batchType) {
       this.openSaveDialog = true;
-      this.productLineToSave = productLine;
+      this.batchTypeToSave = batchType;
       this.dialogMode = "editar";
     },
-    async deleteProductLine(productLine) {
+    async deleteBatchType(batchType) {
       try {
-        const { name } = productLine;
+        const { description } = batchType;
         const res = await this.$confirm(
-          `¿Está seguro de borrar la línea '${name}'?`,
+          `¿Está seguro de borrar el tipo '${description}'?`,
           { title: "Advertencia" }
         );
         if (res) {
-          await this.deleteProductLineAction({ productLine });
+          await this.deleteBatchTypeAction({ batchType });
           await this.$confirm("Borrado correcto!", {
             title: "Éxito",
             color: "success"

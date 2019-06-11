@@ -11,7 +11,10 @@ import ReceptionStatusesService from '@/api/reception-statuses.service';
 import PurchaseDetailsService from '@/api/purchase-details.service';
 import PurchaseCostsService from '@/api/purchase-costs.service';
 import PurchaseInvoicesService from '@/api/purchase-invoices.service';
-import CurrenciesService from '@/api/currencies.service'
+import CurrenciesService from '@/api/currencies.service';
+import LocationsService from '@/api/locations.service';
+import BatchTypesService from '@/api/batch-types.service';
+import UnitStatusesService from '@/api/unit-statuses.service';
 
 export default function(ctx, inject) {
   if (!ctx.$axios) {
@@ -31,5 +34,8 @@ export default function(ctx, inject) {
     inject('purchaseCosts', new PurchaseCostsService(ctx));
     inject('purchaseInvoices', new PurchaseInvoicesService(ctx));
     inject('currencies', new CurrenciesService(ctx));
+    inject('locations', new LocationsService(ctx));
+    inject('batchTypes', new BatchTypesService(ctx));
+    inject('unitStatuses', new UnitStatusesService(ctx));
   }
 }

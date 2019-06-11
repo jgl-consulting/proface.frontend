@@ -13,8 +13,8 @@
     <template #table>
       <v-data-table :headers="purchaseCostHeaders" :items="purchaseCosts" class="elevation-1">
         <template #items="{ item }">
-          <td class="text-xs-left">{{ item.description }}</td>
-          <td class="text-xs-left">{{ getCurrencySymbol(props.item.currency) + ' ' + item.totalCost }}</td>
+          <td class="text-xs-left">{{ item.description || "Sin descripción" }}</td>
+          <td class="text-xs-left">{{ $_.get(item.currency, "symbol", "S/.") + ' ' + item.totalCost }}</td>
           <td class="text-xs-left">{{ 'S/. ' + item.localCost }}</td>
           <td class="text-xs-center">
             <v-btn
@@ -43,7 +43,7 @@
         </template>
         <template #footer>
           <td class="text-sm-left" :colspan="purchaseCostHeaders.length">
-            <h3>Total: S/. {{ purchaseCostAmount.toFixed(2) }}</h3>
+            <h3>Total: S/. {{ purchaseCostAmount | twoDecimals }}</h3>
           </td>
         </template>
       </v-data-table>
@@ -103,9 +103,6 @@ export default {
     ...mapActions("purchaseOrders/details", {
       deletePurchaseCostAction: "deletePurchaseCost"
     }), 
-    getCurrencySymbol(currency) {
-      return currency ? currency.symbol : 'S/. ';
-    },
     openAddPurchaseCostDialog() {
       this.openSaveCostDialog = true;
       this.purchaseCostToSave = {

@@ -2,7 +2,7 @@
   <div>
     <v-layout row wrap>
       <h1 class="headline-1 mb-3">
-        {{ purchaseOrder.nativeId }}
+        {{ purchaseOrder.nativeId || "Sin identificador" }}
       </h1>
     </v-layout>
     <v-tabs v-model="activeTab" icons-and-text fixed-tabs grow>
@@ -56,6 +56,11 @@ export default {
           name: 'Costos', 
           route: `${mainRoute}/costos`, 
           icon: 'fa-coins' 
+        },
+        { 
+          name: 'Facturas', 
+          route: `${mainRoute}/facturas`, 
+          icon: 'fa-file-invoice-dollar' 
         },
       ]
     }

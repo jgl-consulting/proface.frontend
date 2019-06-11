@@ -1,18 +1,18 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <h1>Líneas de Producto</h1>
+      <h1>Ubicaciones</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddProductLineDialog">
+      <v-btn color="accent" @click="openAddLocationDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="mx-1">Nueva Línea</span>
+        <span class="mx-1">Nueva Ubicación</span>
       </v-btn>
     </template>
     <template #table>
       <v-data-table
         :headers="headers"
-        :items="productLines"
+        :items="locations"
         :expand="expand"
         item-key="id"
         class="elevation-1"
@@ -23,7 +23,8 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.name || "Sin nombre" }}</td>
+            <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
+            <td class="text-xs-left">{{ props.item.description || "Sin descripción" }}</td>
             <td class="text-xs-center" @click.stop="() => {}">
               <v-btn
                 class="mx-1"
@@ -32,7 +33,7 @@
                 icon
                 flat
                 small
-                @click.stop="openEditProductLineDialog(props.item)"
+                @click.stop="openEditLocationDialog(props.item)"
               >
                 <v-icon small>fa-pen</v-icon>
               </v-btn>
@@ -43,7 +44,7 @@
                 icon
                 flat
                 small
-                @click.stop="deleteProductLine(props.item)"
+                @click.stop="deleteLocation(props.item)"
               >
                 <v-icon small>fa-trash</v-icon>
               </v-btn>
@@ -53,39 +54,38 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-product-line-dialog
+      <save-location-dialog
         v-model="openSaveDialog"
-        :product-line="productLineToSave"
+        :location="locationToSave"
         :mode="dialogMode"
-      ></save-product-line-dialog>
+      ></save-location-dialog>
     </template>
   </simple-table-layout>
 </template>
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
-import SaveProductLineDialog from "@/components/productLines/SaveProductLineDialog";
+import SaveLocationDialog from "@/components/locations/SaveLocationDialog";
 import { mapState, mapActions } from "vuex";
 export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Líneas de Producto", link: "/compras/lineasProducto" }
+      { name: "Ubicaciones", link: "/almacen/ubicaciones" }
     ]
   },
   components: {
     EmptyListTile,
-    SaveProductLineDialog
+    SaveLocationDialog
   },
   async fetch({ store }) {
-    //const params = { requestPage: 0, size: 20, sortBy: undefined };
-    //await store.dispatch("productLines/fetchProductLines", params);
   },
   data() {
     return {
-      title: "Líneas de Producto",
+      title: "Ubicaciones",
       headers: [
-        { text: "Nombre", align: "left", value: "name" },
+        { text: "Id Local", align: "left", value: "nativeId" },
+        { text: "Descripción", align: "left", value: "description" },
         { text: "Acciones", align: "center", value: "id", sortable: false }
       ],
       pagination: {
@@ -96,7 +96,7 @@ export default {
       },
       expand: false,
       pageSizes: [20, 30, 50, 100],
-      productLineToSave: {},
+      locationToSave: {},
       openSaveDialog: false,
       dialogMode: "nuevo"
     };
@@ -112,36 +112,36 @@ export default {
           sortBy,
           descending
         };
-        await this.$store.dispatch("productLines/fetchProductLines", params);
+        await this.$store.dispatch("locations/fetchLocations", params);
       }
     }
   },
   computed: {
-    ...mapState("productLines", ["productLines", "page"])
+    ...mapState("locations", ["locations", "page"])
   },
   methods: {
-    ...mapActions("productLines", {
-      deleteProductLineAction: "deleteProductLine"
+    ...mapActions("locations", {
+      deleteLocationAction: "deleteLocation"
     }),
-    openAddProductLineDialog() {
+    openAddLocationDialog() {
       this.openSaveDialog = true;
-      this.productLineToSave = {};
+      this.locationToSave = {};
       this.dialogMode = "nuevo";
     },
-    openEditProductLineDialog(productLine) {
+    openEditLocationDialog(location) {
       this.openSaveDialog = true;
-      this.productLineToSave = productLine;
+      this.locationToSave = location;
       this.dialogMode = "editar";
     },
-    async deleteProductLine(productLine) {
+    async deleteLocation(location) {
       try {
-        const { name } = productLine;
+        const { nativeId } = location;
         const res = await this.$confirm(
-          `¿Está seguro de borrar la línea '${name}'?`,
+          `¿Está seguro de borrar la ubicación '${nativeId}'?`,
           { title: "Advertencia" }
         );
         if (res) {
-          await this.deleteProductLineAction({ productLine });
+          await this.deleteLocationAction({ location });
           await this.$confirm("Borrado correcto!", {
             title: "Éxito",
             color: "success"

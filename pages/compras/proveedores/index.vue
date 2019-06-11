@@ -24,18 +24,18 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.nativeId }}</td>
-            <td class="text-xs-left">{{ props.item.name }}</td>
-            <td class="text-xs-left">{{ props.item.address }}</td>
+            <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
+            <td class="text-xs-left">{{ props.item.name || "Sin nombre" }}</td>
+            <td class="text-xs-left">{{ props.item.address || "Sin dirección" }}</td>
             <td class="text-xs-left">
-              <span class="mr-2">{{ getCountryIso(props.item.country) }}</span>
+              <span class="mr-2">{{ $_.get(props.item.country, "iso", "Sin país") }}</span>
               <flag
-                :iso="getCountryIso(props.item.country)"
-                :title="getCountryName(props.item.country)"
+                :iso='$_.get(props.item.country, "iso", "Sin país")'
+                :title='$_.get(props.item.country, "name", "Sin país")'
                 :squared="false"
               ></flag>
             </td>
-            <td class="text-xs-left">{{ props.item.type.name }}</td>
+            <td class="text-xs-left">{{ $_.get(props.item.type, "name", "Sin tipo") }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
               <v-btn
                 class="mx-1"
@@ -171,12 +171,6 @@ export default {
     ...mapActions("suppliers", {
       deleteSupplierAction: "deleteSupplier"
     }),
-    getCountryIso(country) {
-      return country ? country.iso : "Sin país";
-    },
-    getCountryName(country) {
-      return country ? country.name : "Sin país";
-    },
     openAddSupplierDialog() {
       this.openSaveDialog = true;
       this.supplierToSave = {

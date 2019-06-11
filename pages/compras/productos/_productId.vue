@@ -2,7 +2,7 @@
   <div>
     <v-layout row wrap>
       <h1 class="headline-1 mb-3">
-        {{ product.name }}
+        {{ product.name || "Sin nombre" }}
       </h1>
     </v-layout>
     <v-tabs v-model="activeTab" icons-and-text fixed-tabs grow>

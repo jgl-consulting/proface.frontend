@@ -2,11 +2,11 @@
   <div>
     <v-layout row wrap>
       <h1 class="headline-1 mb-3">
-        {{ supplier.name }}
+        {{ supplier.name || "Sin nombre" }}
         <flag
           class="ml-2"
-          :iso="getCountryIso(supplier.country)"
-          :title="getCountryName(supplier.country)"
+          :iso='$_.get(supplier.country, "iso", "Sin país")'
+          :title='$_.get(supplier.country, "name", "Sin país")'
           :squared="false"
         ></flag>
       </h1>
@@ -63,14 +63,6 @@ export default {
   computed: {
     ...mapState("suppliers/details", ["supplier"])
   },
-  methods: {
-    getCountryIso(country) {
-      return country ? country.iso : "Sin país";
-    },
-    getCountryName(country) {
-      return country ? country.name : "Sin país";
-    }
-  }
 };
 </script>
 <style>

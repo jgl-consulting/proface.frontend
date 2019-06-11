@@ -22,14 +22,10 @@ export default {
   }),
   methods: {
     start() {
-      console.log(this.loading);
       this.loading = true;
-      console.log(this.loading);
     },
     finish() {
-      console.log(this.loading);
       this.loading = false;
-      console.log(this.loading);
     },
     fail() {
       console.log("Fail")

@@ -61,7 +61,7 @@ export default {
           key: "type",
           title: "Tipo",
           icon: "fa-globe-americas",
-          render: type => type.name
+          render: type => type ? type.name : "Sin tipo"
         }
       ],
       supplierContactFields: [

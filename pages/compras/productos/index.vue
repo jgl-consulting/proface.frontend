@@ -23,17 +23,17 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.nativeId }}</td>
-            <td class="text-xs-left">{{ props.item.name }}</td>
-            <td class="text-xs-left">{{ props.item.description }}</td>
-            <td class="text-xs-left">{{ getCurrencySymbol(props.item.currency) }} {{ props.item.salePrice | twoDecimals }}</td>
-            <td class="text-xs-left">S/. {{ + props.item.localPrice | twoDecimals }}</td>
+            <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
+            <td class="text-xs-left">{{ props.item.name || "Sin nombre" }}</td>
+            <td class="text-xs-left">{{ props.item.description || "Sin descripcíon" }}</td>
+            <td class="text-xs-left">{{ $_.get(props.item.currency, "symbol", "S/.") }} {{ props.item.salePrice | twoDecimals }}</td>
+            <td class="text-xs-left">S/. {{ props.item.localPrice | twoDecimals }}</td>
             <td class="text-xs-left">{{ props.item.totalStock }}</td>
             <td class="text-xs-left">{{ props.item.totalStock - props.item.avaliableStock }}</td>
             <td class="text-xs-left">{{ props.item.avaliableStock }}</td>
-            <td class="text-xs-left">{{ getLineName(props.item.line) }}</td>
+            <td class="text-xs-left">{{ $_.get(props.item, "line", "Sin línea") }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
-              <!--v-btn
+              <v-btn
                 class="mx-1"
                 color="primary"
                 dark
@@ -44,7 +44,7 @@
                 :to="props.item.id | path($route.fullPath)"
               >
                 <v-icon small>fa-ellipsis-v</v-icon>
-              </v-btn-->
+              </v-btn>
               <v-btn
                 class="mx-1"
                 color="accent"
@@ -152,12 +152,6 @@ export default {
     ...mapActions("products", {
       deleteProductAction: "deleteProduct"
     }),
-    getLineName(line) {
-      return line ? line.name : 'Sin línea';
-    },
-    getCurrencySymbol(currency) {
-      return currency ? currency.symbol : 'S/. ';
-    },
     openAddProductDialog() {
       this.openSaveDialog = true;
       this.productToSave = {

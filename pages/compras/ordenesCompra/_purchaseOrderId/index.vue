@@ -32,11 +32,11 @@ export default {
           key: "supplier",
           title: "Proveedor",
           icon: "fa-truck",
-          render: supplier => supplier ? supplier.name : 'Sin Proveedor asignado'
+          render: supplier => supplier ? supplier.name : "Sin proveedor"
         },
-        { key: "total", title: "Total", icon: "fa-coins"},
-        { key: "localTotal", title: "Total en Soles", icon: "fa-coins"}
-      ],
+        { key: "total", title: "Total", icon: "fa-coins" },
+        { key: "localTotal", title: "Total en Soles", icon: "fa-coins" }
+      ]
     };
   },
   computed: {

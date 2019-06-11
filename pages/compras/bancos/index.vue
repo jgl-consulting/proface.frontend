@@ -23,13 +23,13 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.name }}</td>
-            <td class="text-xs-left">{{ props.item.accountNumberMask }}</td>
+            <td class="text-xs-left">{{ props.item.name || "Sin nombre"}}</td>
+            <td class="text-xs-left">{{ props.item.accountNumberMask || "Sin máscara de cuenta"}}</td>
             <td class="text-xs-left">
-              <span class="mr-2">{{ getCountryIso(props.item.country) }}</span>
+              <span class="mr-2">{{ $_.get(props.item.country, "iso", "Sin país") }}</span>
               <flag
-                :iso="getCountryIso(props.item.country)"
-                :title="getCountryName(props.item.country)"
+                :iso='$_.get(props.item.country, "iso", "Sin país")'
+                :title='$_.get(props.item.country, "name", "Sin país")'
                 :squared="false"
               ></flag>
             </td>
@@ -133,12 +133,6 @@ export default {
     ...mapActions("banks", {
       deleteBankAction: "deleteBank"
     }),
-    getCountryIso(country) {
-      return country ? country.iso : "Sin país";
-    },
-    getCountryName(country) {
-      return country ? country.name : "Sin país";
-    },
     openAddBankDialog() {
       this.openSaveDialog = true;
       this.bankToSave = {

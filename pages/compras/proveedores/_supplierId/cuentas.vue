@@ -13,16 +13,16 @@
     <template #table>
       <v-data-table :headers="accountHeaders" :items="supplierAccounts" class="elevation-1">
         <template #items="{ item }">
-          <td class="text-xs-left">{{ item.number }}</td>
-          <td class="text-xs-left">{{ item.cci }}</td>
-          <td class="text-xs-left">{{ item.description || "No cuenta con descripción" }}</td>
-          <td class="text-xs-left">{{ getCurrencyName(item.currency) }}</td>
-          <td class="text-xs-left">{{ getBankName(item.bank) }}</td>
+          <td class="text-xs-left">{{ item.number || "Sin número de cuenta" }}</td>
+          <td class="text-xs-left">{{ item.cci || "Sin número internacional" }}</td>
+          <td class="text-xs-left">{{ item.description || "Sin descripción" }}</td>
+          <td class="text-xs-left">{{ $_.get(item.currency, "name", "Sin moneda") }}</td>
+          <td class="text-xs-left">{{ $_.get(item.bank, "name", "Sin banco") }}</td>
           <td class="text-xs-left">
-            <span class="mr-2">{{ getBankCountryIso(item.bank) }}</span>
+            <span class="mr-2">{{ $_.get(item.bank, "country.iso", "Sin país") }}</span>
             <flag
-              :iso="getBankCountryIso(item.bank)"
-              :title="getBankCountryName(item.bank)"
+              :iso='$_.get(item.bank, "country.iso", "Sin país")'
+              :title='$_.get(item.bank, "country.name", "Sin país")'
               :squared="false"
             ></flag>
           </td>
@@ -108,24 +108,6 @@ export default {
     ...mapActions("suppliers/details", {
       deleteSupplierAccountAction: "deleteSupplierAccount"
     }),
-    getCurrencyName(currency) {
-      return currency ? currency.name : "S/.";
-    },
-    getBankName(bank) {
-      return bank ? bank.name : "Sin banco";
-    },
-    getBankCountryIso(bank) {
-      if (bank) {
-        return bank.country ? bank.country.iso : "Sin país";
-      }
-      return "Sin país";
-    },
-    getBankCountryName(bank) {
-      if (bank) {
-        return bank.country ? bank.country.name : "Sin país";
-      }
-      return "Sin país";
-    },
     openAddSupplierAccountDialog() {
       this.openSaveAccountDialog = true;
       this.supplierAccountToSave = {

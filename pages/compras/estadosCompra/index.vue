@@ -23,10 +23,14 @@
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
-            <td class="text-xs-left">{{ props.item.nativeId }}</td>
-            <td class="text-xs-left">{{ props.item.description }}</td>
-            <td class="text-xs-center"><v-icon :color="props.item.color">fa-circle</v-icon></td>
-            <td class="text-xs-center"><v-icon>{{props.item.icon}}</v-icon></td>
+            <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
+            <td class="text-xs-left">{{ props.item.description || "Sin descripción" }}</td>
+            <td class="text-xs-center">
+              <v-icon :color="props.item.color || 'primary'">fa-circle</v-icon>
+            </td>
+            <td class="text-xs-center">
+              <v-icon>{{props.item.icon || "fa fa-question-circle"}}</v-icon>
+            </td>
             <td class="text-xs-center" @click.stop="() => {}">
               <v-btn
                 class="mx-1"
@@ -91,7 +95,7 @@ export default {
         { text: "Id Local", align: "left", value: "nativeId" },
         { text: "Descripción", align: "left", value: "description" },
         { text: "Color", align: "center", value: "color" },
-        { text: "Ícono", align: "center", value: "icon"},
+        { text: "Ícono", align: "center", value: "icon" },
         { text: "Acciones", align: "center", value: "id", sortable: false }
       ],
       pagination: {
@@ -118,7 +122,10 @@ export default {
           sortBy,
           descending
         };
-        await this.$store.dispatch("purchaseStatuses/fetchPurchaseStatuses", params);
+        await this.$store.dispatch(
+          "purchaseStatuses/fetchPurchaseStatuses",
+          params
+        );
       }
     }
   },
