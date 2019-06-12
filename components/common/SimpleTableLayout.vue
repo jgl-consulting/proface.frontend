@@ -20,4 +20,7 @@
   tr > th {
     text-transform: uppercase !important;
   }
+  table.v-table thead th, table.v-table tbody td {    
+    font-size: 11px;
+  }
 </style>

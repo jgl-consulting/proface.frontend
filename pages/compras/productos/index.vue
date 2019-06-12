@@ -31,7 +31,7 @@
             <td class="text-xs-left">{{ props.item.totalStock }}</td>
             <td class="text-xs-left">{{ props.item.totalStock - props.item.avaliableStock }}</td>
             <td class="text-xs-left">{{ props.item.avaliableStock }}</td>
-            <td class="text-xs-left">{{ $_.get(props.item, "line", "Sin línea") }}</td>
+            <td class="text-xs-left">{{ $_.get(props.item.line, "name", "Sin línea") }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
               <v-btn
                 class="mx-1"

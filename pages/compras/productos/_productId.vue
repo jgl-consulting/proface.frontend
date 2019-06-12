@@ -31,7 +31,9 @@ export default {
       breadcrumbs: [
         { name: 'Módulos', link: '/' },
         { name: 'Productos', link: '/compras/productos' },
-        ({ productId }) => ({ name: productId  })
+         function({ params }){
+          return { name: params.productId };
+        }
       ]
   },
   asyncData({ route, params }){

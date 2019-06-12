@@ -25,7 +25,12 @@ export default {
       productFields: [
         { key: "nativeId", title: "Código local", icon: "fa-id-card-alt" },
         { key: "description", title: "Descripción", icon: "fa-edit" },
-        { key: "currency", title: "Moneda", icon: "fa-money-bill" },
+        {
+          key: "currency",
+          title: "Moneda",
+          icon: "fa-money-bill",
+          render: currency => (currency ? currency.name : "Sin moneda")
+        },
         {
           key: "salePrice",
           title: "Precio de Venta",
@@ -35,7 +40,7 @@ export default {
           key: "line",
           title: "Línea",
           icon: "fa-box",
-          render: line => line ? line.name : "Sin línea"
+          render: line => (line ? line.name : "Sin línea")
         }
       ]
     };
