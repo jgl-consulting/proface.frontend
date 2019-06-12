@@ -307,13 +307,15 @@ export default {
       sortBy,
       descending,
       page,
-      rowsPerPage
+      rowsPerPage,
+      filter
     }) {
       const params = {
         requestPage: page - 1,
         size: rowsPerPage,
         sortBy,
-        descending
+        descending,
+        filter
       };
       await this.$store.dispatch(
         "purchaseOrders/addOrder/fetchProducts",

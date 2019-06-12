@@ -23,6 +23,8 @@
               <v-text-field
                 v-model="purchaseInvoiceModel.nativeId"
                 label="Id Local"
+                counter="20"
+                hint="Por ejemplo, F0001"
                 :rules="nativeIdRules"
               ></v-text-field>
             </v-flex>
@@ -34,10 +36,20 @@
               ></datepicker>
             </v-flex>
             <v-flex sm9 pa-2>
-              <v-text-field v-model="purchaseInvoiceModel.description" label="Descripción"></v-text-field>
+              <v-text-field
+                v-model="purchaseInvoiceModel.description"
+                counter="300"
+                hint="Por ejemplo, Factura de Proveedor - 10/01/2018"
+                label="Descripción"
+                :rules="descriptionRules"
+              ></v-text-field>
             </v-flex>
             <v-flex sm3 pa-2>
-              <v-text-field v-model="purchaseInvoiceModel.totalPrice" label="Total"></v-text-field>
+              <v-text-field
+                v-model="purchaseInvoiceModel.totalPrice"
+                hint="Por ejemplo, 2000"
+                label="Total"
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -48,7 +60,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { required } from "@/util/validators";
+import { required, maxLength } from "@/util/validators";
 import Datepicker from "@/components/common/Datepicker";
 export default {
   components: {
@@ -91,11 +103,20 @@ export default {
       );
     },
     nativeIdRules() {
-      return [value => required(value, "El Identificador local es requerido")];
+      return [
+        value => required(value, "El identificador es requerido"),
+        value => maxLength(value, "El identificador es demasiado grande", 20)
+      ];
     },
     emissionDateRules() {
       return [value => required(value, "La fecha de emisión es requerida")];
-    }
+    },
+    descriptionRules() {
+      return [
+        value => required(value, "La descripción es requerido"),
+        value => maxLength(value, "La descripción es demasiado grande", 300)
+      ];
+    },
   },
   methods: {
     ...mapActions("purchaseOrders/details", [

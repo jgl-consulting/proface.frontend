@@ -114,15 +114,17 @@ export const actions = {
       requestPage,
       size,
       sortBy,
-      descending
+      descending,
+      filter
     } = pagination || state.pagination;
     const direction = descending ? 'desc' : 'asc';
     const supplierId = this.$_.get(state, 'supplier.id', {});
-    const filter = "supplier.id:" + supplierId;
+    const supplierFilter = "supplier.id:" + supplierId;
+    const completeFilter = filter? filter + supplierFilter : supplierFilter;
     const {
       purchaseOrders,
       page
-    } = await this.$purchaseOrders.pagePurchaseOrders(requestPage, size, sortBy, direction, filter);
+    } = await this.$purchaseOrders.pagePurchaseOrders(requestPage, size, sortBy, direction, completeFilter);
     commit(SET_PURCHASE_ORDERS, purchaseOrders);
     commit(SET_PAGE, page);
     commit(SET_PAGINATION, {

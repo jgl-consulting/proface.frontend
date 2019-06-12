@@ -34,11 +34,18 @@
               <v-text-field
                 v-model="purchaseDetailModel.quantity"
                 label="Cantidad"
+                hint="Por ejemplo, 1"
                 :rules="quantityRules"
               ></v-text-field>
             </v-flex>
             <v-flex sm3 pa-2>
-              <v-text-field v-model="purchaseDetailModel.nativeId" label="Id Local"></v-text-field>
+              <v-text-field
+                v-model="purchaseDetailModel.nativeId"
+                counter="20"
+                :rules="nativeIdRules"
+                hint="Por ejemplo, DP001"
+                label="Id Local"
+              ></v-text-field>
             </v-flex>
             <v-flex sm6 pa-2>
               <v-select
@@ -52,10 +59,18 @@
               ></v-select>
             </v-flex>
             <v-flex sm3 pa-2>
-              <v-text-field v-model="purchaseDetailModel.unitPrice" label="Precio Unitario"></v-text-field>
+              <v-text-field
+                v-model="purchaseDetailModel.unitPrice"
+                hint="Por ejemplo, 2.50"
+                label="Precio Unitario"
+              ></v-text-field>
             </v-flex>
             <v-flex sm3 pa-2>
-              <v-text-field v-model="purchaseDetailModel.disscount" label="Descuento"></v-text-field>
+              <v-text-field
+                v-model="purchaseDetailModel.disscount"
+                hint="Por ejemplo, 1.50"
+                label="Descuento"
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -84,14 +99,9 @@ export default {
   watch: {
     purchaseDetail: {
       handler() {
-        const [status = {}] = this.receptionStatuses;
-        const [product = {}] = this.products;
         this.purchaseDetailModel = JSON.parse(
           JSON.stringify(this.purchaseDetail)
         );
-        this.purchaseDetailModel.status = this.purchaseDetail.status || status;
-        this.purchaseDetailModel.product =
-          this.purchaseDetail.product || product;
       }
     }
   },
@@ -118,7 +128,12 @@ export default {
       return [value => referenced(value, "El estado es requerido")];
     },
     quantityRules() {
-      return [value => required(value, "La cantidad es requerido")];
+      return [value => required(value, "La cantidad es requerida")];
+    },
+    nativeIdRules() {
+      return [
+        value => maxLength(value, "El identificador es demasiado grande", 20)
+      ];
     }
   },
   methods: {

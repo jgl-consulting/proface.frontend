@@ -8,6 +8,16 @@
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nuevo Estado</span>
       </v-btn>
+    </template>    
+    <template #filters>      
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Búsqueda"
+        single-line
+        clearable
+        hide-details
+      ></v-text-field>
     </template>
     <template #table>
       <v-data-table
@@ -104,6 +114,8 @@ export default {
         rowsPerPage: 20, // -1 for All",
         sortBy: "id"
       },
+      search: "",
+      filter: "nativeId:{}*,description:{}*",
       expand: false,
       pageSizes: [20, 30, 50, 100],
       purchaseStatusToSave: {},
@@ -115,12 +127,28 @@ export default {
     pagination: {
       async handler() {
         const { sortBy, descending, page, rowsPerPage } = this.pagination;
-
         const params = {
           requestPage: page - 1,
           size: rowsPerPage,
           sortBy,
           descending
+        };
+        await this.$store.dispatch(
+          "purchaseStatuses/fetchPurchaseStatuses",
+          params
+        );
+      }
+    },
+    search: {
+      async handler() {
+        const { sortBy, descending, page, rowsPerPage } = this.pagination;
+        let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+        const params = {
+          requestPage: page - 1,
+          size: rowsPerPage,
+          sortBy,
+          descending,
+          filter: searchFilter
         };
         await this.$store.dispatch(
           "purchaseStatuses/fetchPurchaseStatuses",

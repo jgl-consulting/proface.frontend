@@ -12,6 +12,14 @@
       <v-card-text>
         <v-layout row wrap>
           <v-flex xs12>
+            <v-text-field
+              v-model="search"
+              append-icon="search"
+              label="Búsqueda"
+              single-line
+              clearable
+              hide-details
+            ></v-text-field>
             <v-data-table
               :headers="headers"
               :items="products"
@@ -85,6 +93,8 @@ export default {
         sortBy: 'id'
       },
       expand: false,
+      search: "",
+      filter: "nativeId:{}*,name:{}*,description:{}*,line.name:{}*",
       pageSizes: [20, 30, 50, 100],
       productToSave: {
         line: { id: 0 }
@@ -96,6 +106,12 @@ export default {
     pagination: {
       async handler() {
         this.$emit('changePagination', this.pagination);
+      }
+    },
+    search: {
+      async handler() {
+        let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+        this.$emit('changePagination', { ...this.pagination, filter: searchFilter });
       }
     }
   },

@@ -9,6 +9,16 @@
         <span class="mx-1">Nueva orden de compra</span>
       </v-btn>
     </template>
+    <template #filters>      
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Búsqueda"
+        single-line
+        clearable
+        hide-details
+      ></v-text-field>
+    </template>
     <template #table>
       <v-data-table
         :headers="headers"
@@ -130,6 +140,8 @@ export default {
         sortBy: "id"
       },
       expand: false,
+      search: "",
+      filter: "nativeId:{}*,supplier.name:{}*,status.description:{}*",
       pageSizes: [20, 30, 50, 100],
       purchaseOrderToSave: {
         status: { id: 0 },
@@ -149,6 +161,23 @@ export default {
           size: rowsPerPage,
           sortBy,
           descending
+        };
+        await this.$store.dispatch(
+          "purchaseOrders/fetchPurchaseOrders",
+          params
+        );
+      }
+    },
+    search: {
+      async handler() {
+        const { sortBy, descending, page, rowsPerPage } = this.pagination;
+        let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+        const params = {
+          requestPage: page - 1,
+          size: rowsPerPage,
+          sortBy,
+          descending,
+          filter: searchFilter
         };
         await this.$store.dispatch(
           "purchaseOrders/fetchPurchaseOrders",

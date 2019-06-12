@@ -6,7 +6,7 @@ export const referenced = function (value, message) {
     const {
       id
     } = value;
-    return id > 0 || message;
+    return isNaN(id) ? !id : id > 0 || message;
   }
   return true;
 }

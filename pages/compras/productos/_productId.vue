@@ -46,6 +46,11 @@ export default {
           name: 'Datos generales', 
           route: `${mainRoute}`, 
           icon: 'fa-info-circle' 
+        },
+        { 
+          name: 'Unidades', 
+          route: `${mainRoute}/unidades`, 
+          icon: 'fa-parking' 
         }
       ]
     }

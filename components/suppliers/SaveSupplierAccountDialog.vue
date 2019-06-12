@@ -45,6 +45,8 @@
               <v-text-field
                 v-model="supplierAccountModel.number"
                 label="Número de Cuenta"
+                counter="20"
+                hint="Por ejemplo, 1324-123214-1234"
                 :mask="supplierAccountModel.bank.accountNumberMask"
                 :rules="nroCtaRules"
               ></v-text-field>
@@ -53,6 +55,8 @@
               <v-text-field
                 v-model="supplierAccountModel.cci"
                 label="CCI"
+                counter="20"
+                hint="Por ejemplo, 123-12345678910123456"
                 mask="###-#################"
                 :rules="cciRules"
               ></v-text-field>
@@ -61,6 +65,8 @@
               <v-text-field
                 v-model="supplierAccountModel.description"
                 label="Descripción"
+                hint="Por ejemplo, Cuenta principal nacional"
+                counter="45"
                 :rules="descriptionRules"
               ></v-text-field>
             </v-flex>
@@ -118,17 +124,23 @@ export default {
       return [value => referenced(value, "El banco es requerido")];
     },
     currencyRules() {
-      return [value => required(value, "La moneda es requerida")];
+      return [value => referenced(value, "La moneda es requerida")];
     },
     nroCtaRules() {
-      return [value => required(value, "El número de cuenta es requerido")];
+      return [
+        value => required(value, "El número de cuenta es requerido"),
+        value => maxLength(value, "El número de cuenta es demasiado grande", 20)
+      ];
     },
     cciRules() {
-      return [value => required(value, "El número de CCI es requerido")];
+      return [
+        value => required(value, "El número de CCI es requerido"),
+        value => maxLength(value, "El número de CCI es demasiado grande", 20)
+      ];
     },
     descriptionRules() {
       return [
-        value => maxLength(value, "El valor supera el tamaño máximo", 45)
+        value => maxLength(value, "La descripción es demasiado grande", 45)
       ];
     }
   },

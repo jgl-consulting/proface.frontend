@@ -20,7 +20,13 @@
               <h3 class="text--blue-grey">Datos del banco</h3>
             </v-flex>
             <v-flex sm6 pa-2>
-              <v-text-field v-model="bankModel.name" label="Nombre" :rules="nameRules"></v-text-field>
+              <v-text-field
+                v-model="bankModel.name"
+                label="Nombre"
+                counter="45"
+                :rules="nameRules"
+                hint="Por ejemplo, Banco Pichincha"
+              ></v-text-field>
             </v-flex>
             <v-flex sm6 pa-2>
               <v-autocomplete
@@ -45,7 +51,10 @@
             <v-flex sm12 pa-2>
               <v-text-field
                 v-model="bankModel.accountNumberMask"
+                counter="20"
+                hint="Por ejemplo, ####-####-###"
                 label="Máscara de Números de Cuenta"
+                :rules="maskRules"
               ></v-text-field>
             </v-flex>
           </v-layout>
@@ -57,7 +66,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { required, referenced } from "@/util/validators";
+import { required, referenced, maxLength } from "@/util/validators";
 
 export default {
   props: {
@@ -105,7 +114,13 @@ export default {
       return [value => referenced(value, "El país es requerido")];
     },
     nameRules() {
-      return [value => required(value, "El nombre es requerido")];
+      return [
+        value => required(value, "El nombre es requerido"),
+        value => maxLength(value, "El nombre es demasiado grande", 45)
+      ];
+    },
+    maskRules() {
+      return [value => maxLength(value, "La máscara es demasiado grande", 20)];
     }
   },
   methods: {

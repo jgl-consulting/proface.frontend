@@ -40,13 +40,14 @@ import {
         requestPage,
         size,
         sortBy,
-        descending
+        descending,
+        filter
       } = pagination || state.pagination;
       const direction = descending ? 'desc' : 'asc';
       const {
         batches,
         page
-      } = await this.$batches.pageBatches(requestPage, size, sortBy, direction);
+      } = await this.$batches.pageBatches(requestPage, size, sortBy, direction, filter);
       commit(SET_BATCHES, batches);
       commit(SET_PAGE, page);
       commit(SET_PAGINATION, {

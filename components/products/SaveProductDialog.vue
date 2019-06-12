@@ -20,12 +20,20 @@
               <h3 class="text--blue-grey">Datos del producto</h3>
             </v-flex>
             <v-flex xs8 pa-2>
-              <v-text-field v-model="productModel.name" label="Nombre" :rules="nameproductRules"></v-text-field>
+              <v-text-field
+                v-model="productModel.name"
+                label="Nombre"
+                counter="200"
+                hint="Por ejemplo, Pasta dental"
+                :rules="nameproductRules"
+              ></v-text-field>
             </v-flex>
             <v-flex xs4 pa-2>
               <v-text-field
                 v-model="productModel.nativeId"
                 label="Id Local"
+                counter="20"
+                hint="Por ejemplo, P001"
                 :rules="idproductRules"
               ></v-text-field>
             </v-flex>
@@ -59,7 +67,13 @@
               ></v-select>
             </v-flex>
             <v-flex xs12 pa-2>
-              <v-text-field v-model="productModel.description" label="Descripción"></v-text-field>
+              <v-text-field
+                v-model="productModel.description"
+                counter="300"
+                hint="Por ejemplo, Pasta para cepillar los dientes"
+                :rules="descriptionRules"
+                label="Descripción"
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -108,24 +122,30 @@ export default {
       );
     },
     currencyRules() {
-      return [value => required(value, "La moneda es requerida")];
+      return [value => referenced(value, "La moneda es requerida")];
     },
     salePriceRules() {
       return [value => required(value, "El precio de venta es requerido")];
     },
     lineRules() {
-      return [value => referenced(value, "La línea de producto es requerida")];
+      return [value => referenced(value, "La línea es requerida")];
     },
     idproductRules() {
       return [
-        value => required(value, "El código del producto es requerido"),
-        value => maxLength(value, "El valor supera el tamaño máximo", 20)
+        value => required(value, "El identificador es requerido"),
+        value => maxLength(value, "El identificador es demasiado grande", 20)
       ];
     },
     nameproductRules() {
       return [
-        value => required(value, "El nombre del producto es requerido"),
-        value => maxLength(value, "El valor supera el tamaño máximo", 300)
+        value => required(value, "El nombre es requerido"),
+        value => maxLength(value, "El nombre es demasiado grande", 200)
+      ];
+    },
+    descriptionRules() {
+      return [
+        value => required(value, "La descripción es requerida"),
+        value => maxLength(value, "La descripción es demasiado grande", 300)
       ];
     }
   },

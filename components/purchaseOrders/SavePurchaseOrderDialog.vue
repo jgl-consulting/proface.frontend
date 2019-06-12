@@ -19,7 +19,13 @@
             <template #title>Datos de la Orden de Compra</template>
             <template #controls>
               <v-flex md4 pa-2>
-                <v-text-field v-model="purchaseOrderModel.nativeId" label="Identificador"></v-text-field>
+                <v-text-field
+                  v-model="purchaseOrderModel.nativeId"
+                  counter="20"
+                  hint="Por ejemplo, OC0001"
+                  label="Identificador"
+                  :rules="nativeIdRules"
+                ></v-text-field>
               </v-flex>
               <v-flex md4 pa-2>
                 <datepicker v-model="purchaseOrderModel.creationDate" label="Fecha de Creación"></datepicker>
@@ -65,6 +71,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import { required, maxLength } from "@/util/validators";
 import FormGroup from "@/components/common/FormGroup";
 import Datepicker from "@/components/common/Datepicker";
 export default {
@@ -80,7 +87,7 @@ export default {
   data() {
     return {
       isOpen: false,
-      purchaseOrderModel: {},
+      purchaseOrderModel: {}
     };
   },
   watch: {
@@ -104,14 +111,24 @@ export default {
       const { name } = this.purchaseOrderModel.supplier || {};
       return name ? name : "";
     },
-    ...mapState("purchaseOrders", ["purchaseStatuses", "suppliers", "currencies"]),
+    ...mapState("purchaseOrders", [
+      "purchaseStatuses",
+      "suppliers",
+      "currencies"
+    ]),
     purchaseOrderToSave() {
       return JSON.parse(
         JSON.stringify({
           ...this.purchaseOrderModel
         })
       );
-    }
+    },
+    nativeIdRules() {
+      return [
+        value => required(value, "El identificador es requerido"),
+        value => maxLength(value, "El identificador es demasiado grande", 20)
+      ];
+    },
   },
   methods: {
     ...mapActions("purchaseOrders", [

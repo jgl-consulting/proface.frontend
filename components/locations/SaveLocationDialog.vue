@@ -23,6 +23,8 @@
               <v-text-field
                 v-model="locationModel.nativeId"
                 label="Identificador"
+                counter="20"
+                hint="Por ejemplo, C001"
                 :rules="nativeIdRules"
               ></v-text-field>
             </v-flex>
@@ -30,6 +32,8 @@
               <v-text-field
                 v-model="locationModel.description"
                 label="Descripción"
+                counter="100"
+                hint="Por ejemplo, Cajón 1"
                 :rules="descriptionRules"
               ></v-text-field>
             </v-flex>
@@ -42,7 +46,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { required } from "@/util/validators";
+import { required, maxLength } from "@/util/validators";
 
 export default {
   props: {
@@ -80,10 +84,16 @@ export default {
       );
     },
     nativeIdRules() {
-      return [value => required(value, "El identificador es requerido")];
+      return [
+        value => required(value, "El identificador es requerido"),
+        value => maxLength(value, "El identificador es demasiado grande", "20")
+      ];
     },
     descriptionRules() {
-      return [value => required(value, "La descripción es requerida")];
+      return [
+        value => required(value, "La descripción es requerida"),
+        value => maxLength(value, "La descripción es demasiado grande", "100")
+      ];
     }
   },
   methods: {

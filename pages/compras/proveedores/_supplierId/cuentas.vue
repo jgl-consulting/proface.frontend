@@ -10,8 +10,18 @@
         <span>Nueva cuenta</span>
       </v-btn>
     </template>
+    <template #filters>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Búsqueda"
+        single-line
+        clearable
+        hide-details
+      ></v-text-field>
+    </template>
     <template #table>
-      <v-data-table :headers="accountHeaders" :items="supplierAccounts" class="elevation-1">
+      <v-data-table :headers="accountHeaders" :items="supplierAccounts" :search="search" class="elevation-1">
         <template #items="{ item }">
           <td class="text-xs-left">{{ item.number || "Sin número de cuenta" }}</td>
           <td class="text-xs-left">{{ item.cci || "Sin número internacional" }}</td>
@@ -95,6 +105,7 @@ export default {
       bank: { id: 0 },
       currency: { id: 0 }
     },
+    search: "",
     openSaveAccountDialog: false,
     dialogMode: "nuevo"
   }),

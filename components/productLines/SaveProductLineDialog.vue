@@ -20,7 +20,13 @@
               <h3 class="text--blue-grey">Datos de la línea</h3>
             </v-flex>
             <v-flex sm12 pa-2>
-              <v-text-field v-model="productLineModel.name" label="Nombre" :rules="nameRules"></v-text-field>
+              <v-text-field
+                v-model="productLineModel.name"
+                label="Nombre"
+                counter="100"
+                hint="Por ejemplo, Instrumento"
+                :rules="nameRules"
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -31,7 +37,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { required } from "@/util/validators";
+import { required, maxLength } from "@/util/validators";
 
 export default {
   props: {
@@ -69,7 +75,10 @@ export default {
       );
     },
     nameRules() {
-      return [value => required(value, "El nombre es requerido")];
+      return [
+        value => required(value, "El nombre es requerido"),
+        value => maxLength(value, "El nombre es demasiado grande", 100)
+      ];
     }
   },
   methods: {

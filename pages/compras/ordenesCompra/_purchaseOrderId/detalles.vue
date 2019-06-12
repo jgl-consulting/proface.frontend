@@ -10,8 +10,18 @@
         <span>Solicitar nuevo producto</span>
       </v-btn>
     </template>
+    <template #filters>      
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Búsqueda"
+        single-line
+        clearable
+        hide-details
+      ></v-text-field>
+    </template>
     <template #table>
-      <v-data-table :headers="purchaseDetailHeaders" :items="purchaseDetails" class="elevation-1">
+      <v-data-table :headers="purchaseDetailHeaders" :items="purchaseDetails" :search="search" class="elevation-1">
         <template #items="{ item }">
           <td class="text-xs-left">{{ $_.get(item.product, "name", "Sin producto") }}</td>
           <td class="text-xs-left">{{ item.quantity }}</td>
@@ -102,6 +112,7 @@ export default {
       status: { id: 0 },
       product: { id: 0 }
     },
+    search: "",
     openSaveDetailDialog: false,
     dialogMode: "nuevo"
   }),

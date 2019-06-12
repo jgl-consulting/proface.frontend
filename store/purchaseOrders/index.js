@@ -56,13 +56,14 @@ export const actions = {
       requestPage,
       size,
       sortBy,
-      descending
+      descending,
+      filter
     } = pagination || state.pagination;
     const direction = descending ? 'desc' : 'asc';
     const {
       purchaseOrders,
       page
-    } = await this.$purchaseOrders.pagePurchaseOrders(requestPage, size, sortBy, direction);
+    } = await this.$purchaseOrders.pagePurchaseOrders(requestPage, size, sortBy, direction, filter);
     commit(SET_PURCHASE_ORDERS, purchaseOrders);
     commit(SET_PAGE, page);
     commit(SET_PAGINATION, {

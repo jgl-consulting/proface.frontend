@@ -20,16 +20,40 @@
               <h3 class="text--blue-grey">Datos del estado</h3>
             </v-flex>
             <v-flex sm4 pa-2>
-              <v-text-field v-model="purchaseStatusModel.nativeId" label="Id Local" :rules="nativeIdRules"></v-text-field>
+              <v-text-field
+                v-model="purchaseStatusModel.nativeId"
+                counter="2"
+                hint="Por ejemplo: CR"
+                label="Id Local"
+                :rules="nativeIdRules"
+              ></v-text-field>
             </v-flex>
             <v-flex sm4 pa-2>
-              <v-text-field v-model="purchaseStatusModel.color" label="Color"></v-text-field>
+              <v-text-field
+                v-model="purchaseStatusModel.color"
+                counter="20"
+                label="Color"
+                hint="Por ejemplo, primary"
+                :rules="colorRules"
+              ></v-text-field>
             </v-flex>
             <v-flex sm4 pa-2>
-              <v-text-field v-model="purchaseStatusModel.icon" label="Ícono"></v-text-field>
+              <v-text-field
+                v-model="purchaseStatusModel.icon"
+                counter="20"
+                label="Ícono"
+                hint="Por ejemplo, fa fa-save"
+                :rules="iconRules"
+              ></v-text-field>
             </v-flex>
             <v-flex sm12 pa-2>
-              <v-text-field v-model="purchaseStatusModel.description" label="Descripción" :rules="descriptionRules"></v-text-field>
+              <v-text-field
+                v-model="purchaseStatusModel.description"
+                label="Descripción"
+                counter="100"
+                hint="Por ejemplo, creado"
+                :rules="descriptionRules"
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -40,7 +64,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { required } from "@/util/validators";
+import { required, maxLength } from "@/util/validators";
 
 export default {
   props: {
@@ -58,7 +82,9 @@ export default {
   watch: {
     purchaseStatus: {
       handler() {
-        this.purchaseStatusModel = JSON.parse(JSON.stringify(this.purchaseStatus));
+        this.purchaseStatusModel = JSON.parse(
+          JSON.stringify(this.purchaseStatus)
+        );
       }
     }
   },
@@ -78,14 +104,29 @@ export default {
       );
     },
     nativeIdRules() {
-      return [value => required(value, "El identificador es requerido")]  
+      return [
+        value => required(value, "El identificador es requerido"),
+        value => maxLength(value, "El identificador es demasiado grande", 2)
+      ];
+    },
+    colorRules() {
+      return [value => maxLength(value, "El ícono es demasiado grande", 20)];
+    },
+    iconRules() {
+      return [value => maxLength(value, "El color es demasiado grande", 20)];
     },
     descriptionRules() {
-      return [value => required(value, "La descripción es requerida")];
+      return [
+        value => required(value, "La descripción es requerido"),
+        value => maxLength(value, "La descripción es demasiado grande", 100)
+      ];
     }
   },
   methods: {
-    ...mapActions("purchaseStatuses", ["createPurchaseStatus", "updatePurchaseStatus"]),
+    ...mapActions("purchaseStatuses", [
+      "createPurchaseStatus",
+      "updatePurchaseStatus"
+    ]),
     async savePurchaseStatus() {
       if (this.$refs.purchaseStatusForm.validate()) {
         const purchaseStatus = this.purchaseStatusToSave;

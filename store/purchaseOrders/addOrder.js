@@ -56,13 +56,14 @@ export const actions = {
       requestPage,
       size,
       sortBy,
-      descending
+      descending,
+      filter
     } = pagination || state.pagination;
     const direction = descending ? 'desc' : 'asc';
     const {
       products,
       page
-    } = await this.$products.pageProducts(requestPage, size, sortBy, direction);
+    } = await this.$products.pageProducts(requestPage, size, sortBy, direction, filter);
     commit(SET_PRODUCTS, products);
     commit(SET_PAGE, page);
     commit(SET_PAGINATION, {
@@ -78,11 +79,15 @@ export const actions = {
     const purchaseStatuses = await this.$purchaseStatuses.listPurchaseStatuses();
     commit(SET_PURCHASE_STATUSES, purchaseStatuses);
   },
-  async fetchCurrencies({ commit }) {
+  async fetchCurrencies({
+    commit
+  }) {
     const currencies = await this.$currencies.listCurrencies();
     commit(SET_CURRENCIES, currencies);
   },
-  async fetchSuppliers({ commit }) {
+  async fetchSuppliers({
+    commit
+  }) {
     const suppliers = await this.$suppliers.listSuppliers();
     commit(SET_SUPPLIERS, suppliers);
   },

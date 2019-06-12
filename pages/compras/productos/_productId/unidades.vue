@@ -1,7 +1,7 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <v-subheader>Órdenes de Compra</v-subheader>
+      <v-subheader>Unidades</v-subheader>
     </template>
     <template #filters>
       <v-text-field
@@ -15,8 +15,8 @@
     </template>
     <template #table>
       <v-data-table
-        :headers="purchaseHeaders"
-        :items="purchases"
+        :headers="unitHeaders"
+        :items="units"
         class="elevation-1"
         :expand="expand"
         item-key="id"
@@ -29,13 +29,16 @@
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
             <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
-            <td class="text-xs-left">{{ formatDate(props.item.creationDate) }}</td>
-            <td class="text-xs-left">{{ $_.get(props.item.currency, "symbol", "S/.") + ' ' + props.item.total }}</td> 
-            <td class="text-xs-left">{{ 'S/. ' + props.item.localTotal }}</td>             
-            <td class="text-xs-left">{{ 'S/. ' + props.item.localCost }}</td>
+            <td
+              class="text-xs-left"
+            >{{ $_.get(props.item.location, "description", "Sin ubicación") }}</td>
+            <td class="text-xs-left">{{ $_.get(props.item.batch, "nativeId", "Sin empaque") }}</td>
             <td class="text-xs-left">
-              <v-icon :color='$_.get(props.item.status, "color", "primary")' small>{{$_.get(props.item.status, "icon", "fa fa-calendar")}}</v-icon>
-              - {{ $_.get(props.item.status, "description", "Sin estado")}}
+              <v-icon
+                :color='$_.get(props.item.status, "color", "primary")'
+                small
+              >{{$_.get(props.item.status, "icon", "fa fa-play-circle")}}</v-icon>
+              {{ $_.get(props.item.status, "description", "Sin estado") }}
             </td>
           </tr>
         </template>
@@ -49,24 +52,20 @@ import EmptyListTile from "@/components/common/EmptyListTile";
 import { mapState, mapActions } from "vuex";
 import moment from "moment";
 export default {
-  async fetch({ params: { supplierId }, route, store }) {
-    //const params = { requestPage: 0, size: 20, sortBy: undefined };
-    await store.dispatch("suppliers/details/fetchSupplier", { supplierId });
-    //await store.dispatch("suppliers/details/fetchPurchaseOrders", params);
+  async fetch({ params: { productId }, route, store }) {
+    await store.dispatch("products/details/fetchProduct", { productId });
   },
   components: {
     EmptyListTile
   },
   data() {
     return {
-      title: "Órdenes de Compra",
-      purchaseHeaders: [
-        { text: "Id Local", value: "nativeId" },
-        { text: "Fecha de Emisión", value: "creationDate" },
-        { text: "Total", value: "total"},
-        { text: "Total en Soles", value: "localTotal"},
-        { text: "Costos en Soles", value: "localCost"},
-        { text: "Estado", value: "status" }
+      title: "Unidades",
+      unitHeaders: [
+        { text: "Id Local", align: "left", value: "nativeId" },
+        { text: "Ubicación", align: "left", value: "location" },
+        { text: "Empaque", align: "left", value: "batch" },
+        { text: "Estado", align: "left", value: "status" },
       ],
       pagination: {
         descending: false,
@@ -75,7 +74,7 @@ export default {
         sortBy: "id"
       },
       search: "",
-      filter: "nativeId:{}*,status.description:{}*,¬",
+      filter: "nativeId:{}*,location.description:{}*,batch.nativeId:{}*,status.description:{}*,¬",
       expand: false,
       pageSizes: [20, 30, 50, 100]
     };
@@ -91,7 +90,7 @@ export default {
           descending
         };
         await this.$store.dispatch(
-          "suppliers/details/fetchPurchaseOrders",
+          "products/details/fetchUnits",
           params
         );
       }
@@ -108,16 +107,16 @@ export default {
           filter: searchFilter
         };
         await this.$store.dispatch(
-          "suppliers/details/fetchPurchaseOrders",
+          "products/details/fetchUnits",
           params
         );
       }
     }
   },
   computed: {
-    ...mapState("suppliers/details", ["purchaseOrders", "page"]),
+    ...mapState("products/details", ["units", "page"]),
     purchases() {
-      return this.purchaseOrders || [];
+      return this.units || [];
     }
   },
   methods: {

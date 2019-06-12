@@ -20,12 +20,20 @@
               <h3 class="text--blue-grey">Datos del proveedor</h3>
             </v-flex>
             <v-flex xs4 pa-2>
-              <v-text-field v-model="supplierModel.name" label="Nombre" :rules="nameRules"></v-text-field>
+              <v-text-field
+                v-model="supplierModel.name"
+                label="Nombre"
+                counter="100"
+                hint="Por ejemplo, JGL-Consulting"
+                :rules="nameRules"
+              ></v-text-field>
             </v-flex>
             <v-flex xs4 pa-2>
               <v-text-field
                 v-model="supplierModel.nativeId"
                 label="Identificador"
+                counter="20"
+                hint="Por ejemplo, P001"
                 :rules="nativeIdRules"
               ></v-text-field>
             </v-flex>
@@ -42,15 +50,21 @@
               >
                 <template v-slot:append>
                   <flag
-                    :iso="getCountryIso(supplierModel.country)"
-                    :title="getCountryName(supplierModel.country)"
+                    :iso='$_.get(supplierModel.country, "iso", "Sin país")'
+                    :title='$_.get(supplierModel.country, "name", "Sin país")'
                     :squared="false"
                   ></flag>
                 </template>
               </v-autocomplete>
             </v-flex>
             <v-flex xs12 pa-2>
-              <v-text-field v-model="supplierModel.address" label="Dirección" :rules="addressRules"></v-text-field>
+              <v-text-field
+                v-model="supplierModel.address"
+                label="Dirección"
+                counter="255"
+                hint="Por ejemplo, Av. Amistad 132"
+                :rules="addressRules"
+              ></v-text-field>
             </v-flex>
           </v-layout>
           <v-divider class="mt-2 mb-4"></v-divider>
@@ -62,6 +76,8 @@
               <v-text-field
                 v-model="supplierModel.contact.firstName"
                 label="Nombres"
+                counter="100"
+                hint="Por ejemplo, Pepe"
                 :rules="contactFirstnameRules"
               ></v-text-field>
             </v-flex>
@@ -69,6 +85,8 @@
               <v-text-field
                 v-model="supplierModel.contact.lastName"
                 label="Apellidos"
+                counter="100"
+                hint="Por ejemplo, Grillo"
                 :rules="contactLastnameRules"
               ></v-text-field>
             </v-flex>
@@ -76,6 +94,8 @@
               <v-text-field
                 v-model="supplierModel.contact.phone"
                 label="Teléfono"
+                counter="12"
+                hint="Por ejemplo, 912789263"
                 :rules="contactPhoneRules"
               ></v-text-field>
             </v-flex>
@@ -83,6 +103,8 @@
               <v-text-field
                 v-model="supplierModel.contact.email"
                 label="Correo electrónico"
+                counter="100"
+                hint="Por ejemplo, pepe@proface.com.pe"
                 :rules="contactEmailRules"
               ></v-text-field>
             </v-flex>
@@ -95,7 +117,13 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { required, email, phone, maxLength, referenced } from "@/util/validators";
+import {
+  required,
+  email,
+  phone,
+  maxLength,
+  referenced
+} from "@/util/validators";
 export default {
   props: {
     supplier: Object,
@@ -146,55 +174,49 @@ export default {
     nameRules() {
       return [
         value => required(value, "El nombre es requerido"),
-        value => maxLength(value, "El valor supera el tamaño máximo", 45)
+        value => maxLength(value, "El nombre es demasiado grande", 100)
       ];
     },
     addressRules() {
       return [
         value => required(value, "La dirección es requerido"),
-        value => maxLength(value, "El valor supera el tamaño máximo", 100)
+        value => maxLength(value, "La dirección es demasiado grande", 255)
       ];
     },
     nativeIdRules() {
       return [
         value => required(value, "El identificador es requerido"),
-        value => maxLength(value, "El valor supera el tamaño máximo", 20)
+        value => maxLength(value, "El identificador es demasiado grande", 20)
       ];
     },
     contactFirstnameRules() {
       return [
         value => required(value, "El nombre del contacto es requerido"),
-        value => maxLength(value, "El valor supera el tamaño máximo", 45)
+        value =>
+          maxLength(value, "El nombre del contacto es demasiado grande", 100)
       ];
     },
     contactLastnameRules() {
       return [
-        //(value) => required(value, 'El apellido del contacto es requerido'),
-        value => maxLength(value, "El valor supera el tamaño máximo", 45)
+        value =>
+          maxLength(value, "El apellido del contacto es demasiado grande", 100)
       ];
     },
     contactPhoneRules() {
       return [
-        //(value) => required(value, 'El teléfono es requerido'),
+        value => maxLength(value, "El teléfono es demasiado grande", 12),
         value => phone(value, "El teléfono no es válido")
       ];
     },
     contactEmailRules() {
       return [
-        //(value) => required(value, 'El correo es requerido'),
         value => email(value, "El correo no es válido"),
-        value => maxLength(value, "El valor supera el tamaño máximo", 50)
+        value => maxLength(value, "El correo es demasiado grande", 100)
       ];
     }
   },
   methods: {
-    ...mapActions("suppliers", ["createSupplier", "updateSupplier"]),    
-    getCountryIso(country) {
-      return country ? country.iso : "Sin país";
-    },
-    getCountryName(country) {
-      return country ? country.name : "Sin país";
-    },
+    ...mapActions("suppliers", ["createSupplier", "updateSupplier"]),
     async saveSupplier() {
       if (this.$refs.supplierForm.validate()) {
         const supplier = this.supplierToSave;

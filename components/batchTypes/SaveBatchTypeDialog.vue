@@ -23,6 +23,8 @@
               <v-text-field
                 v-model="batchTypeModel.description"
                 label="Descripción"
+                counter="100"
+                hint="Por ejemplo, Lote"
                 :rules="descriptionRules"
               ></v-text-field>
             </v-flex>
@@ -35,7 +37,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { required } from "@/util/validators";
+import { required, maxLength } from "@/util/validators";
 
 export default {
   props: {
@@ -73,7 +75,10 @@ export default {
       );
     },
     descriptionRules() {
-      return [value => required(value, "La descripción es requerida")];
+      return [
+        value => required(value, "La descripción es requerida"),
+        value => maxLength(value, "La descripción es demasiado grande", 100)
+      ];
     }
   },
   methods: {

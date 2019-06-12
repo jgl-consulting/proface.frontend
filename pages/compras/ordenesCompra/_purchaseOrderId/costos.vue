@@ -10,8 +10,18 @@
         <span>Nuevo costo</span>
       </v-btn>
     </template>
+    <template #filters>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Búsqueda"
+        single-line
+        clearable
+        hide-details
+      ></v-text-field>
+    </template>
     <template #table>
-      <v-data-table :headers="purchaseCostHeaders" :items="purchaseCosts" class="elevation-1">
+      <v-data-table :headers="purchaseCostHeaders" :items="purchaseCosts" :search="search" class="elevation-1">
         <template #items="{ item }">
           <td class="text-xs-left">{{ item.description || "Sin descripción" }}</td>
           <td class="text-xs-left">{{ $_.get(item.currency, "symbol", "S/.") + ' ' + item.totalCost }}</td>
@@ -84,6 +94,7 @@ export default {
     purchaseCostToSave: {
       currency: { id: 0 }
     },
+    search: "",
     openSaveCostDialog: false,
     dialogMode: "nuevo"
   }),

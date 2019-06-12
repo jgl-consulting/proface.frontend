@@ -22,6 +22,8 @@
             <v-flex sm12 pa-2>
               <v-text-field
                 v-model="purchaseCostModel.description"
+                counter="300"
+                hint="Por ejemplo, Infracción por retraso"
                 label="Descripción"
                 :rules="descriptionRules"
               ></v-text-field>
@@ -37,7 +39,11 @@
               ></v-select>
             </v-flex>
             <v-flex sm6 pa-2>
-              <v-text-field v-model="purchaseCostModel.totalCost" label="Monto"></v-text-field>
+              <v-text-field
+                v-model="purchaseCostModel.totalCost"
+                hint="Por ejemplo, 200"
+                label="Monto"
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -48,7 +54,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { required } from "@/util/validators";
+import { required, maxLength } from "@/util/validators";
 
 export default {
   props: {
@@ -87,7 +93,10 @@ export default {
       );
     },
     descriptionRules() {
-      return [value => required(value, "La descripción es requerida")];
+      return [
+        value => required(value, "La descripción es requerida"),
+        value => maxLength(value, "La descripción es demasiado grande", 300)
+      ];
     }
   },
   methods: {
@@ -99,10 +108,9 @@ export default {
       if (this.$refs.purchaseCostForm.validate()) {
         const purchaseCost = this.purchaseCostToSave;
         try {
-          const res = await this.$confirm(
-            `¿Está seguro de guardar el costo?`,
-            { title: "Advertencia" }
-          );
+          const res = await this.$confirm(`¿Está seguro de guardar el costo?`, {
+            title: "Advertencia"
+          });
           if (res) {
             if (this.mode === "nuevo") {
               await this.createPurchaseCost({ purchaseCost });

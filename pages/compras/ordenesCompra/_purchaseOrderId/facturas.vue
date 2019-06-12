@@ -10,8 +10,18 @@
         <span>Nueva factura</span>
       </v-btn>
     </template>
+    <template #filters>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Búsqueda"
+        single-line
+        clearable
+        hide-details
+      ></v-text-field>
+    </template>
     <template #table>
-      <v-data-table :headers="purchaseInvoiceHeaders" :items="purchaseInvoices" class="elevation-1">
+      <v-data-table :headers="purchaseInvoiceHeaders" :items="purchaseInvoices" :search="search" class="elevation-1">
         <template #items="{ item }">
           <td class="text-xs-left">{{ item.nativeId || "Sin identificador" }}</td>
           <td class="text-xs-left">{{ item.description || "Sin descripción" }}</td>
@@ -77,6 +87,7 @@ export default {
       { text: "Monto Total", value: "totalPrice" },
       { text: "Acciones", value: "id", align: "center", sortable: false }
     ],
+    search: "",
     purchaseInvoiceToSave: {},
     openSaveInvoiceDialog: false,
     dialogMode: "nuevo"

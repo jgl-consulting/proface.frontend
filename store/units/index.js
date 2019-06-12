@@ -40,13 +40,14 @@ import {
         requestPage,
         size,
         sortBy,
-        descending
+        descending,
+        filter
       } = pagination || state.pagination;
       const direction = descending ? 'desc' : 'asc';
       const {
         units,
         page
-      } = await this.$units.pageUnits(requestPage, size, sortBy, direction);
+      } = await this.$units.pageUnits(requestPage, size, sortBy, direction, filter);
       commit(SET_UNITS, units);
       commit(SET_PAGE, page);
       commit(SET_PAGINATION, {

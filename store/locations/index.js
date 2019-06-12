@@ -40,13 +40,14 @@ export const actions = {
       requestPage,
       size,
       sortBy,
-      descending
+      descending,
+      filter
     } = pagination || state.pagination;
     const direction = descending ? 'desc' : 'asc';
     const {
       locations,
       page
-    } = await this.$locations.pageLocations(requestPage, size, sortBy, direction);
+    } = await this.$locations.pageLocations(requestPage, size, sortBy, direction, filter);
     commit(SET_LOCATIONS, locations);
     commit(SET_PAGE, page);
     commit(SET_PAGINATION, {
