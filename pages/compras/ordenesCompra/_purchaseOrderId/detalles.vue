@@ -140,7 +140,7 @@ export default {
     openAddPurchaseDetailDialog() {
       this.openSaveDetailDialog = true;
       this.purchaseDetailToSave = {
-        status: { id: 0 },
+        status: { id: 0, order: 0 },
         product: { id: 0 }
       };
       this.dialogMode = "nuevo";

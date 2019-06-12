@@ -53,7 +53,7 @@
                 return-object
                 itemid="id"
                 item-text="description"
-                :items="receptionStatuses"
+                :items="filteredStatuses"
                 :rules="statusRules"
                 label="Estado"
               ></v-select>
@@ -120,6 +120,11 @@ export default {
           ...this.purchaseDetailModel
         })
       );
+    },
+    filteredStatuses() {
+      return this.receptionStatuses.filter(s => {
+        return s.order >= this.purchaseDetailModel.status.order;
+      });
     },
     productRules() {
       return [value => referenced(value, "El producto es requerido")];

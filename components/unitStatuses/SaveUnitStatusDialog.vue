@@ -19,7 +19,7 @@
             <v-flex xs12 pa-2>
               <h3 class="text--blue-grey">Datos del estado</h3>
             </v-flex>
-            <v-flex sm4 pa-2>
+            <v-flex sm3 pa-2>
               <v-text-field
                 v-model="unitStatusModel.nativeId"
                 label="Id Local"
@@ -28,7 +28,7 @@
                 :rules="nativeIdRules"
               ></v-text-field>
             </v-flex>
-            <v-flex sm4 pa-2>
+            <v-flex sm3 pa-2>
               <v-text-field
                 v-model="unitStatusModel.color"
                 counter="20"
@@ -37,13 +37,22 @@
                 :rules="colorRules"
               ></v-text-field>
             </v-flex>
-            <v-flex sm4 pa-2>
+            <v-flex sm3 pa-2>
               <v-text-field
                 v-model="unitStatusModel.icon"
                 counter="20"
                 hint="Por ejemplo, fa-save"
                 label="Ícono"
                 :rules="iconRules"
+              ></v-text-field>
+            </v-flex>
+            <v-flex sm3 pa-2>
+              <v-text-field
+                v-model="unitStatusModel.order"
+                counter="2"
+                label="Orden"
+                hint="Por ejemplo, 1"
+                :rules="orderRules"
               ></v-text-field>
             </v-flex>
             <v-flex sm12 pa-2>
@@ -112,6 +121,12 @@ export default {
     },
     iconRules() {
       return [value => maxLength(value, "El color es demasiado grande", 20)];
+    },
+    orderRules() {
+      return [
+        value => required(value, "El orden es requerido"),
+        value => maxLength(value, "El orden es demasiado grande", 2)
+      ];
     },
     descriptionRules() {
       return [

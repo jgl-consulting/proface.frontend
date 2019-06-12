@@ -54,7 +54,7 @@
               <v-flex md6 pa-2>
                 <v-select
                   v-model="purchaseOrderModel.status"
-                  :items="purchaseStatuses"
+                  :items="filteredStatuses"
                   item-value="id"
                   item-text="description"
                   return-object
@@ -107,6 +107,11 @@ export default {
         return "Editar orden de compra";
       }
     },
+    filteredStatuses() {
+      return this.purchaseStatuses.filter(s => {
+        return s.order >= this.purchaseOrderModel.status.order;
+      });
+    },
     supplierAutocompleteHint() {
       const { name } = this.purchaseOrderModel.supplier || {};
       return name ? name : "";
@@ -128,7 +133,7 @@ export default {
         value => required(value, "El identificador es requerido"),
         value => maxLength(value, "El identificador es demasiado grande", 20)
       ];
-    },
+    }
   },
   methods: {
     ...mapActions("purchaseOrders", [
