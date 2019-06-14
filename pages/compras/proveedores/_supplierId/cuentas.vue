@@ -17,6 +17,7 @@
         label="Búsqueda"
         single-line
         clearable
+        clear-icon="fa-times"
         hide-details
       ></v-text-field>
     </template>
@@ -37,28 +38,35 @@
             ></flag>
           </td>
           <td class="text-xs-left">
-            <v-btn
-              class="mx-1"
-              color="accent"
-              dark
-              icon
-              flat
-              small
-              @click.stop="openEditSupplierAccountDialog(item)"
-            >
-              <v-icon small>fa-pen</v-icon>
-            </v-btn>
-            <v-btn
-              class="mx-1"
-              color="deep-purple darken-2"
-              dark
-              icon
-              flat
-              small
-              @click.stop="deleteSupplierAccount(item)"
-            >
-              <v-icon small>fa-trash</v-icon>
-            </v-btn>
+            <v-speed-dial direction="left" open-on-hover left>
+              <template v-slot:activator>
+                <v-btn color="secondary" dark icon flat small>
+                  <v-icon small>fa-wrench</v-icon>
+                </v-btn>
+              </template>
+              <v-btn
+                class="mx-1"
+                color="accent"
+                dark
+                icon
+                flat
+                small
+                @click.stop="openEditSupplierAccountDialog(item)"
+              >
+                <v-icon small>fa-pen</v-icon>
+              </v-btn>
+              <v-btn
+                class="mx-1"
+                color="deep-purple darken-2"
+                dark
+                icon
+                flat
+                small
+                @click.stop="deleteSupplierAccount(item)"
+              >
+                <v-icon small>fa-trash</v-icon>
+              </v-btn>
+            </v-speed-dial>
           </td>
         </template>
       </v-data-table>
@@ -99,7 +107,7 @@ export default {
       { text: "Moneda", value: "currency" },
       { text: "Banco", value: "bank" },
       { text: "País", value: "bank" },
-      { text: "Acciones", value: "id", sortable: false }
+      { text: "Acciones", value: "id", width: "10%",sortable: false }
     ],
     supplierAccountToSave: {
       bank: { id: 0 },

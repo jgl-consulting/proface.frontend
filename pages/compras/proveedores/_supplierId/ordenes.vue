@@ -10,6 +10,7 @@
         label="Búsqueda"
         single-line
         clearable
+        clear-icon="fa-times"
         hide-details
       ></v-text-field>
     </template>

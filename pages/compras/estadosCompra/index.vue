@@ -16,6 +16,7 @@
         label="Búsqueda"
         single-line
         clearable
+        clear-icon="fa-times"
         hide-details
       ></v-text-field>
     </template>
@@ -42,28 +43,35 @@
               <v-icon>{{props.item.icon || "fa fa-question-circle"}}</v-icon>
             </td>
             <td class="text-xs-center" @click.stop="() => {}">
-              <v-btn
-                class="mx-1"
-                color="accent"
-                dark
-                icon
-                flat
-                small
-                @click.stop="openEditPurchaseStatusDialog(props.item)"
-              >
-                <v-icon small>fa-pen</v-icon>
-              </v-btn>
-              <v-btn
-                class="mx-1"
-                color="deep-purple darken-2"
-                dark
-                icon
-                flat
-                small
-                @click.stop="deletePurchaseStatus(props.item)"
-              >
-                <v-icon small>fa-trash</v-icon>
-              </v-btn>
+               <v-speed-dial direction="left" open-on-hover>
+                <template v-slot:activator>
+                  <v-btn color="secondary" dark icon flat small>
+                    <v-icon small>fa-wrench</v-icon>
+                  </v-btn>
+                </template>
+                <v-btn
+                  class="mx-1"
+                  color="accent"
+                  dark
+                  icon
+                  flat
+                  small
+                  @click.stop="openEditPurchaseStatusDialog(props.item)"
+                >
+                  <v-icon small>fa-pen</v-icon>
+                </v-btn>
+                <v-btn
+                  class="mx-1"
+                  color="deep-purple darken-2"
+                  dark
+                  icon
+                  flat
+                  small
+                  @click.stop="deletePurchaseStatus(props.item)"
+                >
+                  <v-icon small>fa-trash</v-icon>
+                </v-btn>
+               </v-speed-dial>
             </td>
           </tr>
         </template>
@@ -106,7 +114,7 @@ export default {
         { text: "Descripción", align: "left", value: "description" },
         { text: "Color", align: "center", value: "color" },
         { text: "Ícono", align: "center", value: "icon" },
-        { text: "Acciones", align: "center", value: "id", sortable: false }
+        { text: "Acciones", align: "center", value: "id", width: "10%", sortable: false }
       ],
       pagination: {
         descending: false,

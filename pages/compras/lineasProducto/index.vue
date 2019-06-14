@@ -16,6 +16,7 @@
         label="Búsqueda"
         single-line
         clearable
+        clear-icon="fa-times"
         hide-details
       ></v-text-field>
     </template>
@@ -35,28 +36,35 @@
           <tr @click.stop="props.expanded = !props.expanded">
             <td class="text-xs-left">{{ props.item.name || "Sin nombre" }}</td>
             <td class="text-xs-center" @click.stop="() => {}">
-              <v-btn
-                class="mx-1"
-                color="accent"
-                dark
-                icon
-                flat
-                small
-                @click.stop="openEditProductLineDialog(props.item)"
-              >
-                <v-icon small>fa-pen</v-icon>
-              </v-btn>
-              <v-btn
-                class="mx-1"
-                color="deep-purple darken-2"
-                dark
-                icon
-                flat
-                small
-                @click.stop="deleteProductLine(props.item)"
-              >
-                <v-icon small>fa-trash</v-icon>
-              </v-btn>
+              <v-speed-dial direction="left" open-on-hover>
+                <template v-slot:activator>
+                  <v-btn color="secondary" dark icon flat small>
+                    <v-icon small>fa-wrench</v-icon>
+                  </v-btn>
+                </template>
+                <v-btn
+                  class="mx-1"
+                  color="accent"
+                  dark
+                  icon
+                  flat
+                  small
+                  @click.stop="openEditProductLineDialog(props.item)"
+                >
+                  <v-icon small>fa-pen</v-icon>
+                </v-btn>
+                <v-btn
+                  class="mx-1"
+                  color="deep-purple darken-2"
+                  dark
+                  icon
+                  flat
+                  small
+                  @click.stop="deleteProductLine(props.item)"
+                >
+                  <v-icon small>fa-trash</v-icon>
+                </v-btn>
+              </v-speed-dial>
             </td>
           </tr>
         </template>
@@ -96,7 +104,7 @@ export default {
       title: "Líneas de Producto",
       headers: [
         { text: "Nombre", align: "left", value: "name" },
-        { text: "Acciones", align: "center", value: "id", sortable: false }
+        { text: "Acciones", align: "center", value: "id", width: "10%", sortable: false }
       ],
       pagination: {
         descending: false,

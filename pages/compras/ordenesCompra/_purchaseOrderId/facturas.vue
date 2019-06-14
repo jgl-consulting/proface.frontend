@@ -17,6 +17,7 @@
         label="Búsqueda"
         single-line
         clearable
+        clear-icon="fa-times"
         hide-details
       ></v-text-field>
     </template>
@@ -28,28 +29,35 @@
           <td class="text-xs-left">{{ formatDate(item.emissionDate) }}</td>
           <td class="text-xs-left">S/. {{ item.totalPrice }}</td>
           <td class="text-xs-center">
-            <v-btn
-              class="mx-1"
-              color="accent"
-              dark
-              icon
-              flat
-              small
-              @click.stop="openEditPurchaseInvoiceDialog(item)"
-            >
-              <v-icon small>fa-pen</v-icon>
-            </v-btn>
-            <v-btn
-              class="mx-1"
-              color="deep-purple darken-2"
-              dark
-              icon
-              flat
-              small
-              @click.stop="deletePurchaseInvoice(item)"
-            >
-              <v-icon small>fa-trash</v-icon>
-            </v-btn>
+            <v-speed-dial direction="left" open-on-hover>
+              <template v-slot:activator>
+                <v-btn color="secondary" dark icon flat small>
+                  <v-icon small>fa-wrench</v-icon>
+                </v-btn>
+              </template>
+              <v-btn
+                class="mx-1"
+                color="accent"
+                dark
+                icon
+                flat
+                small
+                @click.stop="openEditPurchaseInvoiceDialog(item)"
+              >
+                <v-icon small>fa-pen</v-icon>
+              </v-btn>
+              <v-btn
+                class="mx-1"
+                color="deep-purple darken-2"
+                dark
+                icon
+                flat
+                small
+                @click.stop="deletePurchaseInvoice(item)"
+              >
+                <v-icon small>fa-trash</v-icon>
+              </v-btn>
+            </v-speed-dial>
           </td>
         </template>
       </v-data-table>
@@ -85,7 +93,7 @@ export default {
       { text: "Descripción", value: "description" },
       { text: "Fecha de Emisión", value: "emissionDate" },
       { text: "Monto Total", value: "totalPrice" },
-      { text: "Acciones", value: "id", align: "center", sortable: false }
+      { text: "Acciones", value: "id", align: "center", width: "10%", sortable: false }
     ],
     search: "",
     purchaseInvoiceToSave: {},

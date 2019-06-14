@@ -16,6 +16,7 @@
         label="Búsqueda"
         single-line
         clearable
+        clear-icon="fa-times"
         hide-details
       ></v-text-field>
     </template>
@@ -35,48 +36,55 @@
           <tr @click.stop="props.expanded = !props.expanded">
             <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
             <td class="text-xs-left">{{ props.item.name || "Sin nombre" }}</td>
-            <td class="text-xs-left">{{ props.item.description || "Sin descripcíon" }}</td>
+            <!--td class="text-xs-left">{{ props.item.description || "Sin descripcíon" }}</td-->
             <td class="text-xs-left">{{ $_.get(props.item.currency, "symbol", "S/.") }} {{ props.item.salePrice | twoDecimals }}</td>
             <td class="text-xs-left">S/. {{ props.item.localPrice | twoDecimals }}</td>
             <td class="text-xs-left">{{ props.item.totalStock }}</td>
             <td class="text-xs-left">{{ props.item.totalStock - props.item.avaliableStock }}</td>
             <td class="text-xs-left">{{ props.item.avaliableStock }}</td>
             <td class="text-xs-left">{{ $_.get(props.item.line, "name", "Sin línea") }}</td>
-            <td class="text-xs-left" @click.stop="() => {}">
-              <v-btn
-                class="mx-1"
-                color="primary"
-                dark
-                icon
-                flat
-                small
-                nuxt
-                :to="props.item.id | path($route.fullPath)"
-              >
-                <v-icon small>fa-ellipsis-v</v-icon>
-              </v-btn>
-              <v-btn
-                class="mx-1"
-                color="accent"
-                dark
-                icon
-                flat
-                small
-                @click.stop="openEditProductDialog(props.item)"
-              >
-                <v-icon small>fa-pen</v-icon>
-              </v-btn>
-              <v-btn
-                class="mx-1"
-                color="deep-purple darken-2"
-                dark
-                icon
-                flat
-                small
-                @click.stop="deleteProduct(props.item)"
-              >
-                <v-icon small>fa-trash</v-icon>
-              </v-btn>
+            <td class="text-xs-center" @click.stop="() => {}">
+              <v-speed-dial direction="left" open-on-hover left>
+                <template v-slot:activator>
+                  <v-btn color="secondary" dark icon flat small>
+                    <v-icon small>fa-wrench</v-icon>
+                  </v-btn>
+                </template>
+                <v-btn
+                  class="mx-1"
+                  color="primary"
+                  dark
+                  icon
+                  flat
+                  small
+                  nuxt
+                  :to="props.item.id | path($route.fullPath)"
+                >
+                  <v-icon small>fa-ellipsis-v</v-icon>
+                </v-btn>
+                <v-btn
+                  class="mx-1"
+                  color="accent"
+                  dark
+                  icon
+                  flat
+                  small
+                  @click.stop="openEditProductDialog(props.item)"
+                >
+                  <v-icon small>fa-pen</v-icon>
+                </v-btn>
+                <v-btn
+                  class="mx-1"
+                  color="deep-purple darken-2"
+                  dark
+                  icon
+                  flat
+                  small
+                  @click.stop="deleteProduct(props.item)"
+                >
+                  <v-icon small>fa-trash</v-icon>
+                </v-btn>
+              </v-speed-dial>
             </td>
           </tr>
         </template>
@@ -115,14 +123,14 @@ export default {
       headers: [
         { text: "Id Local", value: "nativeId" },
         { text: "Nombre", value: "name" },
-        { text: "Descripción", value: "description" },
-        { text: "Precio de Venta", value: "salePrice" },
-        { text: "Precio en Soles", value: "localPrice" },
-        { text: "Total", value: "totalStock" },
-        { text: "Separado", value: "totalStock" },
-        { text: "Disponible", value: "avaliableStock" },
+        //{ text: "Descripción", value: "description" },
+        { text: "Precio de Venta", value: "salePrice", width:"5%" },
+        { text: "Precio en Soles", value: "localPrice", width:"5%" },
+        { text: "Total", value: "totalStock", width:"5%" },
+        { text: "Separado", value: "totalStock", width:"5%" },
+        { text: "Disponible", value: "avaliableStock", width:"5%" },
         { text: "Línea", value: "line" },
-        { text: "Acciones", value: "id", sortable: false }
+        { text: "Acciones", value: "id", width:"10%", sortable: false }
       ],
       pagination: {
         descending: false,

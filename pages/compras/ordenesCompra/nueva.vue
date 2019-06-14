@@ -16,6 +16,8 @@
           <v-text-field
             v-model="purchaseOrder.nativeId"
             label="Identificador"
+            counter="20"
+            hint="Por ejemplo, OC00001"
             :rules="nativeIdRules"
           ></v-text-field>
         </v-flex>
@@ -63,11 +65,7 @@
     <form-group>
       <template #title>Productos</template>
       <template #actions>
-        <v-btn
-          color="accent"
-          @click.stop="openProductList"
-          :disabled="nonSeletedProducts.length === 0"
-        >
+        <v-btn color="accent" @click.stop="openProductList">
           <v-icon small>fa-plus</v-icon>
           <span class="mx-1"></span>
           <span>Nuevo Producto</span>
@@ -224,7 +222,10 @@ export default {
       );
     },
     nativeIdRules() {
-      return [value => required(value, "El identificador es requerido")];
+      return [
+        value => required(value, "El identificador es requerido"),
+        value => maxLength(value, "El identificador es demasiado grande", 20)
+      ];
     },
     title() {
       return "Nueva orden de compra";
@@ -251,9 +252,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("purchaseOrders", [
-      "createPurchaseOrder"
-    ]),
+    ...mapActions("purchaseOrders", ["createPurchaseOrder"]),
     openProductList() {
       this.productDialog = true;
     },
