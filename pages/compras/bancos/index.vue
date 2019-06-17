@@ -31,6 +31,7 @@
         :pagination.sync="pagination"
         :rows-per-page-items="pageSizes"
         rows-per-page-text="Tamaño de página"
+        must-sort
       >
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
@@ -80,7 +81,11 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-bank-dialog v-model="openSaveDialog" :bank="bankToSave" :mode="dialogMode"></save-bank-dialog>
+      <save-bank-dialog 
+        v-model="openSaveDialog" 
+        :bank="bankToSave" 
+        :mode="dialogMode">
+      </save-bank-dialog>
     </template>
   </simple-table-layout>
 </template>
@@ -101,8 +106,6 @@ export default {
     SaveBankDialog
   },
   async fetch({ store }) {
-    //const params = { requestPage: 0, size: 20, sortBy: undefined };
-    //await store.dispatch("banks/fetchBanks", params);
     await store.dispatch("banks/fetchCountries");
   },
   data() {

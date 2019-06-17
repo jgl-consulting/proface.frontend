@@ -22,7 +22,11 @@
       ></v-text-field>
     </template>
     <template #table>
-      <v-data-table :headers="accountHeaders" :items="supplierAccounts" :search="search" class="elevation-1">
+      <v-data-table 
+        :headers="accountHeaders" 
+        :items="supplierAccounts" 
+        :search="search" 
+        class="elevation-1">
         <template #items="{ item }">
           <td class="text-xs-left">{{ item.number || "Sin número de cuenta" }}</td>
           <td class="text-xs-left">{{ item.cci || "Sin número internacional" }}</td>

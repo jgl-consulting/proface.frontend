@@ -22,6 +22,7 @@
     </template>
     <template #table>
       <v-data-table
+        must-sort
         :headers="headers"
         :items="batches"
         :expand="expand"

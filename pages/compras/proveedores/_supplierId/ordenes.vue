@@ -25,6 +25,7 @@
         :pagination.sync="pagination"
         :rows-per-page-items="pageSizes"
         rows-per-page-text="Tamaño de página"
+        must-sort
       >
         >
         <template v-slot:items="props">

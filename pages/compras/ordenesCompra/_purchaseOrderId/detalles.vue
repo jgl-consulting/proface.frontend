@@ -22,7 +22,11 @@
       ></v-text-field>
     </template>
     <template #table>
-      <v-data-table :headers="purchaseDetailHeaders" :items="purchaseDetails" :search="search" class="elevation-1">
+      <v-data-table 
+        :headers="purchaseDetailHeaders" 
+        :items="purchaseDetails" 
+        :search="search" 
+        class="elevation-1">
         <template #items="{ item }">
           <td class="text-xs-left">{{ $_.get(item.product, "name", "Sin producto") }}</td>
           <td class="text-xs-left">{{ item.quantity }}</td>

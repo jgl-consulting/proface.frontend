@@ -29,6 +29,7 @@
               :total-items="page.totalElements"
               :pagination.sync="pagination"
               :rows-per-page-items="pageSizes"
+              must-sort
               rows-per-page-text="Tamaño de página">
               <template v-slot:items="props">
                 <tr @click.stop="props.expanded = !props.expanded">

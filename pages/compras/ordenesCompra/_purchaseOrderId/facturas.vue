@@ -22,7 +22,11 @@
       ></v-text-field>
     </template>
     <template #table>
-      <v-data-table :headers="purchaseInvoiceHeaders" :items="purchaseInvoices" :search="search" class="elevation-1">
+      <v-data-table 
+        :headers="purchaseInvoiceHeaders" 
+        :items="purchaseInvoices" 
+        :search="search" 
+        class="elevation-1">
         <template #items="{ item }">
           <td class="text-xs-left">{{ item.nativeId || "Sin identificador" }}</td>
           <td class="text-xs-left">{{ item.description || "Sin descripción" }}</td>

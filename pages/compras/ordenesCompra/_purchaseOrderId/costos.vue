@@ -22,7 +22,11 @@
       ></v-text-field>
     </template>
     <template #table>
-      <v-data-table :headers="purchaseCostHeaders" :items="purchaseCosts" :search="search" class="elevation-1">
+      <v-data-table 
+        :headers="purchaseCostHeaders" 
+        :items="purchaseCosts" 
+        :search="search" 
+        class="elevation-1">
         <template #items="{ item }">
           <td class="text-xs-left">{{ item.description || "Sin descripción" }}</td>
           <td class="text-xs-left">{{ $_.get(item.currency, "symbol", "S/.") + ' ' + item.totalCost }}</td>
