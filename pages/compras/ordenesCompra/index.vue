@@ -4,12 +4,16 @@
       <h1>Órdenes de Compra</h1>
     </template>
     <template #actions>
+      <v-btn color="indigo darken-3" dark>
+        <v-icon small>fa-file-pdf</v-icon>
+        <span class="mx-1">Descargar Lista</span>
+      </v-btn>
       <v-btn color="accent" to="/compras/ordenesCompra/nueva" nuxt>
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva orden de compra</span>
       </v-btn>
     </template>
-    <template #filters>      
+    <template #filters>
       <v-text-field
         v-model="search"
         append-icon="search"
@@ -90,6 +94,9 @@
                   @click.stop="deletePurchaseOrder(props.item)"
                 >
                   <v-icon small>fa-trash</v-icon>
+                </v-btn>
+                <v-btn class="mx-1" color="red" dark icon flat small>
+                  <v-icon small>fa-file-pdf</v-icon>
                 </v-btn>
               </v-speed-dial>
             </td>
@@ -180,7 +187,9 @@ export default {
     search: {
       async handler() {
         const { sortBy, descending, page, rowsPerPage } = this.pagination;
-        let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+        let searchFilter = this.search
+          ? this.filter.replace(/{}/g, this.search)
+          : "";
         const params = {
           requestPage: page - 1,
           size: rowsPerPage,

@@ -63,4 +63,8 @@ export default class ProductsService {
     await this.$axios.$delete(`${PRODUCTS_ENDPOINT}/${id}`);
   }
 
+  async downloadPdf() {
+    return await this.$axios.$get(`${PRODUCTS_ENDPOINT}/reports`)
+  }
+
 }

@@ -4,6 +4,10 @@
       <h1>Productos</h1>
     </template>
     <template #actions>
+      <v-btn color="indigo darken-3" dark>
+        <v-icon small>fa-file-pdf</v-icon>
+        <span class="mx-1">Descargar Lista</span>
+      </v-btn>
       <v-btn color="accent" @click="openAddProductDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nuevo Producto</span>
@@ -184,7 +188,7 @@ export default {
   },
   methods: {
     ...mapActions("products", {
-      deleteProductAction: "deleteProduct"
+      deleteProductAction: "deleteProduct",
     }),
     openAddProductDialog() {
       this.openSaveDialog = true;
