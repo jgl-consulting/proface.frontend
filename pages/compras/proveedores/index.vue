@@ -9,6 +9,11 @@
         <span class="mx-1"></span>
         <span>Nuevo proveedor</span>
       </v-btn>
+      <v-btn color="red darken-2" dark :href="exportURL" target="_blank">
+        <v-icon small>fa-file-pdf</v-icon>
+        <span class="mx-1"></span>
+        <span>Ver PDF</span>
+      </v-btn>
     </template>
     <template #filters>
       <v-text-field
@@ -200,7 +205,10 @@ export default {
     }
   },
   computed: {
-    ...mapState("suppliers", ["suppliers", "page", "countries"])
+    ...mapState("suppliers", ["suppliers", "page", "countries"]),
+    exportURL() {
+      return `${this.$axios.defaults.baseURL}/api/suppliers/reports`;
+    }
   },
   methods: {
     ...mapActions("suppliers", {

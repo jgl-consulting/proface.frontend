@@ -8,6 +8,11 @@
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva Unidad</span>
       </v-btn>
+      <v-btn color="red darken-2" dark :href="exportURL" target="_blank">
+        <v-icon small>fa-file-pdf</v-icon>
+        <span class="mx-1"></span>
+        <span>Ver PDF</span>
+      </v-btn>
     </template>
     <template #filters>
       <v-text-field
@@ -160,7 +165,10 @@ export default {
     }
   },
   computed: {
-    ...mapState("units", ["units", "page"])
+    ...mapState("units", ["units", "page"]),
+    exportURL() {
+      return `${this.$axios.defaults.baseURL}/api/units/reports`;
+    }
   },
   methods: {
     ...mapActions("units", {
