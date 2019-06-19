@@ -4,10 +4,6 @@
       <h1>Proveedores</h1>
     </template>
     <template #actions>
-      <v-btn color="indigo darken-3" dark>
-        <v-icon small>fa-file-pdf</v-icon>
-        <span class="mx-1">Descargar Lista</span>
-      </v-btn>
       <v-btn color="accent" @click="openAddSupplierDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1"></span>
@@ -211,7 +207,8 @@ export default {
   computed: {
     ...mapState("suppliers", ["suppliers", "page", "countries"]),
     exportURL() {
-      return `${this.$axios.defaults.baseURL}/api/suppliers/reports`;
+      let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+      return `${this.$axios.defaults.baseURL}/api/suppliers/reports?filter=` + searchFilter;
     }
   },
   methods: {

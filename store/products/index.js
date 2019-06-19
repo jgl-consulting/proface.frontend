@@ -127,8 +127,5 @@ export const actions = {
   }) {
     await this.$products.deleteProduct(product);
     await dispatch('fetchProducts');
-  },
-  async downloadPdf() {
-    return await this.$products.downloadPdf();
   }
 }

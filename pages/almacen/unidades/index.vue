@@ -4,10 +4,6 @@
       <h1>Unidades</h1>
     </template>
     <template #actions>
-      <v-btn color="indigo darken-3" dark>
-        <v-icon small>fa-file-pdf</v-icon>
-        <span class="mx-1">Descargar Lista</span>
-      </v-btn>
       <v-btn color="accent" @click="openAddUnitDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva Unidad</span>
@@ -171,7 +167,8 @@ export default {
   computed: {
     ...mapState("units", ["units", "page"]),
     exportURL() {
-      return `${this.$axios.defaults.baseURL}/api/units/reports`;
+      let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+      return `${this.$axios.defaults.baseURL}/api/units/reports?filter=` + searchFilter;
     }
   },
   methods: {
