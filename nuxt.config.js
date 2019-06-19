@@ -29,7 +29,7 @@ export default {
   loading: /* '@/components/common/Loading.vue' */{ 
     color: colors.deepOrange.darken2,
     continuous: true,
-    height: '5px'
+    height: '3px'
   },
   /*
   ** Global CSS

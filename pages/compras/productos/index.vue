@@ -10,7 +10,13 @@
       </v-btn>
       <v-btn color="accent" @click="openAddProductDialog">
         <v-icon small>fa-plus</v-icon>
-        <span class="mx-1">Nuevo Producto</span>
+        <span class="mx-1"></span>
+        <span>Nuevo Producto</span>
+      </v-btn>
+      <v-btn color="red darken-2" dark :href="exportURL" target="_blank">
+        <v-icon small>fa-file-pdf</v-icon>
+        <span class="mx-1"></span>
+        <span>Ver PDF</span>
       </v-btn>
     </template>
     <template #filters>
@@ -184,7 +190,10 @@ export default {
     }
   },
   computed: {
-    ...mapState("products", ["products", "page"])
+    ...mapState("products", ["products", "page"]),
+    exportURL() {
+      return `${this.$axios.defaults.baseURL}/api/products/reports`;
+    }
   },
   methods: {
     ...mapActions("products", {
