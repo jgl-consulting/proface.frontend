@@ -94,7 +94,7 @@
                 >
                   <v-icon small>fa-trash</v-icon>
                 </v-btn>
-                <v-btn class="mx-1" color="red" dark icon flat small>
+                <v-btn class="mx-1" color="red" dark fab small>
                   <v-icon small>fa-file-pdf</v-icon>
                 </v-btn>
               </v-speed-dial>
