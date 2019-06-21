@@ -1,13 +1,13 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <v-subheader>Listado de productos solicitados</v-subheader>
+      <v-subheader>Listado de detalles</v-subheader>
     </template>
     <template #actions>
       <v-btn color="accent" @click="openAddPurchaseDetailDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1"></span>
-        <span>Solicitar nuevo producto</span>
+        <span>Nuevo detalle</span>
       </v-btn>
     </template>
     <template #filters>      

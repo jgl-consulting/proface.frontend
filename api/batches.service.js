@@ -40,6 +40,9 @@ export default class BatchesService {
       }
     });
   }
+  getBatchById(batchId) {
+    return this.$axios.$get(`${BATCHES_ENDPOINT}/${batchId}`);
+  }
   async createBatch(batch) {
     await this.$axios.$post(BATCHES_ENDPOINT, batch);
   }

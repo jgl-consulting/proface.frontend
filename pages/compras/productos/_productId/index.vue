@@ -15,7 +15,6 @@ export default {
     const product = await store.dispatch("products/details/fetchProduct", {
       productId
     });
-    store.dispatch("addParams", [product, route.path]);
   },
   components: {
     ModelDetail

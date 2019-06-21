@@ -4,10 +4,6 @@
       <h1>Unidades</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddUnitDialog">
-        <v-icon small>fa-plus</v-icon>
-        <span class="mx-1">Nueva Unidad</span>
-      </v-btn>
       <v-btn color="red darken-2" dark :href="exportURL" target="_blank">
         <v-icon small>fa-file-pdf</v-icon>
         <span class="mx-1"></span>
@@ -42,7 +38,7 @@
         <template v-slot:items="props">
           <tr @click.stop="props.expanded = !props.expanded">
             <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
-            <td class="text-xs-left">{{ $_.get(props.item.product, "description", "Sin producto") }}</td>
+            <td class="text-xs-left">{{ $_.get(props.item.product, "name", "Sin producto") }}</td>
             <td
               class="text-xs-left"
             >{{ $_.get(props.item.location, "description", "Sin ubicación") }}</td>
@@ -95,7 +91,6 @@
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
-import SaveUnitDialog from "@/components/units/SaveUnitDialog";
 import { mapState, mapActions } from "vuex";
 export default {
   meta: {
@@ -105,8 +100,7 @@ export default {
     ]
   },
   components: {
-    EmptyListTile,
-    SaveUnitDialog
+    EmptyListTile
   },
   async fetch({ store }) {},
   data() {
@@ -166,18 +160,14 @@ export default {
   computed: {
     ...mapState("units", ["units", "page"]),
     exportURL() {
-      return `${this.$axios.defaults.baseURL}/api/units/reports`;
+      let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+      return `${this.$axios.defaults.baseURL}/api/units/reports?filter=` + searchFilter;
     }
   },
   methods: {
     ...mapActions("units", {
       deleteUnitAction: "deleteUnit"
     }),
-    openAddUnitDialog() {
-      this.openSaveDialog = true;
-      this.unitToSave = {};
-      this.dialogMode = "nuevo";
-    },
     openEditUnitDialog(unit) {
       this.openSaveDialog = true;
       this.unitToSave = unit;

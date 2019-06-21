@@ -4,12 +4,17 @@
       <h1>Órdenes de Compra</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" to="/compras/ordenesCompra/nueva" nuxt>
+      <v-btn color="accent" to="/compras/ordenesCompra/nuevaCompra" nuxt>
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva orden de compra</span>
       </v-btn>
+      <v-btn color="red darken-2" dark :href="exportURL" target="_blank">
+        <v-icon small>fa-file-pdf</v-icon>
+        <span class="mx-1"></span>
+        <span>Ver PDF</span>
+      </v-btn>
     </template>
-    <template #filters>      
+    <template #filters>
       <v-text-field
         v-model="search"
         append-icon="search"
@@ -88,6 +93,9 @@
                   @click.stop="deletePurchaseOrder(props.item)"
                 >
                   <v-icon small>fa-trash</v-icon>
+                </v-btn>
+                <v-btn class="mx-1" color="red" dark icon flat small>
+                  <v-icon small>fa-file-pdf</v-icon>
                 </v-btn>
               </v-speed-dial>
             </td>
@@ -178,7 +186,9 @@ export default {
     search: {
       async handler() {
         const { sortBy, descending, page, rowsPerPage } = this.pagination;
-        let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+        let searchFilter = this.search
+          ? this.filter.replace(/{}/g, this.search)
+          : "";
         const params = {
           requestPage: page - 1,
           size: rowsPerPage,
@@ -194,7 +204,11 @@ export default {
     }
   },
   computed: {
-    ...mapState("purchaseOrders", ["purchaseOrders", "page"])
+    ...mapState("purchaseOrders", ["purchaseOrders", "page"]),    
+    exportURL() {
+      let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+      return `${this.$axios.defaults.baseURL}/api/purchaseOrders/reports?filter=` + searchFilter;
+    }
   },
   methods: {
     ...mapActions("purchaseOrders", {
@@ -229,7 +243,7 @@ export default {
       try {
         const { nativeId } = purchaseOrder;
         const res = await this.$confirm(
-          `¿Está seguro de borrar la orden de compra '${nativeId}'?`,
+          `¿Está seguro de borrar la orden de compra '${nativeId}'?, recuerde que se borraran los empaques.`,
           { title: "Advertencia" }
         );
         if (res) {

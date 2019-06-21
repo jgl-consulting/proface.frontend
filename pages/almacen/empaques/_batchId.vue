@@ -2,7 +2,7 @@
   <div>
     <v-layout row wrap>
       <h1 class="headline-1 mb-3">
-        {{ purchaseOrder.nativeId || "Sin identificador" }}
+        {{ batch.nativeId || "Sin identificador" }}
       </h1>
     </v-layout>
     <v-tabs v-model="activeTab" icons-and-text fixed-tabs grow>
@@ -30,15 +30,15 @@ export default {
   meta: {
       breadcrumbs: [
         { name: 'Módulos', link: '/' },
-        { name: 'Órdenes de compra', link: '/compras/ordenesCompra' },
+        { name: 'Empaques', link: '/almacen/empaques' },
         function({ params }){
-          return { name: params.purchaseOrderId };
+          return { name: params.batchId };
         }
       ]
   },
   asyncData({ route, params }){
     const { path } = route;
-    const mainRoute = `/compras/ordenesCompra/${params.purchaseOrderId}`
+    const mainRoute = `/almacen/empaques/${params.batchId}`
     return {
       activeTab: path,
       tabs: [
@@ -48,30 +48,15 @@ export default {
           icon: 'fa-info-circle' 
         },
         { 
-          name: 'Detalles', 
-          route: `${mainRoute}/detalles`, 
-          icon: 'fa-clipboard' 
+          name: 'Unidades', 
+          route: `${mainRoute}/unidades`, 
+          icon: 'fa-parking' 
         },
-        { 
-          name: 'Costos', 
-          route: `${mainRoute}/costos`, 
-          icon: 'fa-coins' 
-        },
-        /*{ 
-          name: 'Facturas', 
-          route: `${mainRoute}/facturas`, 
-          icon: 'fa-file-invoice-dollar' 
-        },*/
-        {
-          name: 'Empaques',
-          route: `${mainRoute}/empaques`,
-          icon: 'fa-archive'
-        }
       ]
     }
   },
   computed: {
-    ...mapState('purchaseOrders/details', ['purchaseOrder'])
+    ...mapState('batches/details', ['batch'])
   }
 }
 </script>

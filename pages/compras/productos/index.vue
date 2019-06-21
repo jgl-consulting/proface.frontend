@@ -186,12 +186,13 @@ export default {
   computed: {
     ...mapState("products", ["products", "page"]),
     exportURL() {
-      return `${this.$axios.defaults.baseURL}/api/products/reports`;
+      let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+      return `${this.$axios.defaults.baseURL}/api/products/reports?filter=` + searchFilter;
     }
   },
   methods: {
     ...mapActions("products", {
-      deleteProductAction: "deleteProduct"
+      deleteProductAction: "deleteProduct",
     }),
     openAddProductDialog() {
       this.openSaveDialog = true;

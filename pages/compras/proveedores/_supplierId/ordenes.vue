@@ -3,6 +3,17 @@
     <template #title>
       <v-subheader>Órdenes de Compra</v-subheader>
     </template>
+    <template #actions>
+      <v-btn color="accent" to="/compras/ordenesCompra/nuevaCompra" nuxt>
+        <v-icon small>fa-plus</v-icon>
+        <span class="mx-1">Nueva orden de compra</span>
+      </v-btn>
+      <v-btn color="red darken-2" dark :href="exportURL" target="_blank">
+        <v-icon small>fa-file-pdf</v-icon>
+        <span class="mx-1"></span>
+        <span>Ver PDF</span>
+      </v-btn>
+    </template>
     <template #filters>
       <v-text-field
         v-model="search"
@@ -118,9 +129,14 @@ export default {
     }
   },
   computed: {
-    ...mapState("suppliers/details", ["purchaseOrders", "page"]),
+    ...mapState("suppliers/details", ["purchaseOrders", "supplier", "page"]),
     purchases() {
       return this.purchaseOrders || [];
+    },        
+    exportURL() {
+      let supplierFilter = "supplier.id:" + this.supplier.id;
+      let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+      return `${this.$axios.defaults.baseURL}/api/purchaseOrders/reports?filter=` + searchFilter + supplierFilter;
     }
   },
   methods: {

@@ -76,5 +76,5 @@ export const actions = {
       sortBy,
       descending
     })
-  }
+  },
 }

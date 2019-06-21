@@ -143,7 +143,11 @@ export default {
   async fetch({ store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined};
     //await store.dispatch("suppliers/fetchSuppliers", params);
-    await store.dispatch("suppliers/fetchCountries");
+    try {
+      await store.dispatch("suppliers/fetchCountries");
+    } catch (error) {
+      console.log(error);
+    }
   },
   data() {
     return {
@@ -205,7 +209,8 @@ export default {
   computed: {
     ...mapState("suppliers", ["suppliers", "page", "countries"]),
     exportURL() {
-      return `${this.$axios.defaults.baseURL}/api/suppliers/reports`;
+      let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+      return `${this.$axios.defaults.baseURL}/api/suppliers/reports?filter=` + searchFilter;
     }
   },
   methods: {
