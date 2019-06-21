@@ -145,7 +145,11 @@ export default {
   async fetch({ store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined};
     //await store.dispatch("suppliers/fetchSuppliers", params);
-    await store.dispatch("suppliers/fetchCountries");
+    try {
+      await store.dispatch("suppliers/fetchCountries");
+    } catch (error) {
+      console.log(error);
+    }
   },
   data() {
     return {

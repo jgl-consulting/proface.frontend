@@ -4,9 +4,9 @@
       <h1>Empaques</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddBatchDialog">
+      <v-btn color="accent" to="/almacen/empaques/nuevoEmpaque" nuxt>
         <v-icon small>fa-plus</v-icon>
-        <span class="mx-1">Nuevo Empaque</span>
+        <span class="mx-1">Nuevo empaque</span>
       </v-btn>
     </template>
     <template #filters>
@@ -46,7 +46,19 @@
                   <v-btn color="secondary" dark icon flat small>
                     <v-icon small>fa-wrench</v-icon>
                   </v-btn>
-                </template>
+                </template>                
+                <v-btn
+                  class="mx-1"
+                  color="primary"
+                  dark
+                  icon
+                  flat
+                  small
+                  nuxt
+                  :to="props.item.id | path($route.fullPath)"
+                >
+                  <v-icon small>fa-ellipsis-v</v-icon>
+                </v-btn>
                 <v-btn
                   class="mx-1"
                   color="accent"
@@ -94,7 +106,7 @@ export default {
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
-      { name: "Empaque", link: "/almacen/empaques" }
+      { name: "Empaques", link: "/almacen/empaques" }
     ]
   },
   components: {
@@ -189,7 +201,7 @@ export default {
       try {
         const { nativeId } = batch;
         const res = await this.$confirm(
-          `¿Está seguro de borrar el empaque '${nativeId}'?`,
+          `¿Está seguro de borrar el empaque '${nativeId}'?, recuerde que las unidades se borraran también.`,
           { title: "Advertencia" }
         );
         if (res) {
@@ -214,6 +226,9 @@ export default {
         width: 500
       });
     }
+  },
+  filters: {
+    path: (param, path) => `${path}/${param}`
   }
 };
 </script>

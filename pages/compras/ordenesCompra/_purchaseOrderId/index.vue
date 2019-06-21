@@ -14,6 +14,7 @@
 import { mapState } from "vuex";
 import ModelDetail from "@/components/common/ModelDetail";
 import ModelTimeline from "@/components/common/ModelTimeline";
+import moment from "moment";
 export default {
   async fetch({ params: { purchaseOrderId }, route, store }) {
     const fetchPurchaseOrderAction =
@@ -28,6 +29,12 @@ export default {
     return {
       purchaseOrderFields: [
         { key: "nativeId", title: "Código local", icon: "fa-id-card-alt" },
+        { 
+          key: "creationDate", 
+          title: "Fecha de Creación", 
+          icon: "fa-calendar",
+          render: creationDate => this.formatDate(creationDate)
+        },
         {
           key: "supplier",
           title: "Proveedor",
@@ -44,6 +51,19 @@ export default {
     purchaseTraces() {
       return this.purchaseOrder.traces;
     }
+  },
+  methods: {
+    formatDate(date) {
+      if (date != undefined) return this.dateMoment(date).format("DD/MM/YYYY");
+      return "";
+    },
+    dateMoment(date) {
+      if (date != undefined) {
+        const momentDate = moment(date);
+        return momentDate.isValid() ? momentDate : moment.now();
+      }
+      return "";
+    },
   }
 };
 </script>

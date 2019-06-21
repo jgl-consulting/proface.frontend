@@ -4,7 +4,7 @@
       <h1>Órdenes de Compra</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" to="/compras/ordenesCompra/nueva" nuxt>
+      <v-btn color="accent" to="/compras/ordenesCompra/nuevaCompra" nuxt>
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva orden de compra</span>
       </v-btn>
@@ -245,7 +245,7 @@ export default {
       try {
         const { nativeId } = purchaseOrder;
         const res = await this.$confirm(
-          `¿Está seguro de borrar la orden de compra '${nativeId}'?`,
+          `¿Está seguro de borrar la orden de compra '${nativeId}'?, recuerde que se borraran los empaques.`,
           { title: "Advertencia" }
         );
         if (res) {

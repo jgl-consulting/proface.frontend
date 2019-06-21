@@ -1,13 +1,13 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <v-subheader>Listado de detalles</v-subheader>
+      <v-subheader>Listado de unidades</v-subheader>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddPurchaseDetailDialog">
+      <v-btn color="accent" @click="openAddUnitDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1"></span>
-        <span>Nuevo detalle</span>
+        <span>Nueva unidad</span>
       </v-btn>
     </template>
     <template #filters>      
@@ -23,18 +23,14 @@
     </template>
     <template #table>
       <v-data-table 
-        :headers="purchaseDetailHeaders" 
-        :items="purchaseDetails" 
+        :headers="unitHeaders" 
+        :items="units" 
         :search="search" 
         class="elevation-1">
         <template #items="{ item }">
+          <td class="text-xs-left">{{ item.nativeId || "Sin identificador" }}</td>
           <td class="text-xs-left">{{ $_.get(item.product, "name", "Sin producto") }}</td>
-          <td class="text-xs-left">{{ item.quantity }}</td>
-          <td class="text-xs-left">{{ formatPrice(item.unitPrice) }}</td>
-          <td class="text-xs-left">{{ formatPrice(item.purchasePrice) }}</td>
-          <td class="text-xs-left">{{ formatPrice(item.disscount) }}</td>
-          <td class="text-xs-left">{{ formatPrice(item.finalPrice) }}</td>
-          <td class="text-xs-left">{{ 'S/. ' + item.localPrice }}</td>
+          <td class="text-xs-left">{{ $_.get(item.location, "description", "Sin ubicación") }}</td>
           <td class="text-xs-left">
             <v-icon
               :color='$_.get(item.status, "color", "primary")'
@@ -56,7 +52,7 @@
                 icon
                 flat
                 small
-                @click.stop="openEditPurchaseDetailDialog(item)"
+                @click.stop="openEditUnitDialog(item)"
               >
                 <v-icon small>fa-pen</v-icon>
               </v-btn>
@@ -67,110 +63,92 @@
                 icon
                 flat
                 small
-                @click.stop="deletePurchaseDetail(item)"
+                @click.stop="deleteUnit(item)"
               >
                 <v-icon small>fa-trash</v-icon>
               </v-btn>
             </v-speed-dial>
           </td>
         </template>
-        <template #footer>
-          <td class="text-sm-left" :colspan="purchaseDetailHeaders.length">
-            <h3>Total: S/. {{ purchaseDetailAmount | twoDecimals }}</h3>
-          </td>
-        </template>
       </v-data-table>
     </template>
     <template #dialog>
-      <save-purchase-detail-dialog
-        v-model="openSaveDetailDialog"
-        :purchase-detail="purchaseDetailToSave"
+      <save-unit-dialog
+        v-model="openSaveUnitDialog"
+        :unit="unitToSave"
         :mode="dialogMode"
-      ></save-purchase-detail-dialog>
+      ></save-unit-dialog>
     </template>
   </simple-table-layout>
 </template>
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
-import SavePurchaseDetailDialog from "@/components/purchaseOrders/SavePurchaseDetailDialog";
+import SaveUnitDialog from "@/components/batches/SaveUnitDialog";
 import { mapState, mapActions } from "vuex";
 
 export default {
-  async fetch({ params: { purchaseOrderId }, route, store }) {
-    await store.dispatch("purchaseOrders/details/fetchPurchaseOrder", {
-      purchaseOrderId
+  async fetch({ params: { batchId }, route, store }) {
+    await store.dispatch("batches/details/fetchBatch", {
+      batchId
     });
-    await store.dispatch("purchaseOrders/details/fetchProducts");
-    await store.dispatch("purchaseOrders/details/fetchReceptionStatuses");
+    await store.dispatch("batches/details/fetchProducts");
+    await store.dispatch("batches/details/fetchLocations");
+    await store.dispatch("batches/details/fetchUnitStatuses")
   },
   components: {
     EmptyListTile,
-    SavePurchaseDetailDialog
+    SaveUnitDialog
   },
   data: () => ({
-    purchaseDetailHeaders: [
+    unitHeaders: [
+      { text: "Identificador", value: "nativeId" },
       { text: "Producto", value: "product" },
-      { text: "Cantidad", value: "quantity" },
-      { text: "Precio Unitario", value: "unitPrice" },
-      { text: "Precio Neto", value: "purchasePrice" },
-      { text: "Descuento", value: "disscount" },
-      { text: "Precio Final", value: "finalPrice" },
-      { text: "Precio en Soles", value: "totalPrice" },
+      { text: "Ubicación", value: "location" },
       { text: "Estado", value: "status" },
       { text: "Acciones", value: "id", width: "10%", sortable: false }
     ],
-    purchaseDetailToSave: {
+    unitToSave: {
       status: { id: 0 },
-      product: { id: 0 }
+      product: { id: 0 },
+      location: { id: 0 }
     },
     search: "",
-    openSaveDetailDialog: false,
+    openSaveUnitDialog: false,
     dialogMode: "nuevo"
   }),
   computed: {
-    ...mapState("purchaseOrders/details", ["purchaseOrder"]),
-    purchaseDetails() {
-      return this.purchaseOrder.details || [];
+    ...mapState("batches/details", ["batch"]),
+    units() {
+      return this.batch.units || [];
     },
-    purchaseDetailAmount() {
-      return this.purchaseDetails.reduce(
-        (totalAmount, { localPrice }) => totalAmount + localPrice,
-        0
-      );
-    }
   },
   methods: {
-    ...mapActions("purchaseOrders/details", {
-      deletePurchaseDetailAction: "deletePurchaseDetail"
+    ...mapActions("batches/details", {
+      deleteUnitAction: "deleteUnit"
     }),
-    formatPrice(price) {
-      return this.purchaseOrder.currency
-        ? this.purchaseOrder.currency.symbol + " " + price
-        : price;
-    },
-    openAddPurchaseDetailDialog() {
-      this.openSaveDetailDialog = true;
-      this.purchaseDetailToSave = {
-        status: { id: 0, order: 0 },
-        product: { id: 0 }
+    openAddUnitDialog() {
+      this.openSaveUnitDialog = true;
+      this.unitToSave = {
+        product: { id: 0 },
+        location: { id : 0 }
       };
       this.dialogMode = "nuevo";
     },
-    openEditPurchaseDetailDialog(purchaseDetail) {
-      this.openSaveDetailDialog = true;
-      this.purchaseDetailToSave = purchaseDetail;
+    openEditUnitDialog(unit) {
+      this.openSaveUnitDialog = true;
+      this.unitToSave = unit;
       this.dialogMode = "editar";
     },
-    async deletePurchaseDetail(purchaseDetail) {
+    async deleteUnit(unit) {
       try {
-        const { product } = purchaseDetail;
+        const { nativeId } = unit;
         const res = await this.$confirm(
-          `¿Está seguro de borrar el detalle del producto '${product.name}'?`,
+          `¿Está seguro de borrar la unidad '${nativeId}'?`,
           { title: "Advertencia" }
         );
         if (res) {
-          await this.deletePurchaseDetailAction({ purchaseDetail });
+          await this.deleteUnitAction({ unit });
 
           await this.$confirm("Borrado correcto!", {
             title: "Éxito",

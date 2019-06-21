@@ -3,6 +3,13 @@
     <template #title>
       <v-subheader>Unidades</v-subheader>
     </template>
+    <template #actions>
+      <v-btn color="red darken-2" dark :href="exportURL" target="_blank">
+        <v-icon small>fa-file-pdf</v-icon>
+        <span class="mx-1"></span>
+        <span>Ver PDF</span>
+      </v-btn>
+    </template>
     <template #filters>
       <v-text-field
         v-model="search"
@@ -67,7 +74,7 @@ export default {
         { text: "Id Local", align: "left", value: "nativeId" },
         { text: "Ubicación", align: "left", value: "location" },
         { text: "Empaque", align: "left", value: "batch" },
-        { text: "Estado", align: "left", value: "status" },
+        { text: "Estado", align: "left", value: "status" }
       ],
       pagination: {
         descending: false,
@@ -78,7 +85,7 @@ export default {
       search: "",
       filter: "nativeId:{}*,location.description:{}*,batch.nativeId:{}*,status.description:{}*,¬",
       expand: false,
-      pageSizes: [20, 30, 50, 100]
+      pageSizes: [20, 30, 50, 100],
     };
   },
   watch: {
@@ -116,12 +123,48 @@ export default {
     }
   },
   computed: {
-    ...mapState("products/details", ["units", "page"]),
+    ...mapState("products/details", ["units", "product", "page"]),
     purchases() {
       return this.units || [];
+    },
+    exportURL() {
+      let productFilter = "product.id:" + this.product.id;
+      let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+      return `${this.$axios.defaults.baseURL}/api/units/reports?filter=` + searchFilter + productFilter;
     }
   },
   methods: {
+     ...mapActions("products/details", {
+      deleteUnitAction: "deleteUnit"
+    }),
+    openAddUnitDialog() {
+      this.openSaveDialog = true;
+      this.unitToSave = {};
+      this.dialogMode = "nuevo";
+    },
+    openEditUnitDialog(unit) {
+      this.openSaveDialog = true;
+      this.unitToSave = unit;
+      this.dialogMode = "editar";
+    },
+    async deleteUnit(unit) {
+      try {
+        const { nativeId } = unit;
+        const res = await this.$confirm(
+          `¿Está seguro de borrar la unidad '${nativeId}'?`,
+          { title: "Advertencia" }
+        );
+        if (res) {
+          await this.deleteUnitAction({ unit });
+          await this.$confirm("Borrado correcto!", {
+            title: "Éxito",
+            color: "success"
+          });
+        }
+      } catch (error) {
+        this.showError(error);
+      }
+    },
     formatDate(date) {
       if (date != undefined) return this.dateMoment(date).format("DD/MM/YYYY");
       return "";
@@ -135,6 +178,14 @@ export default {
     },
     optional(object) {
       return object || {};
+    },
+    showError(error) {
+      const { message, errors } = error.response.data;
+      this.$confirm(errors.map(e => e.errorMessage).join("\n"), {
+        title: message,
+        color: "error",
+        width: 500
+      });
     }
   }
 };

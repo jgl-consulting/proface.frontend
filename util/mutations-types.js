@@ -20,3 +20,4 @@ export const SET_LOCATIONS = 'setLocations';
 export const SET_UNIT_STATUSES = 'setUnitStatuses';
 export const SET_BATCHES = 'setBatches';
 export const SET_UNITS = 'setUnits';
+export const SET_BATCH = 'setBatch';

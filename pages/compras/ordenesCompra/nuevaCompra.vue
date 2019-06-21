@@ -73,80 +73,115 @@
       </template>
       <template #controls>
         <v-flex xs12 px-2>
-          <v-data-table
-            :headers="detailHeaders"
-            :items="purchaseOrderItems"
-            hide-actions
-            class="elevation-1"
-          >
-            <template v-slot:items="props">
-              <td class="text-xs-left">{{ props.item.name }}</td>
-              <td>
-                <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.unitPrice">
-                  <span>
-                    <v-icon small color="accent">fa-pen</v-icon>
-                    <span class="ml-2">{{ props.item.unitPrice }}</span>
-                  </span>
-                  <template v-slot:input>
-                    <v-text-field
-                      type="number"
-                      v-model="props.item.unitPrice"
-                      label="Precio Unitario"
-                      single-line
-                    ></v-text-field>
-                  </template>
-                </v-edit-dialog>
-              </td>
-              <td>
-                <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.quantity" lazy>
-                  <span>
-                    <v-icon small color="accent">fa-pen</v-icon>
-                    <span class="ml-2">{{ props.item.quantity }} unidades</span>
-                  </span>
-                  <template v-slot:input>
-                    <v-text-field
-                      type="number"
-                      v-model="props.item.quantity"
-                      label="Cantidad"
-                      single-line
-                    ></v-text-field>
-                  </template>
-                </v-edit-dialog>
-              </td>
-              <td
-                class="text-xs-left"
-              >{{ (props.item.unitPrice * props.item.quantity) | twoDecimals}}</td>
-              <td>
-                <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.disscount" lazy>
-                  <span>
-                    <v-icon small color="accent">fa-pen</v-icon>
-                    <span class="ml-2">{{ props.item.disscount }}</span>
-                  </span>
-                  <template v-slot:input>
-                    <v-text-field
-                      type="number"
-                      v-model="props.item.disscount"
-                      label="Descuento"
-                      single-line
-                    ></v-text-field>
-                  </template>
-                </v-edit-dialog>
-              </td>
-              <td
-                class="text-xs-left"
-              >{{ (props.item.unitPrice * props.item.quantity - props.item.disscount) | twoDecimals }}</td>
-              <td class="text-xs-center">
-                <v-btn flat icon color="accent" @click="deleteOrderProduct(props.item)">
-                  <v-icon small>fa-trash</v-icon>
-                </v-btn>
-              </td>
-            </template>
-            <template #footer>
-              <td class="text-sm-right" :colspan="detailHeaders.length">
-                <h3>Total: {{ purchaseOrderAmount | twoDecimals }}</h3>
-              </td>
-            </template>
-          </v-data-table>
+          <div v-if="isBudgeted()">
+            <v-data-table
+              :headers="detailHeaders"
+              :items="purchaseOrderItems"
+              hide-actions
+              class="elevation-1"
+            >
+              <template v-slot:items="props">
+                <td class="text-xs-left">{{ props.item.name }}</td>
+                <td>
+                  <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.unitPrice">
+                    <span>
+                      <v-icon small color="accent">fa-pen</v-icon>
+                      <span class="ml-2">{{ props.item.unitPrice }}</span>
+                    </span>
+                    <template v-slot:input>
+                      <v-text-field
+                        type="number"
+                        v-model="props.item.unitPrice"
+                        label="Precio Unitario"
+                        single-line
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </td>
+                <td>
+                  <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.quantity" lazy>
+                    <span>
+                      <v-icon small color="accent">fa-pen</v-icon>
+                      <span class="ml-2">{{ props.item.quantity }} unidades</span>
+                    </span>
+                    <template v-slot:input>
+                      <v-text-field
+                        type="number"
+                        v-model="props.item.quantity"
+                        label="Cantidad"
+                        single-line
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </td>
+                <td
+                  class="text-xs-left"
+                >{{ (props.item.unitPrice * props.item.quantity) | twoDecimals}}</td>
+                <td>
+                  <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.disscount" lazy>
+                    <span>
+                      <v-icon small color="accent">fa-pen</v-icon>
+                      <span class="ml-2">{{ props.item.disscount }}</span>
+                    </span>
+                    <template v-slot:input>
+                      <v-text-field
+                        type="number"
+                        v-model="props.item.disscount"
+                        label="Descuento"
+                        single-line
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </td>
+                <td
+                  class="text-xs-left"
+                >{{ (props.item.unitPrice * props.item.quantity - props.item.disscount) | twoDecimals }}</td>
+                <td class="text-xs-center">
+                  <v-btn flat icon color="accent" @click="deleteOrderProduct(props.item)">
+                    <v-icon small>fa-trash</v-icon>
+                  </v-btn>
+                </td>
+              </template>
+              <template #footer>
+                <td class="text-sm-right" :colspan="detailHeaders.length">
+                  <h3>Total: {{ purchaseOrderAmount | twoDecimals }}</h3>
+                </td>
+              </template>
+            </v-data-table>
+          </div>
+          <div v-else>
+            <v-data-table
+              :headers="newDetailHeaders"
+              :items="purchaseOrderItems"
+              hide-actions
+              class="elevation-1"
+            >
+              <template v-slot:items="props">
+                <td class="text-xs-left">{{ props.item.name }}</td>
+                <td>
+                  <v-edit-dialog class="text-xs-left" :return-value.sync="props.item.quantity" lazy>
+                    <span>
+                      <v-icon small color="accent">fa-pen</v-icon>
+                      <span class="ml-2">{{ props.item.quantity }} unidades</span>
+                    </span>
+                    <template v-slot:input>
+                      <v-text-field
+                        type="number"
+                        v-model="props.item.quantity"
+                        label="Cantidad"
+                        single-line
+                      ></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </td>
+                <td class="text-xs-center">
+                  <v-btn flat icon color="accent" @click="deleteOrderProduct(props.item)">
+                    <v-icon small>fa-trash</v-icon>
+                  </v-btn>
+                </td>
+              </template>
+            </v-data-table>
+          </div>
         </v-flex>
       </template>
     </form-group>
@@ -209,6 +244,11 @@ export default {
         { sortable: false, key: "finalPrice", text: "Precio final" },
         { sortable: false, key: "product", text: "¿Eliminar?" }
       ],
+      newDetailHeaders: [
+        { sortable: false, key: "name", text: "Producto" },
+        { sortable: false, key: "quantity", text: "Cantidad" },
+        { sortable: false, key: "product", text: "¿Eliminar?" }
+      ],
       valid: true
     };
   },
@@ -255,6 +295,14 @@ export default {
     ...mapActions("purchaseOrders", ["createPurchaseOrder"]),
     openProductList() {
       this.productDialog = true;
+    },
+    isBudgeted() {
+      let status = this.purchaseOrder.status;
+      if (status) {
+        return status.nativeId != "CR";
+      } else {
+        return false;
+      }
     },
     async savePurchaseOrder() {
       if (this.$refs.purchaseOrderForm.validate()) {

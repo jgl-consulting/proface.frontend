@@ -30,6 +30,14 @@ export default class PurchaseOrdersService {
     }
   }
 
+  async listPurchaseOrders() {
+    return await this.$axios.$get(PURCHASE_ORDERS_ENDPOINT, {
+      params: {
+        unpaged: true
+      }
+    });
+  }
+
   getPurchaseOrderById(purchaseOrderId) {
     return this.$axios.$get(`${PURCHASE_ORDERS_ENDPOINT}/${purchaseOrderId}`);
   }
