@@ -136,7 +136,7 @@
                 class="text-xs-left"
               >{{ (props.item.unitPrice * props.item.quantity - props.item.disscount) | twoDecimals }}</td>
               <td class="text-xs-center">
-                <v-btn flat icon color="accent" @click="deleteOrderProduct(props.item)">
+                <v-btn fab dark small color="accent" @click="deleteOrderProduct(props.item)">
                   <v-icon small>fa-trash</v-icon>
                 </v-btn>
               </td>

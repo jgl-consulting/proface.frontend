@@ -30,7 +30,7 @@
               </v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-action>
-              <v-btn icon flat @click="manageUser(user)">
+              <v-btn flat fab @click="manageUser(user)">
                 <v-icon small>fa fa-cog</v-icon>
               </v-btn>
             </v-list-tile-action>

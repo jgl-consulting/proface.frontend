@@ -17,6 +17,7 @@
               append-icon="search"
               label="Búsqueda"
               single-line
+              box
               clearable
               clear-icon="fa-times"
               hide-details
@@ -55,8 +56,8 @@
                     {{ props.item.avaliableStock }}
                   </td>
                   <td class="text-xs-center">
-                    <v-btn flat icon color="accent" @click.stop="emitProduct(props.item)">
-                      <v-icon small>fa-plus-circle</v-icon>
+                    <v-btn fab small dark color="accent" @click.stop="emitProduct(props.item)">
+                      <v-icon small>fa-plus</v-icon>
                     </v-btn>
                   </td>
                 </tr>

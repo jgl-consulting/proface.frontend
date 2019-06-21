@@ -15,6 +15,7 @@
         append-icon="search"
         label="Búsqueda"
         single-line
+        box
         clearable
         clear-icon="fa-times"
         hide-details
@@ -46,7 +47,7 @@
             <td class="text-xs-center" @click.stop="() => {}">
               <v-speed-dial direction="left" open-on-hover>
                 <template v-slot:activator>
-                  <v-btn color="secondary" dark icon flat small>
+                  <v-btn color="secondary" dark fab small>
                     <v-icon small>fa-wrench</v-icon>
                   </v-btn>
                 </template>
@@ -54,8 +55,7 @@
                   class="mx-1"
                   color="accent"
                   dark
-                  icon
-                  flat
+                  fab
                   small
                   @click.stop="openEditReceptionStatusDialog(props.item)"
                 >
@@ -65,8 +65,7 @@
                   class="mx-1"
                   color="deep-purple darken-2"
                   dark
-                  icon
-                  flat
+                  fab
                   small
                   @click.stop="deleteReceptionStatus(props.item)"
                 >

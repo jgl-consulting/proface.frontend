@@ -5,7 +5,7 @@
       <v-spacer></v-spacer>
       <slot name="actions"></slot>
     </v-layout>
-    <v-layout wrap row>
+    <v-layout wrap row pt-3 pb-4>
       <slot name="filters"></slot>
     </v-layout>
     <v-layout wrap row mt-1>

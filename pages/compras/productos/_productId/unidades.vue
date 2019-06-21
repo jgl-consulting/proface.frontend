@@ -8,6 +8,7 @@
         v-model="search"
         append-icon="search"
         label="Búsqueda"
+        box
         single-line
         clearable
         clear-icon="fa-times"

@@ -15,6 +15,7 @@
         v-model="search"
         append-icon="search"
         label="Búsqueda"
+        box
         single-line
         clearable
         clear-icon="fa-times"
@@ -35,7 +36,7 @@
           <td class="text-xs-center">
             <v-speed-dial direction="left" open-on-hover>
               <template v-slot:activator>
-                <v-btn color="secondary" dark icon flat small>
+                <v-btn color="secondary" dark fab small>
                   <v-icon small>fa-wrench</v-icon>
                 </v-btn>
               </template>

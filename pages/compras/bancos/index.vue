@@ -14,9 +14,10 @@
         v-model="search"
         append-icon="search"
         label="Búsqueda"
+        box
         single-line
         clearable
-        clear-icon="fa-times"
+        clear-icon="fa-times fa-sm"
         hide-details
       ></v-text-field>
     </template>
@@ -48,7 +49,7 @@
             <td class="text-xs-center" @click.stop="() => {}">
               <v-speed-dial direction="left" open-on-hover>
                 <template v-slot:activator>
-                  <v-btn class="mx-1" color="secondary" dark icon flat small>
+                  <v-btn class="mx-1" color="secondary" dark fab small>
                     <v-icon small>fa-wrench</v-icon>
                   </v-btn>
                 </template>
@@ -56,8 +57,7 @@
                   class="mx-1"
                   color="accent"
                   dark
-                  icon
-                  flat
+                  fab
                   small
                   @click.stop="openEditBankDialog(props.item)"
                 >
@@ -67,8 +67,7 @@
                   class="mx-1"
                   color="deep-purple darken-2"
                   dark
-                  icon
-                  flat
+                  fab
                   small
                   @click.stop="deleteBank(props.item)"
                 >
