@@ -52,8 +52,7 @@
                   class="mx-1"
                   color="primary"
                   dark
-                  icon
-                  flat
+                  fab
                   small
                   nuxt
                   :to="props.item.id | path($route.fullPath)"
