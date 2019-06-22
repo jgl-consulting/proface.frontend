@@ -1,11 +1,15 @@
 import {
     SET_BATCHES,
     SET_PAGE,
-    SET_PAGINATION
+    SET_PAGINATION,
+    SET_PURCHASE_ORDERS,
+    SET_BATCH_TYPES,
   } from '@/util/mutations-types';
   import _ from 'lodash';
   export const state = () => ({
     batches: [],
+    purchaseOrders: [],
+    batchTypes: [],
     page: {
       size: 0,
       totalElements: 0,
@@ -29,7 +33,13 @@ import {
     },
     [SET_PAGINATION](state, pagination) {
       state.pagination = pagination;
-    }
+    },
+    [SET_PURCHASE_ORDERS](state, purchaseOrders) {
+      state.purchaseOrders = purchaseOrders;
+    },
+    [SET_BATCH_TYPES](state, batchTypes) {
+      state.batchTypes = batchTypes;
+    },
   }
   export const actions = {
     async fetchBatches({
@@ -80,6 +90,18 @@ import {
     }) {
       await this.$batches.deleteBatch(batch);
       await dispatch('fetchBatches');
-    }
+    },
+    async fetchPurchaseOrders({
+      commit
+    }) {
+      const purchaseOrders = await this.$purchaseOrders.listPurchaseOrders();
+      commit(SET_PURCHASE_ORDERS, purchaseOrders);
+    },
+    async fetchBatchTypes({
+      commit
+    }) {
+      const batchTypes = await this.$batchTypes.listBatchTypes();
+      commit(SET_BATCH_TYPES, batchTypes);
+    },
   }
   

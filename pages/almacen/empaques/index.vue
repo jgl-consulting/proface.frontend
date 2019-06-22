@@ -111,7 +111,9 @@ export default {
     EmptyListTile,
     SaveBatchDialog
   },
-  async fetch({ store }) {
+  async fetch({ store }) {    
+    await store.dispatch("batches/fetchPurchaseOrders");
+    await store.dispatch("batches/fetchBatchTypes");
   },
   data() {
     return {
