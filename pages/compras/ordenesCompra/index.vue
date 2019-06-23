@@ -4,7 +4,11 @@
       <h1>Órdenes de Compra</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" to="/compras/ordenesCompra/nuevaCompra" nuxt>
+      <v-btn 
+        v-if="$isAllowed('createPurchaseOrder')"
+        color="accent" 
+        to="/compras/ordenesCompra/nuevaCompra" 
+        nuxt>
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva orden de compra</span>
       </v-btn>
@@ -114,6 +118,7 @@
 </template>
 
 <script>
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 import EmptyListTile from "@/components/common/EmptyListTile";
 import SavePurchaseOrderDialog from "@/components/purchaseOrders/SavePurchaseOrderDialog";
 import { mapState, mapActions } from "vuex";
@@ -129,6 +134,9 @@ export default {
     EmptyListTile,
     SavePurchaseOrderDialog
   },
+  perimeters: [
+    purchasePerimeter
+  ],
   async fetch({ store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch("purchaseOrders/fetchCurrencies");

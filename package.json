@@ -22,6 +22,7 @@
     "nuxt": "^2.4.0",
     "query-string": "^6.5.0",
     "vue-flag-icon": "^1.0.6",
+    "vue-kindergarten": "^0.3.3",
     "vuetify": "^1.5.5",
     "vuetify-confirm": "^0.2.6",
     "vuetify-loader": "^1.2.1"

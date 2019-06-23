@@ -47,7 +47,8 @@ export default {
     '@/plugins/services',
     '@/plugins/flags',
     '@/plugins/lodash',
-    '@/plugins/filters'
+    '@/plugins/filters',
+    '@/plugins/kindergarten'
   ],
 
   /*
@@ -118,6 +119,10 @@ export default {
     }
   },
   router: {
-    middleware: ['auth', 'page-title']
+    middleware: [
+      'auth', 
+      'page-title',
+      'kindergarten',
+    ]
   }
 }
