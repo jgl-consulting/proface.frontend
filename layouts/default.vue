@@ -21,22 +21,6 @@
           </v-list-tile-content>
         </v-list-tile>
         <span class="my-3"></span>
-        <!-- <v-list-tile
-          class="my-2"
-          v-for="(menu, i) in menus"
-          :key="i" 
-          :to="menu.to"
-          router 
-          exact>
-          <v-list-tile-action>
-            <v-icon small>{{ menu.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title class="font-weight-bold">
-              {{ menu.title }}
-            </v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile> -->
         <MenuTree :menus="menus"></MenuTree>
         <v-spacer></v-spacer>
         <v-list-tile class="my-2" @click.stop="miniVariant = !miniVariant">
