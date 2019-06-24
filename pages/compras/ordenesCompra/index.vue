@@ -5,7 +5,7 @@
     </template>
     <template #actions>
       <v-btn 
-        v-if="$isAllowed('createPurchaseOrder')"
+        v-if="$isAllowed('registerPurchase')"
         color="accent" 
         to="/compras/ordenesCompra/nuevaCompra" 
         nuxt>
@@ -84,6 +84,7 @@
                   dark
                   fab
                   small
+                  v-if="$isAllowed('organizePurchase')"
                   @click.stop="openEditPurchaseOrderDialog(props.item)"
                 >
                   <v-icon small>fa-pen</v-icon>
@@ -94,6 +95,7 @@
                   dark
                   fab
                   small
+                  v-if="$isAllowed('organizePurchase')"
                   @click.stop="deletePurchaseOrder(props.item)"
                 >
                   <v-icon small>fa-trash</v-icon>
@@ -124,6 +126,7 @@ import SavePurchaseOrderDialog from "@/components/purchaseOrders/SavePurchaseOrd
 import { mapState, mapActions } from "vuex";
 import moment from "moment";
 export default {
+  routePerimeterAction: 'viewPurchase',
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },

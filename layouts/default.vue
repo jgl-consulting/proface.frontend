@@ -70,7 +70,13 @@ import strings from '@/util/strings';
 import menus from '@/util/menus';
 import { mapState } from 'vuex';
 
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
 export default {
+  perimeters: [
+    purchasePerimeter,
+    warehousePerimeter
+  ],
   components: {
     UserDetailsMenu,
     ProfaceLogo,
@@ -90,7 +96,39 @@ export default {
       'user'
     ]),
     strings: () => strings,
-    menus: () => menus,
+    menus() {
+      const _vueInstance = this;
+      
+      let checkChildren = (children) => {
+        const allowedChildren = [];
+        
+        children.forEach((child) => {
+          const checkedChild = checkChild(child);
+          if(checkedChild) {
+            allowedChildren.push(checkedChild);
+          }
+        })
+
+        return allowedChildren;
+      };
+
+      let checkChild = (child) => {
+        const isAllowed = _vueInstance.$isAllowed(child.perimeterAction);
+
+        if(isAllowed) {
+          const checkedChild = Object.assign({}, child);
+          
+          if(checkedChild && checkedChild.children) {
+            checkedChild.children = checkChildren(child.children);
+          }
+
+          checkedChild.isAllowed = isAllowed;
+          
+          return checkedChild;
+        }  
+      }
+      return checkChildren(menus);
+    },
   }
 }
 </script>

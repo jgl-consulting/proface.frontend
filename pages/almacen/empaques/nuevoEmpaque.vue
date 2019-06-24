@@ -138,6 +138,8 @@
 </template>
 
 <script>
+
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 import { mapState, mapActions } from "vuex";
 import FormGroup from "@/components/common/FormGroup";
 import Datepicker from "@/components/common/Datepicker";
@@ -145,6 +147,10 @@ import { required, maxLength, referenced } from "@/util/validators";
 // Componente que maneja la tabla
 import ProductListDialog from "@/components/products/ProductListDialog";
 export default {
+  routePerimeterAction: 'organizePurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },

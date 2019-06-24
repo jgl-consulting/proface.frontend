@@ -17,7 +17,7 @@ export default {
   },
   props: {
     menus: Array
-  }
+  },
 }
 </script>
 

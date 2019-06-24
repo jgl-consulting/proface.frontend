@@ -5,7 +5,11 @@
       <v-subheader>Listado de empaques recibidos</v-subheader>
     </template>
     <template #actions>
-      <v-btn color="accent" to="/almacen/empaques/nuevoEmpaque" nuxt>
+      <v-btn v-if="$isAllowed('organizePurchase')" 
+        color="accent" 
+        to="/almacen/empaques/nuevoEmpaque" 
+        nuxt
+      >
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nuevo empaque</span>
       </v-btn>
@@ -15,6 +19,7 @@
         v-model="search"
         append-icon="search"
         label="Búsqueda"
+        box
         single-line
         clearable
         clear-icon="fa-times"
@@ -48,8 +53,12 @@
 import EmptyListTile from "@/components/common/EmptyListTile";
 import { mapState, mapActions } from "vuex";
 import moment from "moment";
-
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   async fetch({ params: { purchaseOrderId }, route, store }) {
     await store.dispatch("purchaseOrders/details/fetchPurchaseOrder", {
       purchaseOrderId

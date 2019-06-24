@@ -3,14 +3,14 @@ export default [{
     title: 'Compras',
     icon: 'fa fa-shopping-bag',
     description: 'Módulo de Gestión de Compras',
-    allowedRoles: ['COMPRAS'],
+    perimeterAction: 'viewPurchase',
     children: [{
         id: 'bancos',
         title: 'Bancos',
         icon: 'fa fa-piggy-bank',
         to: '/compras/bancos',
         description: 'Gestión de bancos de la compañía',
-        allowedRoles: ['COMPRAS']
+        perimeterAction: 'viewPurchase'
       },
       {
         id: 'estadosCompra',
@@ -18,7 +18,7 @@ export default [{
         icon: 'fa fa-project-diagram',
         to: '/compras/estadosCompra',
         description: 'Gestión de estados de compra de la compañía',
-        allowedRoles: ['COMPRAS']
+        perimeterAction: 'viewPurchase'
       },
       {
         id: 'estadosRecepcion',
@@ -26,7 +26,7 @@ export default [{
         icon: 'fa fa-question-circle',
         to: '/compras/estadosRecepcion',
         description: 'Gestión de estados de recepción de la compañía',
-        allowedRoles: ['COMPRAS']
+        perimeterAction: 'viewPurchase'
       },
       {
         id: 'lineasProducto',
@@ -34,7 +34,7 @@ export default [{
         icon: 'fa fa-tags',
         to: '/compras/lineasProducto',
         description: 'Gestión de líneas de producto de la compañía',
-        allowedRoles: ['COMPRAS']
+        perimeterAction: 'viewPurchase'
       },
       {
         id: 'ordenesCompra',
@@ -42,7 +42,7 @@ export default [{
         icon: 'fa fa-shopping-cart',
         to: '/compras/ordenesCompra',
         description: 'Gestión de órdenes de compra de la compañía',
-        allowedRoles: ['COMPRAS']
+        perimeterAction: 'viewPurchase'
       },
       {
         id: 'productos',
@@ -50,7 +50,7 @@ export default [{
         icon: 'fa fa-boxes',
         to: '/compras/productos',
         description: 'Gestión de productos de la compañía',
-        allowedRoles: ['COMPRAS'],
+        perimeterAction: 'viewPurchase',
       },
       {
         id: 'proveedores',
@@ -58,7 +58,7 @@ export default [{
         icon: 'fa fa-truck',
         to: '/compras/proveedores',
         description: 'Gestión de proveedores de la compañía',
-        allowedRoles: ['COMPRAS'],
+        perimeterAction: 'viewPurchase',
       },
     ]
   },
@@ -67,14 +67,14 @@ export default [{
     title: 'Almacén',
     icon: 'fa fa-store',
     description: 'Módulo de Gestión de Almacén',
-    allowedRoles: ['ALMACEN'],
+    perimeterAction: 'viewWarehouse',
     children: [{
         id: 'ubicaciones',
         title: 'Ubicaciones',
         icon: 'fa fa-map-marker-alt',
         to: '/almacen/ubicaciones',
         description: 'Gestión de ubicaciones de la compañía',
-        allowedRoles: ['ALMACEN']
+        perimeterAction: 'viewWarehouse'
       },
       {
         id: 'tiposEmpaque',
@@ -82,7 +82,7 @@ export default [{
         icon: 'fa fa-paperclip',
         to: '/almacen/tiposEmpaque',
         description: 'Gestión de tipos de empaque de la compañía',
-        allowedRoles: ['ALMACEN']
+        perimeterAction: 'viewWarehouse'
       },
       {
         id: 'estadosUnidad',
@@ -90,7 +90,7 @@ export default [{
         icon: 'fa fa-play-circle',
         to: '/almacen/estadosUnidad',
         description: 'Gestión de estados de unidad de la compañía',
-        allowedRoles: ['ALMACEN']
+        perimeterAction: 'viewWarehouse'
       },
       {
         id: 'empaques',
@@ -98,7 +98,7 @@ export default [{
         icon: 'fa fa-archive',
         to: '/almacen/empaques',
         description: 'Gestión de empaques de la compañía',
-        allowedRoles: ['ALMACEN']
+        perimeterAction: 'viewWarehouse'
       },
       {
         id: 'unidades',
@@ -106,7 +106,7 @@ export default [{
         icon: 'fa fa-parking',
         to: '/almacen/unidades',
         description: 'Gestión de unidades de la compañía',
-        allowedRoles: ['ALMACEN']
+        perimeterAction: 'viewWarehouse'
       },
     ]
   }

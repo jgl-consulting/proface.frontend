@@ -4,7 +4,7 @@
       <v-subheader>Listado de facturas</v-subheader>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddPurchaseInvoiceDialog">
+      <v-btn v-if="$isAllowed('organizePurchase')" color="accent" @click="openAddPurchaseInvoiceDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1"></span>
         <span>Nueva factura</span>
@@ -82,7 +82,12 @@ import EmptyListTile from "@/components/common/EmptyListTile";
 import SavePurchaseInvoiceDialog from "@/components/purchaseOrders/SavePurchaseInvoiceDialog";
 import { mapState, mapActions } from "vuex";
 import moment from "moment";
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   async fetch({ params: { purchaseOrderId }, route, store }) {
     await store.dispatch("purchaseOrders/details/fetchPurchaseOrder", {
       purchaseOrderId

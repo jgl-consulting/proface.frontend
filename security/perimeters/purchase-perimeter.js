@@ -1,12 +1,16 @@
 import BasePermiter from './base-perimeter'
 
 export default new BasePermiter({
-  purpose: 'purchase_order',
+  purpose: 'purchase',
   can: {
-    route: () => true,
-    createPurchaseOrder() {
-      return this.isPurchaseAdmin();
+    viewPurchase() {
+      return this.isPurchaseViewer() || this.isPurchaseOrganizer() || this.isPurchaseRegistrant();
     },
-    listPurchaseOrder: () => true
+    organizePurchase() {
+      return this.isPurchaseOrganizer();
+    },
+    registerPurchase() {
+      return this.isPurchaseRegistrant()|| this.isPurchaseOrganizer();
+    }
   }
 });
