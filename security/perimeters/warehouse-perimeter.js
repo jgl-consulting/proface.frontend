@@ -11,6 +11,9 @@ export default new BasePermiter({
     },
     registerWarehouse() {
       return this.isWarehouseRegistrant()|| this.isWarehouseOrganizer();
+    },
+    registerBatches() {
+      return this.isWarehouseRegistrant()|| this.isWarehouseOrganizer() || this.isPurchaseRegistrant()|| this.isPurchaseOrganizer();
     }
   }
 });

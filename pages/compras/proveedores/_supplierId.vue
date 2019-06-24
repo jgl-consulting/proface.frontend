@@ -26,7 +26,12 @@
 <script>
 import { mapState } from "vuex";
 
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },

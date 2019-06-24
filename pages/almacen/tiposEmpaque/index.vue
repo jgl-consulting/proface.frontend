@@ -38,7 +38,7 @@
           <tr @click.stop="props.expanded = !props.expanded">
             <td class="text-xs-left">{{ props.item.description || "Sin descripción" }}</td>
             <td class="text-xs-center" @click.stop="() => {}">
-              <v-speed-dial direction="left" open-on-hover left>
+              <v-speed-dial v-if="$isAllowed('organizeWarehouse')" direction="left" open-on-hover left>
                 <template v-slot:activator>
                   <v-btn color="secondary" dark fab small>
                     <v-icon small>fa-wrench</v-icon>
@@ -84,7 +84,13 @@
 import EmptyListTile from "@/components/common/EmptyListTile";
 import SaveBatchTypeDialog from "@/components/batchTypes/SaveBatchTypeDialog";
 import { mapState, mapActions } from "vuex";
+
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
 export default {
+  routePerimeterAction: 'viewWarehouse',
+  perimeters: [
+    warehousePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },

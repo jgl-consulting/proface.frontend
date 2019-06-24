@@ -37,7 +37,13 @@
 import { mapState } from "vuex";
 import ModelDetail from "@/components/common/ModelDetail";
 import ModelTimeline from "@/components/common/ModelTimeline";
+
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   async fetch({ params: { supplierId }, route, store }) {
     const fetchSupplierAction = "suppliers/details/fetchSupplier";
     await store.dispatch(fetchSupplierAction, { supplierId });

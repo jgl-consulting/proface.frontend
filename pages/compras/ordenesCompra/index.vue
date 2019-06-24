@@ -120,13 +120,17 @@
 </template>
 
 <script>
-import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 import EmptyListTile from "@/components/common/EmptyListTile";
 import SavePurchaseOrderDialog from "@/components/purchaseOrders/SavePurchaseOrderDialog";
 import { mapState, mapActions } from "vuex";
 import moment from "moment";
+
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
   routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
@@ -137,9 +141,6 @@ export default {
     EmptyListTile,
     SavePurchaseOrderDialog
   },
-  perimeters: [
-    purchasePerimeter
-  ],
   async fetch({ store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined };
     await store.dispatch("purchaseOrders/fetchCurrencies");

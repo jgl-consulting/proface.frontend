@@ -4,7 +4,7 @@
       <h1>Ubicaciones</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddLocationDialog">
+      <v-btn v-if="$isAllowed('registerWarehouse')" color="accent" @click="openAddLocationDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva Ubicación</span>
       </v-btn>
@@ -39,7 +39,10 @@
             <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
             <td class="text-xs-left">{{ props.item.description || "Sin descripción" }}</td>
             <td class="text-xs-center" @click.stop="() => {}">
-              <v-speed-dial direction="left" open-on-hover left>
+              <v-speed-dial 
+                v-if="$isAllowed('organizeWarehouse')" 
+                direction="left"
+                 open-on-hover left>
                 <template v-slot:activator>
                   <v-btn color="secondary" dark fab small>
                     <v-icon small>fa-wrench</v-icon>
@@ -85,7 +88,14 @@
 import EmptyListTile from "@/components/common/EmptyListTile";
 import SaveLocationDialog from "@/components/locations/SaveLocationDialog";
 import { mapState, mapActions } from "vuex";
+
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
+
 export default {
+  routePerimeterAction: 'viewWarehouse',
+  perimeters: [
+    warehousePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
@@ -95,8 +105,6 @@ export default {
   components: {
     EmptyListTile,
     SaveLocationDialog
-  },
-  async fetch({ store }) {
   },
   data() {
     return {

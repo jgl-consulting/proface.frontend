@@ -139,17 +139,18 @@
 
 <script>
 
-import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 import { mapState, mapActions } from "vuex";
 import FormGroup from "@/components/common/FormGroup";
 import Datepicker from "@/components/common/Datepicker";
 import { required, maxLength, referenced } from "@/util/validators";
 // Componente que maneja la tabla
 import ProductListDialog from "@/components/products/ProductListDialog";
+
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
 export default {
-  routePerimeterAction: 'organizePurchase',
+  routePerimeterAction: 'registerBatches',
   perimeters: [
-    purchasePerimeter
+    warehousePerimeter
   ],
   meta: {
     breadcrumbs: [
