@@ -11,6 +11,11 @@ export default {
   },
   data: () => ({
     open: true
-  })
+  }),
+  watch: {
+    message: {
+      handler: () => this.open = true
+    }
+  }
 }
 </script>

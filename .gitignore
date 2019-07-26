@@ -84,3 +84,4 @@ dist
 sw.*
 .settings
 .sonarlint
+.vscode
