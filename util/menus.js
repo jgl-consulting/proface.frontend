@@ -109,5 +109,45 @@ export default [{
         allowedRoles: ['ALMACEN']
       },
     ]
+  },
+  {
+    id: 'ventas',
+    title: 'Ventas',
+    icon: 'fa fa-shopping-bag',
+    description: 'Módulo de Gestión de Ventas',
+    allowedRoles: ['VENTAS'],
+    children: [{
+        id: 'tiposCliente',
+        title: 'Tipos de Cliente',
+        icon: 'fa fa-piggy-bank',
+        to: '/ventas/tiposCliente',
+        description: 'Gestión de tipos de clientes de la compañía',
+        allowedRoles: ['VENTAS']
+      },
+      {
+        id: 'clientes',
+        title: 'Clientes',
+        icon: 'fa fa-piggy-bank',
+        to: '/ventas/clientes',
+        description: 'Gestión de clientes de la compañía',
+        allowedRoles: ['VENTAS']
+      },
+      {
+        id: 'estadosVenta',
+        title: 'Estados de Venta',
+        icon: 'fa fa-piggy-bank',
+        to: '/ventas/estadosVenta',
+        description: 'Gestión de estados de venta de la compañía',
+        allowedRoles: ['VENTAS']
+      },
+      {
+        id: 'ordenesVenta',
+        title: 'Órdenes de Venta',
+        icon: 'fa fa-piggy-bank',
+        to: '/ventas/ordenesVenta',
+        description: 'Gestión de órdenes de venta de la compañía',
+        allowedRoles: ['VENTAS']
+      }      
+    ]
   }
 ]

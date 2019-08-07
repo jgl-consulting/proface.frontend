@@ -17,6 +17,12 @@ import BatchTypesService from '@/api/batch-types.service';
 import UnitStatusesService from '@/api/unit-statuses.service';
 import BatchesService from '@/api/batches.service';
 import UnitsService from '@/api/units.service';
+import ClientTypesService from '@/api/client-types.service';
+import ClientsService from '@/api/clients.service'; 
+import SaleOrdersService from '@/api/sale-orders.service';
+import SaleStatusesService from '@/api/sale-statuses.service';
+import SaleDetailsService from '@/api/sale-details.service';
+import SaleInvoicesService from '@/api/sale-invoices.service';
 
 export default function (ctx, inject) {
   if (!ctx.$axios) {
@@ -41,5 +47,11 @@ export default function (ctx, inject) {
     inject('unitStatuses', new UnitStatusesService(ctx));
     inject('batches', new BatchesService(ctx));
     inject('units', new UnitsService(ctx));
+    inject('clientTypes', new ClientTypesService(ctx));
+    inject('clients', new ClientsService(ctx));
+    inject('saleOrders', new SaleOrdersService(ctx));
+    inject('saleStatuses', new SaleStatusesService(ctx));
+    inject('saleDetails', new SaleDetailsService(ctx));
+    inject('saleInvoices', new SaleInvoicesService(ctx));
   }
 }
