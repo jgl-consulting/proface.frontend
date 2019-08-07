@@ -179,7 +179,6 @@ export default {
     },
     addressRules() {
       return [
-        value => required(value, "La dirección es requerido"),
         value => maxLength(value, "La dirección es demasiado grande", 255)
       ];
     },

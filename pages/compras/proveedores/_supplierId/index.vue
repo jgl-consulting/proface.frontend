@@ -84,7 +84,7 @@ export default {
       return {};
     },
     purchaseTraces() {
-      if (this.supplier.purchases.length > 0) {
+      if (this.supplier.purchases && this.supplier.purchases.length > 0) {
         const purchaseOrder = this.supplier.purchases[0];
         return purchaseOrder.traces;
       } else {

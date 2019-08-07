@@ -91,7 +91,7 @@ export const actions = {
     commit
   }) {
     const clientTypes = await this.$clientTypes.listClientTypes();
-    commit(SET_PRODUCT_TYPES, clientTypes);
+    commit(SET_CLIENT_TYPES, clientTypes);
   },
   async createClient({
     dispatch

@@ -113,13 +113,13 @@ export default [{
   {
     id: 'ventas',
     title: 'Ventas',
-    icon: 'fa fa-shopping-bag',
+    icon: 'fa fa-shopping-basket',
     description: 'Módulo de Gestión de Ventas',
     allowedRoles: ['VENTAS'],
     children: [{
         id: 'tiposCliente',
         title: 'Tipos de Cliente',
-        icon: 'fa fa-piggy-bank',
+        icon: 'fa fa-user-tag',
         to: '/ventas/tiposCliente',
         description: 'Gestión de tipos de clientes de la compañía',
         allowedRoles: ['VENTAS']
@@ -127,7 +127,7 @@ export default [{
       {
         id: 'clientes',
         title: 'Clientes',
-        icon: 'fa fa-piggy-bank',
+        icon: 'fa fa-users',
         to: '/ventas/clientes',
         description: 'Gestión de clientes de la compañía',
         allowedRoles: ['VENTAS']
@@ -135,7 +135,7 @@ export default [{
       {
         id: 'estadosVenta',
         title: 'Estados de Venta',
-        icon: 'fa fa-piggy-bank',
+        icon: 'fa fa-star',
         to: '/ventas/estadosVenta',
         description: 'Gestión de estados de venta de la compañía',
         allowedRoles: ['VENTAS']
@@ -143,7 +143,7 @@ export default [{
       {
         id: 'ordenesVenta',
         title: 'Órdenes de Venta',
-        icon: 'fa fa-piggy-bank',
+        icon: 'fa fa-cash-register',
         to: '/ventas/ordenesVenta',
         description: 'Gestión de órdenes de venta de la compañía',
         allowedRoles: ['VENTAS']

@@ -1,5 +1,5 @@
 import {
-    CLIENT_ENDPOINT
+    CLIENTS_ENDPOINT
   } from '@/util/endpoints';
   
   export default class ClientsService {
@@ -9,7 +9,7 @@ import {
       this.$axios = $axios;
     }
     async pageClients(page, size, sortBy, direction, filter) {
-      const clients = await this.$axios.$get(CLIENT_ENDPOINT, {
+      const clients = await this.$axios.$get(CLIENTS_ENDPOINT, {
         params: {
           page,
           size,
@@ -34,25 +34,28 @@ import {
       }
     }
     async listClients() {
-      return await this.$axios.$get(CLIENT_ENDPOINT, {
+      return await this.$axios.$get(CLIENTS_ENDPOINT, {
         params: {
           unpaged: true
         }
       });
     }
+    async getClientById(clientId) {
+      return this.$axios.$get(`${CLIENTS_ENDPOINT}/${clientId}`);
+    }
     async createClient(client) {
-      await this.$axios.$post(CLIENT_ENDPOINT, client);
+      await this.$axios.$post(CLIENTS_ENDPOINT, client);
     }
     async updateClient(client) {
       const {
         id
       } = client;
-      await this.$axios.$put(`${CLIENT_ENDPOINT}/${id}`, client);
+      await this.$axios.$put(`${CLIENTS_ENDPOINT}/${id}`, client);
     }
     async deleteClient({
       id
     }) {
-      await this.$axios.$delete(`${CLIENT_ENDPOINT}/${id}`);
+      await this.$axios.$delete(`${CLIENTS_ENDPOINT}/${id}`);
     }
   }
   
