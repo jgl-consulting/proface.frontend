@@ -5,4 +5,8 @@ export default class BasePerimeter extends Perimeter {
     const { child } = this;
     return _.find(child.roles || [], ['name', 'ADMIN_COMPRAS']) != undefined;
   }
+  isSaleAdmin() {
+    const { child } = this;
+    return _.find(child.roles || [], ['name', 'ADMIN_VENTAS']) != undefined;
+  }
 }

@@ -40,7 +40,7 @@ export default {
           icon: "fa-info-circle"
         },
         {
-          name: "Ordenes de compra",
+          name: "Ordenes de venta",
           route: `${mainRoute}/ordenes`,
           icon: "fa-cash-register"
         }
