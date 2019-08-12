@@ -92,7 +92,11 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-client-dialog v-model="openSaveDialog" :client="clientToSave" :mode="dialogMode"></save-client-dialog>
+      <save-client-dialog 
+        v-model="openSaveDialog" 
+        :client="clientToSave" 
+        :mode="dialogMode"
+      ></save-client-dialog>
     </template>
   </simple-table-layout>
 </template>
@@ -128,7 +132,7 @@ export default {
       pagination: {
         descending: false,
         page: 1,
-        rowsPerPage: 20, // -1 for All",
+        rowsPerPage: 20,
         sortBy: "id"
       },
       expand: false,
@@ -180,10 +184,7 @@ export default {
       let searchFilter = this.search
         ? this.filter.replace(/{}/g, this.search)
         : "";
-      return (
-        `${this.$axios.defaults.baseURL}/api/clients/reports?filter=` +
-        searchFilter
-      );
+      return `${this.$axios.defaults.baseURL}/api/clients/reports?filter=${searchFilter}`;
     }
   },
   methods: {
