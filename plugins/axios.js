@@ -10,7 +10,9 @@ export default function (ctx) {
 
     if(error.response) {
       if(error.response.status === 500) {
-        redirect('/sorry')
+        redirect('/sorry');
+      } else if(error.response.status === 401) {
+        redirect('/unauthorized');
       } else if(route.fullPath !== '/login'){
         /* const { message, errors } = error.response.data;
         if(message && errors) {
