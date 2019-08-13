@@ -2,15 +2,29 @@
 
 export default function ({ app, $axios, redirect, route }) {
   
+  let currentRequest = 0;
+
+  // A noop loading inteterface for when $nuxt is not yet ready
+  const noopLoading = {
+    finish: () => { },
+    start: () => { },
+    fail: () => { },
+    set: () => { }
+  }
+
+  
   function isManualPageLoading(window) {
     return window.$nuxt.$root.$loading.manual !== undefined && window.$nuxt.$root.$loading.manual === false;
   }
+  const $loading = ($window) => isManualPageLoading($window) ? noopLoading : $window.$nuxt.$root.$loading;
 
   $axios.onError(error => {
+    if(currentRequest > 0) {
+      currentRequest--;
+    }
+    
     if (process.browser && window.$nuxt) {
-      if(!isManualPageLoading(window)) {
-        window.$nuxt.$root.$loading.fail();
-      }
+      $loading(window).fail();
     }
 
     if(error.response) {
@@ -35,18 +49,18 @@ export default function ({ app, $axios, redirect, route }) {
   });
 
   $axios.onRequest(() => {
+    currentRequest ++;
     if (process.browser && window.$nuxt) {
-      if(!isManualPageLoading(window)) {
-        window.$nuxt.$root.$loading.start();
-      }
+      $loading(window).start();
     }
   });
 
   $axios.onResponse(() => {
+    if(currentRequest > 0) {
+      currentRequest--;
+    }
     if (process.browser && window.$nuxt) {
-      if(!isManualPageLoading(window)) {
-        window.$nuxt.$root.$loading.finish();
-      }
+      $loading(window).finish();
     }
   })
 }
