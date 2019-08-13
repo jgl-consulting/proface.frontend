@@ -4,36 +4,36 @@
     <h1>Estados de Venta</h1>
   </template>
   <template #actions>
-    <v-btn color="accent" @click="openAddClientDialog">
-    <v-icon small>fa-plus</v-icon>
-    <span class="mx-1"></span>
-    <span>Nuevo Estado de Venta</span>
+    <v-btn color="accent" @click="openAddSaleStatusDialog">
+      <v-icon small>fa-plus</v-icon>
+      <span class="mx-1"></span>
+      <span>Nuevo Estado de Venta</span>
     </v-btn>
   </template>
   <template #filters>
     <v-text-field
-    v-model="search"
-    append-icon="search"
-    label="Búsqueda"
-    box
-    single-line
-    clearable
-    clear-icon="fa-times"
-    hide-details
+      v-model="search"
+      append-icon="search"
+      label="Búsqueda"
+      box
+      single-line
+      clearable
+      clear-icon="fa-times"
+      hide-details
     ></v-text-field>
   </template>
   <template #table>
     <v-data-table
-    :headers="headers"
-    :items="saleStatuses"
-    :expand="expand"
-    item-key="id"
-    class="elevation-1"
-    :total-items="page.totalElements"
-    :pagination.sync="pagination"
-    :rows-per-page-items="pageSizes"
-    rows-per-page-text="Tamaño de página"
-    must-sort
+      :headers="headers"
+      :items="saleStatuses"
+      :expand="expand"
+      item-key="id"
+      class="elevation-1"
+      :total-items="page.totalElements"
+      :pagination.sync="pagination"
+      :rows-per-page-items="pageSizes"
+      rows-per-page-text="Tamaño de página"
+      must-sort
     >
     <template v-slot:items="props">
       <tr @click.stop="props.expanded = !props.expanded">
@@ -60,8 +60,7 @@
           fab
           small
           nuxt
-          :to="props.item.id | path($route.fullPath)"
-        >
+          :to="props.item.id | path($route.fullPath)">
           <v-icon small>fa-ellipsis-v</v-icon>
         </v-btn>
         <v-btn
@@ -70,8 +69,7 @@
           dark
           fab
           small
-          @click.stop="openEditClientDialog(props.item)"
-        >
+          @click.stop="openEditSaleStatusDialog(props.item)">
           <v-icon small>fa-pen</v-icon>
         </v-btn>
         <v-btn
@@ -80,7 +78,7 @@
           dark
           fab
           small
-          @click.stop="deleteClient(props.item)"
+          @click.stop="deleteSaleStatus(props.item)"
         >
           <v-icon small>fa-trash</v-icon>
         </v-btn>
@@ -90,79 +88,83 @@
     </template>
     </v-data-table>
   </template>
-  <!-- 
+  
   <template #dialog>
-    <save-client-dialog 
-    v-model="openSaveDialog" 
-    :client="clientToSave" 
-    :mode="dialogMode"
-    ></save-client-dialog>
+    <SaveSaleStatusDialog 
+      v-model="openSaveDialog" 
+      :saleStatus="saleStatusToSave" 
+      :mode="dialogMode"
+    ></SaveSaleStatusDialog>
   </template>
-  -->
+  
   </simple-table-layout> 
 </template>
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
+import SaveSaleStatusDialog from "@/components/saleStatuses/SaveSaleStatusDialog"
 import { mapState, mapActions } from "vuex";
 
 export default {
   meta: {
-  breadcrumbs: [
-    { name: "Módulos", link: "/" },
-    { name: "Estados de Venta", link: "/ventas/estadosVenta" }
-  ]
+    breadcrumbs: [
+      { name: "Módulos", link: "/" },
+      { name: "Estados de Venta", link: "/ventas/estadosVenta" }
+    ]
   },
   components: {
-  EmptyListTile
-  },
-  async fetch({ store }) {
+    EmptyListTile,
+    SaveSaleStatusDialog
   },
   data() {
-  return {
-    title: "Clientes",
-      headers: [
-      { text: "Id Local", value: "nativeId" },
-      { text: "Descripcion", value: "description" },
-      { text: "Color", value: "color" },
-      { text: "Icono", value: "icon" },
-      { text: "Orden", value: "Order" },
-      { text: "Acciones", value: "id", width: "10%", sortable: false }
-    ],
-    pagination: {
-      descending: false,
-      page: 1,
-      rowsPerPage: 20,
-      sortBy: "id"
-    },
-    expand: false,
-    search: "",
-    filter: "nativeId:{}*,description:{}*,color:{}*,icon:{}*",
-    pageSizes: [20, 30, 50, 100],
-    openSaveDialog: false,
-    dialogMode: "nuevo"
-  };
+    return {
+      title: "Clientes",
+        headers: [
+        { text: "Id Local", value: "nativeId" },
+        { text: "Descripcion", value: "description" },
+        { text: "Color", value: "color" },
+        { text: "Icono", value: "icon" },
+        { text: "Orden", value: "Order" },
+        { text: "Acciones", value: "id", width: "10%", sortable: false }
+      ],
+      pagination: {
+        descending: false,
+        page: 1,
+        rowsPerPage: 20,
+        sortBy: "id"
+      },
+      expand: false,
+      search: "",
+      filter: "nativeId:{}*,description:{}*,color:{}*,icon:{}*",
+      pageSizes: [20, 30, 50, 100],
+      openSaveDialog: false,
+      dialogMode: "nuevo",
+      saleStatusToSave: {}
+    };
   },
   watch: {
     pagination: {
       async handler() {
-        const { sortBy, descending, page, rowsPerPage } = this.pagination;
-        const params = {
-          requestPage: page - 1,
-          size: rowsPerPage,
-          sortBy,
-          descending
-        };
-        await this.$store.dispatch("saleStatuses/fetchSaleStatuses", params);
+        try{
+          const { sortBy, descending, page, rowsPerPage } = this.pagination;
+          const params = {
+            requestPage: page - 1,
+            size: rowsPerPage,
+            sortBy,
+            descending
+          };
+          await this.$store.dispatch("saleStatuses/fetchSaleStatuses", params);
+        } catch(error) {
+          this.showError(error);
+        }
       }
     },
     search: {
       async handler() {
-        try{
+        try {
           const { sortBy, descending, page, rowsPerPage } = this.pagination;
-          let searchFilter = this.search
-            ? this.filter.replace(/{}/g, this.search)
-            : "";
+          let searchFilter = this.search ? this.filter.replace(/{}/g, this.search) : "";
+          
           const params = {
             requestPage: page - 1,
             size: rowsPerPage,
@@ -172,7 +174,7 @@ export default {
           };
   
           await this.$store.dispatch("saleStatuses/fetchSaleStatuses", params);
-        } catch (error) {
+        } catch(error) {
           this.showError(error);
         }
       }
@@ -182,39 +184,35 @@ export default {
     ...mapState("saleStatuses", ["saleStatuses", "page"])
   },
   methods: {
-    /* 
-    ...mapActions("clients", {
-      deleteClientAction: "deleteClient"
-    }), 
-    */
-    openAddClientDialog() {
+    ...mapActions("saleStatuses", {
+      deleteSaleStatusAction: 'deleteSaleStatus'
+    }),
+    openAddSaleStatusDialog() {
       this.openSaveDialog = true;
-      this.clientToSave = {
-      type: { id: 0 },
-      };
+      this.saleStatusToSave = {};
       this.dialogMode = "nuevo";
     },
-    openEditClientDialog(client) {
+    openEditSaleStatusDialog(saleStatus) {
       this.openSaveDialog = true;
-      this.clientToSave = client;
+      this.saleStatusToSave = saleStatus;
       this.dialogMode = "editar";
     },
-    async deleteClient(client) {
+    async deleteSaleStatus(saleStatus) {
       try {
-      const { name } = client;
-      const res = await this.$confirm(
-        `¿Está seguro de borrar al cliente '${name}'?`,
-        { title: "Advertencia" }
-      );
-      if (res) {
-        await this.deleteClientAction({ client });
-        await this.$confirm("Borrado correcto!", {
-        title: "Éxito",
-        color: "success"
+        const { description } = saleStatus;
+        const res = await this.$confirm(`¿Está seguro de borrar el estado de venta '${description}'?`,{ 
+          title: "Advertencia" 
         });
-      }
-      } catch (error) {
-      this.showError(error);
+  
+        if (res) {
+          this.$nuxt.$loading.start();
+          await this.deleteSaleStatusAction({ saleStatus });
+          this.$nuxt.$loading.finish();
+          await this.$confirm("Borrado correcto!", { title: "Éxito", color: "success" });
+        }
+      } catch(error) {
+        this.$nuxt.$loading.fail();
+        this.showError(error);
       }
     },
 
@@ -229,9 +227,7 @@ export default {
   },
   filters: {
     path: (param, path) => `${path}/${param}`,
-    accountFlatId({ id }) {
-      return `${id}`;
-    }
+    accountFlatId: ({ id }) => `${id}`
   }
 };
 </script>

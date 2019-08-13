@@ -8,20 +8,20 @@
         <v-toolbar-title class="font-weight-bold">{{ title }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn dark icon @click="savePurchaseStatus">
+          <v-btn dark icon @click="saveSaleStatus">
             <v-icon>fa-save</v-icon>
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-container>
-        <v-form ref="purchaseStatusForm" v-model="valid" lazy-validation>
+        <v-form ref="saleStatusForm" v-model="valid" lazy-validation>
           <v-layout row wrap>
             <v-flex xs12 pa-2>
               <h3 class="text--blue-grey">Datos del estado</h3>
             </v-flex>
             <v-flex sm3 pa-2>
               <v-text-field
-                v-model="purchaseStatusModel.nativeId"
+                v-model="saleStatusModel.nativeId"
                 counter="2"
                 hint="Por ejemplo: CR"
                 label="Id Local"
@@ -30,7 +30,7 @@
             </v-flex>
             <v-flex sm3 pa-2>
               <v-text-field
-                v-model="purchaseStatusModel.color"
+                v-model="saleStatusModel.color"
                 counter="20"
                 label="Color"
                 hint="Por ejemplo, primary"
@@ -39,7 +39,7 @@
             </v-flex>
             <v-flex sm3 pa-2>
               <v-text-field
-                v-model="purchaseStatusModel.icon"
+                v-model="saleStatusModel.icon"
                 counter="20"
                 label="Ícono"
                 hint="Por ejemplo, fa fa-save"
@@ -48,7 +48,7 @@
             </v-flex>
             <v-flex sm3 pa-2>
               <v-text-field
-                v-model="purchaseStatusModel.order"
+                v-model="saleStatusModel.order"
                 counter="2"
                 label="Orden"
                 hint="Por ejemplo, 1"
@@ -57,7 +57,7 @@
             </v-flex>
             <v-flex sm12 pa-2>
               <v-text-field
-                v-model="purchaseStatusModel.description"
+                v-model="saleStatusModel.description"
                 label="Descripción"
                 counter="100"
                 hint="Por ejemplo, creado"
@@ -77,22 +77,22 @@ import { required, maxLength } from "@/util/validators";
 
 export default {
   props: {
-    purchaseStatus: Object,
+    saleStatus: Object,
     mode: String,
     value: Boolean
   },
   data() {
     return {
       isOpen: false,
-      purchaseStatusModel: {},
+      saleStatusModel: {},
       valid: true
     };
   },
   watch: {
-    purchaseStatus: {
+    saleStatus: {
       handler() {
-        this.purchaseStatusModel = JSON.parse(
-          JSON.stringify(this.purchaseStatus)
+        this.saleStatusModel = JSON.parse(
+          JSON.stringify(this.saleStatus)
         );
       }
     }
@@ -105,10 +105,10 @@ export default {
         return "Editar estado";
       }
     },
-    purchaseStatusToSave() {
+    saleStatusToSave() {
       return JSON.parse(
         JSON.stringify({
-          ...this.purchaseStatusModel
+          ...this.saleStatusModel
         })
       );
     },
@@ -126,7 +126,7 @@ export default {
     },
     orderRules() {
       return [
-        value => required(value, "El orden es requerido")
+        value => required(value, "El orden es requerido"),
       ];
     },
     descriptionRules() {
@@ -137,27 +137,28 @@ export default {
     }
   },
   methods: {
-    ...mapActions("purchaseStatuses", [
-      "createPurchaseStatus",
-      "updatePurchaseStatus"
+    ...mapActions("saleStatuses", [
+      "createSaleStatus",
+      "updateSaleStatus"
     ]),
-    async savePurchaseStatus() {
-      if (this.$refs.purchaseStatusForm.validate()) {
-        const purchaseStatus = this.purchaseStatusToSave;
+    async saveSaleStatus() {
+      if (this.$refs.saleStatusForm.validate()) {
+        const saleStatus = this.saleStatusToSave;
         try {
-          const { description } = purchaseStatus;
-          const res = await this.$confirm(
-            `¿Está seguro de guardar el estado '${description}'?`,
-            {
-              title: "Advertencia"
-            }
-          );
+          const { description } = saleStatus;
+          const res = await this.$confirm(`¿Está seguro de guardar el estado '${description}'?`,{
+            title: "Advertencia"
+          });
+
           if (res) {
             if (this.mode === "nuevo") {
-              await this.createPurchaseStatus({ purchaseStatus });
+              await this.createSaleStatus({ saleStatus });
             } else if (this.mode === "editar") {
-              await this.updatePurchaseStatus({ purchaseStatus });
+              await this.updateSaleStatus({ saleStatus });
+            } else { 
+              throw `No existe el modo ${this.mode}`
             }
+
             await this.$confirm("Guardado correcto!", {
               title: "Éxito",
               color: "success"
@@ -188,6 +189,7 @@ export default {
         message: "Error inesperado",
         errors: [error.message]
       });
+
       this.$confirm(errors.map(e => e.errorMessage).join("\n"), {
         title: message,
         color: "error",
@@ -197,7 +199,7 @@ export default {
   },
   created() {
     this.isOpen = this.value;
-    this.purchaseStatusModel = { ...this.purchaseStatus };
+    this.saleStatusModel = { ...this.saleStatus };
   }
 };
 </script>

@@ -12,14 +12,16 @@
         indeterminate
       ></v-progress-circular>
     </v-layout>
-  </div> 
+  </div>
 </template>
 
 <script>
 export default {
-  data: () => ({
-    loading: false
-  }),
+  data() {
+    return {
+      loading: false
+    };
+  },
   methods: {
     start() {
       this.loading = true;
@@ -28,7 +30,7 @@ export default {
       this.loading = false;
     },
     fail() {
-      console.log("Fail")
+      this.loading = false;
     }
   }
 }
@@ -41,7 +43,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255);
+  background: rgba(0, 0, 0, 0.5);
   text-align: center;
   font-size: 30px;
   font-family: sans-serif;

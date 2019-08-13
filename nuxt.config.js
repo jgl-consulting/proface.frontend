@@ -26,11 +26,15 @@ export default {
   /*
   ** Customize the progress-bar color
   */
-  loading: /* '@/components/common/Loading.vue' */{ 
+  loading: '@/components/common/Loading.vue'
+  /* 
+  { 
     color: colors.deepOrange.darken2,
     continuous: true,
     height: '3px'
-  },
+  } 
+  */
+  ,
   /*
   ** Global CSS
   */
@@ -48,7 +52,9 @@ export default {
     '@/plugins/flags',
     '@/plugins/lodash',
     '@/plugins/filters',
-    '@/plugins/kindergarten'
+    '@/plugins/kindergarten',
+    '@/plugins/confirm',
+    '@/plugins/axios',
   ],
 
   /*

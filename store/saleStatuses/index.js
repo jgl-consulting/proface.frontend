@@ -57,27 +57,15 @@ export const actions = {
       descending
     })
   },
-  async createSaleStatus({
-    dispatch
-  }, {
-    saleStatus
-  }) {
+  async createSaleStatus({ dispatch }, { saleStatus }) {
     await this.$saleStatuses.createSaleStatus(saleStatus);
     await dispatch('fetchSaleStatuses');
   },
-  async updateSaleStatus({
-    dispatch
-  }, {
-    saleStatus
-  }) {
+  async updateSaleStatus({ dispatch }, { saleStatus }) {
     await this.$saleStatuses.updateSaleStatus(saleStatus);
     await dispatch('fetchSaleStatuses');
   },
-  async deleteSaleStatus({
-    dispatch
-  }, {
-    saleStatus
-  }) {
+  async deleteSaleStatus({ dispatch }, { saleStatus }) {
     await this.$saleStatuses.deleteSaleStatus(saleStatus);
     await dispatch('fetchSaleStatuses');
   }
