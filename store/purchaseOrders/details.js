@@ -1,77 +1,119 @@
 import { 
-    SET_SALE_ORDER,
+    SET_PURCHASE_ORDER,
     SET_PRODUCTS,
+    SET_CURRENCIES,
+    SET_RECEPTION_STATUSES
   } from '@/util/mutations-types'
   export const state = () => ({
-    saleOrder: {},
+    purchaseOrder: {},
     products: [],
+    currencies: [],
+    receptionStatuses: []
   });
   
   export const mutations = {
-    [SET_SALE_ORDER](state, saleOrder){
-      state.saleOrder = saleOrder;
+    [SET_PURCHASE_ORDER](state, purchaseOrder){
+      state.purchaseOrder = purchaseOrder;
+    },
+    [SET_RECEPTION_STATUSES](state, receptionStatuses){
+      state.receptionStatuses = receptionStatuses;
+    },
+    [SET_CURRENCIES](state, currencies){
+      state.currencies = currencies;
     },
     [SET_PRODUCTS](state, products){
       state.products = products;
-    },
+    }
   }
   
   export const actions = {
-    async fetchSaleOrder({commit}, { saleOrderId }) {
-      const saleOrder = await this.$saleOrders.getSaleOrderById(saleOrderId);
-      commit(SET_SALE_ORDER, saleOrder);
-      return saleOrder;
+    async fetchPurchaseOrder({commit}, { purchaseOrderId }) {
+      const purchaseOrder = await this.$purchaseOrders.getPurchaseOrderById(purchaseOrderId);
+      commit(SET_PURCHASE_ORDER, purchaseOrder);
+      return purchaseOrder;
     },
     async fetchProducts({commit}) {
       const products = await this.$products.listProducts();
       commit(SET_PRODUCTS, products);
     },
-    async createSaleDetail({ state, dispatch }, { saleDetail }) {
+    async fetchCurrencies({commit}) {
+      const currencies = await this.$currencies.listCurrencies();
+      commit(SET_CURRENCIES, currencies);
+    },
+    async createPurchaseDetail({ state, dispatch }, { purchaseDetail }) {
     
-      await this.$saleDetails.createSaleDetail({
-        ...saleDetail,
-        sale: state.saleOrder
+      await this.$purchaseDetails.createPurchaseDetail({
+        ...purchaseDetail,
+        purchase: state.purchaseOrder
       });
-      await dispatch('fetchSaleOrder', { saleOrderId: this.$_.get(state, 'saleOrder.id', { })});
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
     },
-    async updateSaleDetail({ state, dispatch }, { saleDetail }) {
+    async updatePurchaseDetail({ state, dispatch }, { purchaseDetail }) {
       
-      await this.$saleDetails.updateSaleDetail({
-        ...saleDetail,
-        sale: state.saleOrder
+      await this.$purchaseDetails.updatePurchaseDetail({
+        ...purchaseDetail,
+        purchase: state.purchaseOrder
       });
-      await dispatch('fetchSaleOrder', { saleOrderId: this.$_.get(state, 'saleOrder.id', { })});
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
     },
-    async deleteSaleDetail({ state, dispatch }, { saleDetail }) {
+    async deletePurchaseDetail({ state, dispatch }, { purchaseDetail }) {
       
-      await this.$saleDetails.deleteSaleDetail({
-        ...saleDetail,
-        sale: state.saleOrder
+      await this.$purchaseDetails.deletePurchaseDetail({
+        ...purchaseDetail,
+        purchase: state.purchaseOrder
       });
-      await dispatch('fetchSaleOrder', { saleOrderId: this.$_.get(state, 'saleOrder.id', { })});
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
     },
-    async createSaleInvoice({ state, dispatch }, { saleInvoice }) {
+    async fetchReceptionStatuses({commit}) {
+      const receptionStatuses = await this.$receptionStatuses.listReceptionStatuses();
+      commit(SET_RECEPTION_STATUSES, receptionStatuses);
+    },
+    async createPurchaseCost({ state, dispatch }, { purchaseCost }) {
     
-      await this.$saleInvoices.createSaleInvoice({
-        ...saleInvoice,
-        sale: state.saleOrder
+      await this.$purchaseCosts.createPurchaseCost({
+        ...purchaseCost,
+        purchase: state.purchaseOrder
       });
-      await dispatch('fetchSaleOrder', { saleOrderId: this.$_.get(state, 'saleOrder.id', { })});
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
     },
-    async updateSaleInvoice({ state, dispatch }, { saleInvoice }) {
+    async updatePurchaseCost({ state, dispatch }, { purchaseCost }) {
       
-      await this.$saleInvoices.updateSaleInvoice({
-        ...saleInvoice,
-        sale: state.saleOrder
+      await this.$purchaseCosts.updatePurchaseCost({
+        ...purchaseCost,
+        purchase: state.purchaseOrder
       });
-      await dispatch('fetchSaleOrder', { saleOrderId: this.$_.get(state, 'saleOrder.id', { })});
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
     },
-    async deleteSaleInvoice({ state, dispatch }, { saleInvoice }) {
+    async deletePurchaseCost({ state, dispatch }, { purchaseCost }) {
       
-      await this.$saleInvoices.deleteSaleInvoice({
-        ...saleInvoice,
-        sale: state.saleOrder
+      await this.$purchaseCosts.deletePurchaseCost({
+        ...purchaseCost,
+        purchase: state.purchaseOrder
       });
-      await dispatch('fetchSaleOrder', { saleOrderId: this.$_.get(state, 'saleOrder.id', { })});
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
+    },
+    async createPurchaseInvoice({ state, dispatch }, { purchaseInvoice }) {
+    
+      await this.$purchaseInvoices.createPurchaseInvoice({
+        ...purchaseInvoice,
+        purchase: state.purchaseOrder
+      });
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
+    },
+    async updatePurchaseInvoice({ state, dispatch }, { purchaseInvoice }) {
+      
+      await this.$purchaseInvoices.updatePurchaseInvoice({
+        ...purchaseInvoice,
+        purchase: state.purchaseOrder
+      });
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
+    },
+    async deletePurchaseInvoice({ state, dispatch }, { purchaseInvoice }) {
+      
+      await this.$purchaseInvoices.deletePurchaseInvoice({
+        ...purchaseInvoice,
+        purchase: state.purchaseOrder
+      });
+      await dispatch('fetchPurchaseOrder', { purchaseOrderId: this.$_.get(state, 'purchaseOrder.id', { })});
     },
   }
