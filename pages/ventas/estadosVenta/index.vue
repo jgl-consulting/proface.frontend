@@ -205,13 +205,10 @@ export default {
         });
   
         if (res) {
-          this.$nuxt.$loading.start();
           await this.deleteSaleStatusAction({ saleStatus });
-          this.$nuxt.$loading.finish();
           await this.$confirm("Borrado correcto!", { title: "Éxito", color: "success" });
         }
       } catch(error) {
-        this.$nuxt.$loading.fail();
         this.showError(error);
       }
     },
