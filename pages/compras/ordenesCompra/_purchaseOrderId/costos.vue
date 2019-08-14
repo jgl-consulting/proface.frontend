@@ -4,7 +4,7 @@
       <v-subheader>Listado de costos</v-subheader>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddPurchaseCostDialog">
+      <v-btn v-if="$isAllowed('organizePurchase')" color="accent" @click="openAddPurchaseCostDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1"></span>
         <span>Nuevo costo</span>
@@ -83,8 +83,12 @@
 import EmptyListTile from "@/components/common/EmptyListTile";
 import SavePurchaseCostDialog from "@/components/purchaseOrders/SavePurchaseCostDialog";
 import { mapState, mapActions } from "vuex";
-
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   async fetch({ params: { purchaseOrderId }, route, store }) {
     await store.dispatch("purchaseOrders/details/fetchPurchaseOrder", {
       purchaseOrderId

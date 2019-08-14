@@ -10,7 +10,13 @@
 import { mapState } from "vuex";
 import ModelDetail from "@/components/common/ModelDetail";
 import moment from "moment";
+
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
 export default {
+  routePerimeterAction: 'viewWarehouse',
+  perimeters: [
+    warehousePerimeter
+  ],
   async fetch({ params: { batchId }, route, store }) {
     const fetchBatchAction =
       "batches/details/fetchBatch";

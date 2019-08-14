@@ -4,7 +4,10 @@
       <h1>Empaques</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" to="/almacen/empaques/nuevoEmpaque" nuxt>
+      <v-btn v-if="$isAllowed('registerWarehouse')"
+        color="accent" 
+        to="/almacen/empaques/nuevoEmpaque" 
+        nuxt>
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nuevo empaque</span>
       </v-btn>
@@ -42,7 +45,7 @@
             <td class="text-xs-left">{{ $_.get(props.item.purchase, "nativeId", "Sin compra") }}</td>
             <td class="text-xs-left">{{ $_.get(props.item.type, "description", "Sin tipo") }}</td>
             <td class="text-xs-center" @click.stop="() => {}">
-              <v-speed-dial direction="left" open-on-hover left>
+              <v-speed-dial v-if="$isAllowed('organizeWarehouse')" direction="left" open-on-hover left>
                 <template v-slot:activator>
                   <v-btn color="secondary" dark fab small>
                     <v-icon small>fa-wrench</v-icon>
@@ -100,7 +103,13 @@ import EmptyListTile from "@/components/common/EmptyListTile";
 import SaveBatchDialog from "@/components/batches/SaveBatchDialog";
 import { mapState, mapActions } from "vuex";
 import moment from "moment";
+
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
 export default {
+  routePerimeterAction: 'viewWarehouse',
+  perimeters: [
+    warehousePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },

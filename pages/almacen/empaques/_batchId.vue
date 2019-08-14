@@ -26,7 +26,12 @@
 <script>
 import { mapState } from 'vuex';
 
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
 export default {
+  routePerimeterAction: 'viewWarehouse',
+  perimeters: [
+    warehousePerimeter
+  ],
   meta: {
       breadcrumbs: [
         { name: 'Módulos', link: '/' },

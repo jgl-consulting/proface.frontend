@@ -128,7 +128,13 @@ import EmptyListTile from "@/components/common/EmptyListTile";
 import AccountListItem from "@/components/suppliers/AccountListItem";
 import SaveSupplierDialog from "@/components/suppliers/SaveSupplierDialog";
 import { mapState, mapActions } from "vuex";
+
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },

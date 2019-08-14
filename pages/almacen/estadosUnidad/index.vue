@@ -4,7 +4,7 @@
       <h1>Estados de Unidad</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddUnitStatusDialog">
+      <v-btn v-if="$isAllowed('registerWarehouse')" color="accent" @click="openAddUnitStatusDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nuevo Estado</span>
       </v-btn>
@@ -45,7 +45,10 @@
               <v-icon>{{props.item.icon || 'fa fa-calendar'}}</v-icon>
             </td>
             <td class="text-xs-center" @click.stop="() => {}">
-              <v-speed-dial direction="left" open-on-hover left>
+              <v-speed-dial v-if="$isAllowed('organizeWarehouse')" 
+                direction="left" 
+                open-on-hover
+                left>
                 <template v-slot:activator>
                   <v-btn color="secondary" dark fab small>
                     <v-icon small>fa-wrench</v-icon>
@@ -91,7 +94,13 @@
 import EmptyListTile from "@/components/common/EmptyListTile";
 import SaveUnitStatusDialog from "@/components/unitStatuses/SaveUnitStatusDialog";
 import { mapState, mapActions } from "vuex";
+
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
 export default {
+  routePerimeterAction: 'viewWarehouse',
+  perimeters: [
+    warehousePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
