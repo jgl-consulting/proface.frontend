@@ -115,14 +115,14 @@ export default [{
     title: 'Ventas',
     icon: 'fa fa-shopping-basket',
     description: 'Módulo de Gestión de Ventas',
-    allowedRoles: ['VENTAS'],
+    perimeterAction: 'viewSale',
     children: [{
         id: 'tiposCliente',
         title: 'Tipos de Cliente',
         icon: 'fa fa-user-tag',
         to: '/ventas/tiposCliente',
         description: 'Gestión de tipos de clientes de la compañía',
-        allowedRoles: ['VENTAS']
+        perimeterAction: 'viewSale'
       },
       {
         id: 'clientes',
@@ -130,7 +130,7 @@ export default [{
         icon: 'fa fa-users',
         to: '/ventas/clientes',
         description: 'Gestión de clientes de la compañía',
-        allowedRoles: ['VENTAS']
+        perimeterAction: 'viewSale'
       },
       {
         id: 'estadosVenta',
@@ -138,7 +138,7 @@ export default [{
         icon: 'fa fa-star',
         to: '/ventas/estadosVenta',
         description: 'Gestión de estados de venta de la compañía',
-        allowedRoles: ['VENTAS']
+        perimeterAction: 'viewSale'
       },
       {
         id: 'ordenesVenta',
@@ -146,7 +146,7 @@ export default [{
         icon: 'fa fa-cash-register',
         to: '/ventas/ordenesVenta',
         description: 'Gestión de órdenes de venta de la compañía',
-        allowedRoles: ['VENTAS']
+        perimeterAction: 'viewSale'
       }      
     ]
   }

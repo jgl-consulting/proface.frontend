@@ -10,19 +10,25 @@ export default function ({ app, $axios, redirect }) {
     set: () => { }
   }
 
-  function isManualPageLoading(window) {
-    return window.$nuxt.$root.$loading.manual !== undefined && window.$nuxt.$root.$loading.manual === false;
+  function loadingComponentExists($process, $window) {
+    
+    if ($process.browser && $window.$nuxt) {
+      return $window.$nuxt.$loading;
+    } else {
+      return true;
+    }
   }
   
-  const $loading = ($window) => isManualPageLoading($window) ? noopLoading : $window.$nuxt.$root.$loading;
+  const $loading = ($process, $window) => loadingComponentExists($process,$window) ? $window.$nuxt.$loading : noopLoading;
   
   $axios.onRequest(config => {
     
     if (config && config.progress === false) {
       return;
     }
+
     if (process.browser && window.$nuxt) {
-      $loading(window).start();
+      $loading(process, window).start();
     }
 
   });
@@ -34,9 +40,8 @@ export default function ({ app, $axios, redirect }) {
     }
 
     if (process.browser && window.$nuxt) {
-      $loading(window).finish();
+      $loading(process, window).finish();
     }
-
   });
 
   $axios.onError(error => {
@@ -46,7 +51,7 @@ export default function ({ app, $axios, redirect }) {
     } 
 
     if (process.browser && window.$nuxt) {
-      $loading(window).fail();
+      $loading(process, window).fail();
     }
     
     if(error.response) {

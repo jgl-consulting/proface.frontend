@@ -5,6 +5,7 @@ import child from '@/security/child';
 
 export default function (context) {
   const { route, error, redirect, store, isServer } = context;  
+  
   route.matched.some((routeRecord) => {
     const options = routeRecord.components.default.options;
     const perimeters = options.perimeters;

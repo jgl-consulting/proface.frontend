@@ -10,6 +10,9 @@ export default new BasePermiter({
     viewWarehouse() {
       return this.isWarehouseViewer() || this.isWarehouseOrganizer() || this.isWarehouseRegistrant();
     },
+    viewSale() {
+      return this.isSaleViewer() || this.isSaleOrganizer() || this.isSaleRegistrant();
+    }
   },
   renderMenus(){
     const _this = this;

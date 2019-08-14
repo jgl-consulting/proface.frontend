@@ -27,6 +27,18 @@ export default class BasePerimeter extends Perimeter {
     return this.hasRole('WAREHOUSE_REGISTRANT');
   }
 
+  isSaleOrganizer() {
+    return this.hasRole('SALE_ORGANIZER');
+  }
+
+  isSaleViewer() {
+    return this.hasRole('SALE_VIEWER');
+  }
+
+  isSaleRegistrant() {
+    return this.hasRole('SALE_REGISTRANT');
+  }
+
   hasRole(role) {
     return !!_.find(this.child.roles || [], ['name', role]);
   }
