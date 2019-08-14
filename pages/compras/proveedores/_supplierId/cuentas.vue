@@ -88,7 +88,12 @@
 import EmptyListTile from "@/components/common/EmptyListTile";
 import SaveSupplierAccountDialog from "@/components/suppliers/SaveSupplierAccountDialog";
 import { mapState, mapActions } from "vuex";
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   async fetch({ params: { supplierId }, route, store }) {
     await store.dispatch("suppliers/details/fetchSupplier", { supplierId });
     await store.dispatch("suppliers/details/fetchBanks");

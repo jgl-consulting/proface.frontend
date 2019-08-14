@@ -21,7 +21,7 @@
           </v-list-tile-content>
         </v-list-tile>
         <span class="my-3"></span>
-        <MenuTree :menus="menus"></MenuTree>
+        <MenuTree :menus="$menus.renderMenus()"></MenuTree>
         <v-spacer></v-spacer>
         <v-list-tile class="my-2" @click.stop="miniVariant = !miniVariant">
           <v-list-tile-action>
@@ -67,10 +67,15 @@ import MenuTree from '@/components/common/MenuTree'
 import UserDetailsMenu from '@/components/common/UserDetailsMenu'
 import ProfaceLogo from '@/components/common/ProfaceLogo'
 import strings from '@/util/strings';
-import menus from '@/util/menus';
+
 import { mapState } from 'vuex';
 
+import menusPerimeter from '@/security/perimeters/menus-perimeter';
+
 export default {
+  perimeters: [
+    menusPerimeter
+  ],
   components: {
     UserDetailsMenu,
     ProfaceLogo,
@@ -81,7 +86,8 @@ export default {
       clipped: false,
       drawer: false,
       fixed: true,
-      miniVariant: false
+      miniVariant: false,
+      menusAlrredyRender: false,
     }
   },
   computed: {
@@ -90,7 +96,6 @@ export default {
       'user'
     ]),
     strings: () => strings,
-    menus: () => menus,
   }
 }
 </script>

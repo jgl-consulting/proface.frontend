@@ -158,7 +158,10 @@ export default {
               await this.createSaleStatus({ saleStatus });
             } else if (this.mode === "editar") {
               await this.updateSaleStatus({ saleStatus });
+            } else { 
+              throw `No existe el modo ${this.mode}`
             }
+
             await this.$confirm("Guardado correcto!", {
               title: "Éxito",
               color: "success"

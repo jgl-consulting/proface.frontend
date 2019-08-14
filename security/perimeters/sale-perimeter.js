@@ -1,12 +1,16 @@
 import BasePermiter from './base-perimeter'
 
 export default new BasePermiter({
-  purpose: 'sale_order',
+  purpose: 'sale',
   can: {
-    route: () => true,
-    createSaleOrder() {
-      return this.isSaleAdmin();
+    viewSale() {
+      return this.isSaleViewer() || this.isSaleOrganizer() || this.isSaleRegistrant();
     },
-    listSaleOrder: () => true
+    organizeSale() {
+      return this.isSaleOrganizer();
+    },
+    registerSale() {
+      return this.isSaleRegistrant() || this.isSaleOrganizer();
+    }
   }
 });

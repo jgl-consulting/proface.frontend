@@ -4,7 +4,7 @@
       <v-subheader>Listado de unidades</v-subheader>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddUnitDialog">
+      <v-btn  v-if="$isAllowed('organizeWarehouse')" color="accent" @click="openAddUnitDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1"></span>
         <span>Nueva unidad</span>
@@ -87,7 +87,12 @@ import EmptyListTile from "@/components/common/EmptyListTile";
 import SaveUnitDialog from "@/components/batches/SaveUnitDialog";
 import { mapState, mapActions } from "vuex";
 
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
 export default {
+  routePerimeterAction: 'viewWarehouse',
+  perimeters: [
+    warehousePerimeter
+  ],
   async fetch({ params: { batchId }, route, store }) {
     await store.dispatch("batches/details/fetchBatch", {
       batchId

@@ -1,10 +1,10 @@
 <template>
   <simple-table-layout>
     <template #title>
-      <v-subheader>Listado de detalles</v-subheader>
+      <v-subheader>Listado de detalle</v-subheader>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddPurchaseDetailDialog">
+      <v-btn v-if="$isAllowed('organizePurchase')" color="accent" @click="openAddPurchaseDetailDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1"></span>
         <span>Nuevo detalle</span>
@@ -94,8 +94,12 @@
 import EmptyListTile from "@/components/common/EmptyListTile";
 import SavePurchaseDetailDialog from "@/components/purchaseOrders/SavePurchaseDetailDialog";
 import { mapState, mapActions } from "vuex";
-
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   async fetch({ params: { purchaseOrderId }, route, store }) {
     await store.dispatch("purchaseOrders/details/fetchPurchaseOrder", {
       purchaseOrderId
@@ -195,6 +199,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

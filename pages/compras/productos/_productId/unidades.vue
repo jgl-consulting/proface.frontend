@@ -61,7 +61,13 @@
 import EmptyListTile from "@/components/common/EmptyListTile";
 import { mapState, mapActions } from "vuex";
 import moment from "moment";
+
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   async fetch({ params: { productId }, route, store }) {
     await store.dispatch("products/details/fetchProduct", { productId });
   },

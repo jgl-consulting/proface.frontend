@@ -51,7 +51,7 @@
               {{ $_.get(props.item.status, "description", "Sin estado") }}
             </td>
             <td class="text-xs-center" @click.stop="() => {}">
-              <v-speed-dial direction="left" open-on-hover left>
+              <v-speed-dial v-if="$isAllowed('organizeWarehouse')" direction="left" open-on-hover left>
                 <template v-slot:activator>
                   <v-btn color="secondary" dark fab small>
                     <v-icon small>fa-wrench</v-icon>
@@ -84,7 +84,9 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <save-unit-dialog v-model="openSaveDialog" :unit="unitToSave" :mode="dialogMode"></save-unit-dialog>
+      <!-- 
+        <save-unit-dialog v-model="openSaveDialog" :unit="unitToSave" :mode="dialogMode"></save-unit-dialog>
+      --> 
     </template>
   </simple-table-layout>
 </template>
@@ -92,7 +94,14 @@
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
 import { mapState, mapActions } from "vuex";
+
+import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
+
 export default {
+  routePerimeterAction: 'viewWarehouse',
+  perimeters: [
+    warehousePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },

@@ -126,8 +126,7 @@ export default {
     },
     orderRules() {
       return [
-        value => required(value, "El orden es requerido"),
-        value => maxLength(value, "El orden es demasiado grande", 2)
+        value => required(value, "El orden es requerido")
       ];
     },
     descriptionRules() {

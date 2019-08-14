@@ -3,7 +3,7 @@ import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/es5/util/colors'
 import PageBreadcrumbs from '@/components/common/PageBreadcrumbs';
 import SimpleTableLayout from '@/components/common/SimpleTableLayout';
-import VuetifyConfirm from 'vuetify-confirm'
+
  
 Vue.use(Vuetify, {
   iconfont: 'fa',
@@ -21,11 +21,3 @@ Vue.use(Vuetify, {
 // Custom
 Vue.component("PageBreadcrumbs", PageBreadcrumbs);
 Vue.component("SimpleTableLayout", SimpleTableLayout);
-
-
-// vuetify-confirm
-Vue.use(VuetifyConfirm, {
-  buttonTrueText: 'Aceptar',
-  buttonFalseText: 'Cancelar',
-  width: 350,
-})

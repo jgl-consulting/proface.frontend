@@ -1,6 +1,6 @@
 <template>
   <v-layout fill-height wrap row justify-center align-content-center>
-    <v-flex sm7 md5 lg4>
+    <v-flex sm7 md5 lg4 xl3>
       <notification class="mb-3" v-if="error" :message="error"/>
       <v-card class="px-3 py-5" elevation="3">
         <v-card-text>
@@ -22,7 +22,7 @@
               :rules="passwordRules"
               :type="value ? 'password' : 'text'"
             ></v-text-field>
-            <v-btn class="mt-5" large color="primary" :loading="busy" @click.prevent="login">
+            <v-btn class="mt-5" large color="primary" @click.prevent="login">
               <v-icon small class="mr-3">fa-sign-in-alt</v-icon>
               <span class="font-weight-bold">Iniciar Sesión</span>
             </v-btn>
@@ -48,7 +48,6 @@ export default {
   meta: {
     breadcrumbs: false
   },
-  loading: false,
   components: {
     Notification,
     ProfaceLogo

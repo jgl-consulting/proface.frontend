@@ -9,7 +9,13 @@
 <script>
 import { mapState } from "vuex";
 import ModelDetail from "@/components/common/ModelDetail";
+
+import purchasePerimeter from '@/security/perimeters/purchase-perimeter';
 export default {
+  routePerimeterAction: 'viewPurchase',
+  perimeters: [
+    purchasePerimeter
+  ],
   async fetch({ params, route, store }) {
     const { productId } = params;
     const product = await store.dispatch("products/details/fetchProduct", {
