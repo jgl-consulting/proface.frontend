@@ -4,7 +4,7 @@
       <h1>Clientes</h1>
     </template>
     <template #actions>
-      <v-btn color="accent" @click="openAddClientDialog">
+      <v-btn v-if="$isAllowed('registerSale')" color="accent" @click="openAddClientDialog">
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1"></span>
         <span>Nuevo cliente</span>
@@ -66,6 +66,7 @@
                   <v-icon small>fa-ellipsis-v</v-icon>
                 </v-btn>
                 <v-btn
+                  v-if="$isAllowed('organizeSale')"
                   class="mx-1"
                   color="accent"
                   dark
@@ -76,6 +77,7 @@
                   <v-icon small>fa-pen</v-icon>
                 </v-btn>
                 <v-btn
+                  v-if="$isAllowed('organizeSale')"
                   class="mx-1"
                   color="deep-purple darken-2"
                   dark
@@ -105,7 +107,13 @@
 import EmptyListTile from "@/components/common/EmptyListTile";
 import SaveClientDialog from "@/components/clients/SaveClientDialog";
 import { mapState, mapActions } from "vuex";
+import salePerimeter from '@/security/perimeters/sale-perimeter.js';
+
 export default {
+  routePerimeterAction: 'viewSale',
+  perimeters: [
+    salePerimeter
+  ],
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },
@@ -191,32 +199,51 @@ export default {
     ...mapActions("clients", {
       deleteClientAction: "deleteClient"
     }),
-    openAddClientDialog() {
-      this.openSaveDialog = true;
-      this.clientToSave = {
-        type: { id: 0 },
-      };
-      this.dialogMode = "nuevo";
+    async openAddClientDialog() {
+      await this.$auth.fetchUser();
+      if(this.$isAllowed('registerSale')) {
+        this.openSaveDialog = true;
+        this.clientToSave = {
+          type: { id: 0 },
+        };
+        this.dialogMode = "nuevo";
+      } else {
+        this.$router.push("/unauthorized");
+      }
+
     },
-    openEditClientDialog(client) {
-      this.openSaveDialog = true;
-      this.clientToSave = client;
-      this.dialogMode = "editar";
+    async openEditClientDialog(client) {
+      await this.$auth.fetchUser();
+      if(this.$isAllowed('organizeSale')) {
+        this.openSaveDialog = true;
+        this.clientToSave = client;
+        this.dialogMode = "editar";
+      } else {
+        this.$router.push("/unauthorized");
+      }
     },
     async deleteClient(client) {
       try {
         const { name } = client;
-        const res = await this.$confirm(
-          `¿Está seguro de borrar al cliente '${name}'?`,
-          { title: "Advertencia" }
-        );
-        if (res) {
-          await this.deleteClientAction({ client });
-          await this.$confirm("Borrado correcto!", {
-            title: "Éxito",
-            color: "success"
-          });
+        
+        const res = await this.$confirm(`¿Está seguro de borrar al cliente '${name}'?`, { 
+          title: "Advertencia" 
+        });
+
+        await this.$auth.fetchUser();
+
+        if(this.$isAllowed('organizeSale')) {
+          if (res) {
+            await this.deleteClientAction({ client });
+            await this.$confirm("Borrado correcto!", {
+              title: "Éxito",
+              color: "success"
+            });
+          } 
+        } else {
+          this.$router.push("/unauthorized");
         }
+
       } catch (error) {
         this.showError(error);
       }
@@ -226,7 +253,7 @@ export default {
     },
     showError(error) {
       const { message, errors } = error.response.data;
-      this.$confirm(errors.map(e => e.errorMessage).join("\n"), {
+      this.$confirm((errors || []).map(e => e.errorMessage).join("\n"), {
         title: message,
         color: "error",
         width: 500

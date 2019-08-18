@@ -113,7 +113,8 @@ export default {
             },
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
-            }
+            },
+            progress: false
           },
           logout: false,
           user: { url: '/oauth/info', method: 'get', propertyName: "user" }
