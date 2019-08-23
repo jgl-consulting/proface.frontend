@@ -23,3 +23,4 @@ export const SALE_ORDERS_ENDPOINT = 'api/saleOrders';
 export const SALE_STATUSES_ENDPOINT = 'api/saleStatuses';
 export const SALE_DETAILS_ENDPOINT = 'api/saleDetails';
 export const SALE_INVOICES_ENDPOINT = 'api/saleInvoices';
+export const USERS_ENDPOINT = 'api/users';

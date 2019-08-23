@@ -23,6 +23,7 @@ import SaleOrdersService from '@/api/sale-orders.service';
 import SaleStatusesService from '@/api/sale-statuses.service';
 import SaleDetailsService from '@/api/sale-details.service';
 import SaleInvoicesService from '@/api/sale-invoices.service';
+import UsersService from '@/api/users.service';
 
 export default function (ctx, inject) {
   if (!ctx.$axios) {
@@ -53,5 +54,6 @@ export default function (ctx, inject) {
     inject('saleStatuses', new SaleStatusesService(ctx));
     inject('saleDetails', new SaleDetailsService(ctx));
     inject('saleInvoices', new SaleInvoicesService(ctx));
+    inject('users', new UsersService(ctx));
   }
 }

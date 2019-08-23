@@ -5,7 +5,7 @@
     </template>
     <template #actions>
       <v-btn 
-        v-if="$isAllowed('createSaleOrder')"
+        v-if="$isAllowed('registerSale')"
         color="accent" 
         to="/ventas/ordenesVenta/nuevaVenta" 
         nuxt>
@@ -81,6 +81,7 @@
                   dark
                   fab
                   small
+                  v-if="$isAllowed('organizeSale')"
                   @click.stop="openEditSaleOrderDialog(props.item)"
                 >
                   <v-icon small>fa-pen</v-icon>
@@ -91,6 +92,7 @@
                   dark
                   fab
                   small
+                  v-if="$isAllowed('organizeSale')"
                   @click.stop="deleteSaleOrder(props.item)"
                 >
                   <v-icon small>fa-trash</v-icon>
@@ -121,6 +123,7 @@ import SaveSaleOrderDialog from "@/components/saleOrders/SaveSaleOrderDialog";
 import { mapState, mapActions } from "vuex";
 import moment from "moment";
 export default {
+  routePerimeterAction: 'viewSale',
   meta: {
     breadcrumbs: [
       { name: "Módulos", link: "/" },

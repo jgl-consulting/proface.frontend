@@ -39,13 +39,12 @@
           <tr @click.stop="props.expanded = !props.expanded">
             <td class="text-xs-left">{{ props.item.nativeId || "Sin identificador" }}</td>
             <td class="text-xs-left">{{ props.item.description || "Sin descripción" }}</td>
-            <td class="text-xs-left">
+            <td class="text-xs-center">
               <v-icon :color="props.item.color || 'primary'">fa-circle</v-icon>
             </td>
-            <td class="text-xs-left">
+            <td class="text-xs-center">
               <v-icon>{{ props.item.icon }}</v-icon>
             </td>
-            <td class="text-xs-left">{{ props.item.order }}</td>
             <td class="text-xs-left" @click.stop="() => {}">
               <v-speed-dial direction="left" open-on-hover left>
                 <template v-slot:activator>
