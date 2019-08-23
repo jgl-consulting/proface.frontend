@@ -1,7 +1,5 @@
-
-
 export default function ({ app, $axios, redirect }) {
-  
+
   // A noop loading inteterface for when $nuxt is not yet ready
   const noopLoading = {
     finish: () => { },
@@ -10,16 +8,16 @@ export default function ({ app, $axios, redirect }) {
     set: () => { }
   }
 
-  function loadingComponentExists($process, $window) {
-    
+  const $loading = ($process, $window) => {
     if ($process.browser && $window.$nuxt) {
-      return $window.$nuxt.$loading;
+      const { $loading = {} } = $window.$nuxt;
+      return Object.keys($loading).length > 1 ? $loading : noopLoading;
     } else {
-      return true;
+      return noopLoading;
     }
   }
   
-  const $loading = ($process, $window) => loadingComponentExists($process,$window) ? $window.$nuxt.$loading : noopLoading;
+  // const $loading = ($process, $window) => loadingComponentExists($process,$window) ? $window.$nuxt.$loading : noopLoading;
   
   $axios.onRequest(config => {
     
@@ -34,7 +32,6 @@ export default function ({ app, $axios, redirect }) {
   });
 
   $axios.onResponse(response => {
-
     if(response && response.config && response.config.progress === false){
       return;
     }

@@ -22,7 +22,7 @@
               :rules="passwordRules"
               :type="value ? 'password' : 'text'"
             ></v-text-field>
-            <v-btn class="mt-5" large color="primary" @click.prevent="login">
+            <v-btn class="mt-5" large color="primary" :loading="busy" @click.prevent="login">
               <v-icon small class="mr-3">fa-sign-in-alt</v-icon>
               <span class="font-weight-bold">Iniciar Sesión</span>
             </v-btn>

@@ -4,7 +4,7 @@
       <v-subheader>Órdenes de Venta</v-subheader>
     </template>
     <template #actions>
-      <v-btn color="accent" to="/ventas/ordenesVenta/nuevaVenta" nuxt>
+      <v-btn v-if="$isAllowed('registerSale')" color="accent" to="/ventas/ordenesVenta/nuevaVenta" nuxt>
         <v-icon small>fa-plus</v-icon>
         <span class="mx-1">Nueva orden de venta</span>
       </v-btn>
@@ -60,8 +60,16 @@
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
 import { mapState, mapActions } from "vuex";
+import salePerimeter from '@/security/perimeters/sale-perimeter'
+
 import moment from "moment";
+
+
 export default {
+  routePerimeterAction: 'viewSale',
+  perimeters: [
+    salePerimeter
+  ],
   async fetch({ params: { clientId }, route, store }) {
     await store.dispatch("clients/details/fetchClient", { clientId });
   },
