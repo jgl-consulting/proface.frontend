@@ -62,6 +62,19 @@ export default {
     saleTraces() {
       return this.saleOrder.traces;
     }
+  },
+  methods: {
+    formatDate(date) {
+      if (date != undefined) return this.dateMoment(date).format("DD/MM/YYYY");
+      return "";
+    },
+    dateMoment(date) {
+      if (date != undefined) {
+        const momentDate = moment(date);
+        return momentDate.isValid() ? momentDate : moment.now();
+      }
+      return "";
+    },
   }
 };
 </script>

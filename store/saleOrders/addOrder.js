@@ -59,11 +59,13 @@ export const actions = {
       descending,
       filter
     } = pagination || state.pagination;
+    const avaliableFilter = 'avaliableStock>0';
+    const completeFilter = filter? filter + avaliableFilter : avaliableFilter;
     const direction = descending ? 'desc' : 'asc';
     const {
       products,
       page
-    } = await this.$products.pageProducts(requestPage, size, sortBy, direction, filter);
+    } = await this.$products.pageProducts(requestPage, size, sortBy, direction, completeFilter);
     commit(SET_PRODUCTS, products);
     commit(SET_PAGE, page);
     commit(SET_PAGINATION, {
