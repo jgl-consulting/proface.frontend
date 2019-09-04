@@ -35,7 +35,7 @@
                   v-model="saleOrderModel.user"
                   :items="users"
                   item-value="id"
-                  item-text="name"
+                  item-text="firstName"
                   label="Vendedor"
                   return-object
                 ></v-select>

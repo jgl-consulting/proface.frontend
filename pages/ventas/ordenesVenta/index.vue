@@ -139,7 +139,7 @@ export default {
   ],
   async fetch({ store }) {
     //const params = { requestPage: 0, size: 20, sortBy: undefined };
-    //await store.dispatch("saleOrders/fetchUsers");
+    await store.dispatch("saleOrders/fetchUsers");
     await store.dispatch("saleOrders/fetchSaleStatuses");
     await store.dispatch("saleOrders/fetchClients");
   },

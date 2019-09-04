@@ -84,15 +84,14 @@
       </v-data-table>
     </template>
     <template #dialog>
-      <!-- 
-        <save-unit-dialog v-model="openSaveDialog" :unit="unitToSave" :mode="dialogMode"></save-unit-dialog>
-      --> 
+      <save-unit-dialog v-model="openSaveDialog" :unit="unitToSave" :mode="dialogMode"></save-unit-dialog>
     </template>
   </simple-table-layout>
 </template>
 
 <script>
 import EmptyListTile from "@/components/common/EmptyListTile";
+import SaveUnitDialog from "@/components/units/SaveUnitDialog";
 import { mapState, mapActions } from "vuex";
 
 import warehousePerimeter from '@/security/perimeters/warehouse-perimeter';
@@ -109,9 +108,14 @@ export default {
     ]
   },
   components: {
-    EmptyListTile
+    EmptyListTile,
+    SaveUnitDialog
   },
-  async fetch({ store }) {},
+  async fetch({ store }) {    
+    await store.dispatch('units/fetchLocations');
+    await store.dispatch("units/fetchUnitStatuses");
+    await store.dispatch("units/fetchProducts");
+  },
   data() {
     return {
       title: "Ubicaciones",
