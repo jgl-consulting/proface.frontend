@@ -74,6 +74,7 @@ export default {
     baseURL: 'https://proface-api.herokuapp.com/'
   },
 
+  
   /*
   ** Build configuration
   */
