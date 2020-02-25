@@ -1,12 +1,8 @@
 import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 import pkg from './package'
-
+import colors from 'vuetify/es5/util/colors'
 export default {
   mode: 'spa',
-
-  /*
-  ** Headers of the page
-  */
   head: {
     title: pkg.name,
     meta: [
@@ -18,7 +14,7 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700|Material+Icons'
+        href: 'https://fonts.googleapis.com/css?family=Lato:300,400,500,700|Material+Icons'
       },
       {
         rel: 'stylesheet',
@@ -30,8 +26,15 @@ export default {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
-
+  loading: '@/components/common/Loading.vue'
+  /* 
+  { 
+    color: colors.deepOrange.darken2,
+    continuous: true,
+    height: '3px'
+  } 
+  */
+  ,
   /*
   ** Global CSS
   */
@@ -44,7 +47,14 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/vuetify'
+    '@/plugins/vuetify',
+    '@/plugins/services',
+    '@/plugins/flags',
+    '@/plugins/lodash',
+    '@/plugins/filters',
+    '@/plugins/kindergarten',
+    '@/plugins/confirm',
+    '@/plugins/axios',
   ],
 
   /*
@@ -61,7 +71,7 @@ export default {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'http://localhost:8080'
+    baseURL: 'https://proface-api.herokuapp.com/'
   },
 
   /*
@@ -79,6 +89,9 @@ export default {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
+      if (ctx.isDev) {
+        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+      }
     }
   },
   auth: {
@@ -100,7 +113,8 @@ export default {
             },
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
-            }
+            },
+            progress: false
           },
           logout: false,
           user: { url: '/oauth/info', method: 'get', propertyName: "user" }
@@ -111,6 +125,10 @@ export default {
     }
   },
   router: {
-    middleware: ['auth']
+    middleware: [
+      'auth', 
+      'page-title',
+      'kindergarten',
+    ]
   }
 }
